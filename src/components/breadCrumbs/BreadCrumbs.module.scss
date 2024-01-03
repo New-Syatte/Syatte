@@ -1,0 +1,22 @@
+.container {
+  display: flex;
+  text-align: center;
+  padding: 10px;
+  .bread {
+    font-size: inherit;
+    color: var(--color-black);
+    text-decoration: none;
+  }
+  .bread::after {
+    content: ">";
+    margin: 0 8px;
+    color: var(--color-black);
+  }
+  .bread:last-child::after {
+    content: "";
+  }
+  .bread:last-child {
+    color: var(--color-black);
+    font-weight: bold;
+  }
+}

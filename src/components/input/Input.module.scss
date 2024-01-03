@@ -1,0 +1,75 @@
+.formControl {
+  display: inline-flex;
+  flex-direction: column;
+
+  .inputWrapper {
+    position: relative;
+    display: inline-flex;
+    min-width: 296px;
+    border: 1px solid var(--border-gray);
+  }
+
+  .inputWrapperError {
+    position: relative;
+    border: 1px solid var(--color-red);
+  }
+
+  .input {
+    flex: 1;
+    border: 0;
+    padding: 0.875rem;
+    background: var(--color-white);
+    border: 1px solid var(--border-gray);
+
+    &::placeholder {
+      color: var(--dark-gray);
+    }
+
+    &::read-only {
+      color: var(--dark-gray);
+    }
+
+    &::disabled {
+      cursor: not-allowed;
+      color: var(--dark-gray);
+    }
+  }
+
+  .label {
+    display: inline-block;
+    margin-bottom: 4px;
+    color: #24292e;
+    font-size: 13px;
+
+    &Hidden {
+      position: absolute;
+      clip-path: circle(0);
+      width: 1px;
+      height: 1px;
+      margin: -1px;
+      border: 0;
+      padding: 0;
+    }
+  }
+}
+
+.button {
+  cursor: pointer;
+  border: 0;
+  padding: 0;
+
+  &:disabled {
+    cursor: not-allowed;
+  }
+
+  img {
+    vertical-align: bottom;
+  }
+}
+
+.error {
+  color: var(--color-red);
+  font-size: 15px;
+  margin-top: 10px;
+  margin-left: 10px;
+}

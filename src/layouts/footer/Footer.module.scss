@@ -1,0 +1,12 @@
+.container {
+  width: 100%;
+  height: var(--footer-height);
+  background-color: black;
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  .footer {
+    width: var(--content-width);
+  }
+}

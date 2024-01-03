@@ -1,0 +1,24 @@
+
+.summary {
+  h3 {
+    font-size: 1.7rem;
+    margin-bottom: 1rem;
+  }
+
+  .text {
+    display: flex;
+    padding: 5px 0;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 1.5rem;
+  }
+
+  .card {
+    width: 100%;
+    max-width: 500px;
+    padding: 1rem;
+    border: 1px solid var(--light-blue);
+    margin-bottom: 5px;
+    font-size: 1.3rem;
+  }
+}
