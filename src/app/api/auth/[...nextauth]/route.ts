@@ -31,15 +31,15 @@ export const authOptions: AuthOptions = {
   ],
   callbacks: {
     async signIn({ user: { id, email, name, image } }) {
-      if (!email) {
+      if (!id) {
         return false;
       }
       await addUser({
         id,
         name: name || "",
-        email,
+        email: email || "",
         image,
-        username: email.split("@")[0],
+        username: email?.split("@")[0] || "",
       });
       return true;
     },
