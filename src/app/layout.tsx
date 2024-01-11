@@ -1,13 +1,22 @@
 import "./globals.css";
-import { Noto_Sans_KR } from "next/font/google";
+import { EB_Garamond, Inter } from "next/font/google";
 import Footer from "@/layouts/footer/Footer";
 import Provider from "./Provider";
 import Header from "@/layouts/header/Header";
 import PageLoadingIndicator from "./PageLoadingIndicator";
 
-const notoSansKR = Noto_Sans_KR({
+export const garamond = EB_Garamond({
   subsets: ["latin"],
-  weight: ["700", "500", "400", "300"],
+  weight: ["700", "600", "500", "400"],
+  variable: "--font-garamond",
+  display: "swap",
+});
+
+export const inter = Inter({
+  subsets: ["latin"],
+  weight: ["700", "600", "500", "400"],
+  variable: "--font-inter",
+  display: "swap",
 });
 
 export const metadata = {
@@ -21,8 +30,8 @@ interface RootLayoutProps {
 
 export default async function RootLayout({ children }: RootLayoutProps) {
   return (
-    <html lang="ko">
-      <body className={notoSansKR.className}>
+    <html lang="ko" className={`${garamond.variable} ${inter.variable}`}>
+      <body>
         <Provider>
           {/* @ts-expect-error Async Server Component */}
           <Header />

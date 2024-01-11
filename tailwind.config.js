@@ -20,6 +20,20 @@ module.exports = {
       minHeight: {
         contentHeight: "calc(100vh - headerHeight - footerHeight)",
       },
+      fontFamily: {
+        helvetica: ["Helvetica", "Arial", "sans-serif"],
+        garamond: ["var(--font-garamond)"],
+        inter: ["var(--font-inter)"],
+        family: [
+          "var(--font-garamond)",
+          "Helvetica",
+          "var(--font-inter)",
+          "Arial",
+          "sans-serif",
+        ],
+        kor: ["Helvetica", "var(--font-inter)", "sans-serif"],
+        eng: ["var(--font-garamond)", "Helvetica", "sans-serif"],
+      },
     },
   },
   variants: {
