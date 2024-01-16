@@ -253,7 +253,7 @@ export default async function Home() {
                 style="w-[166px] h-[50px] border-white border text-white"
                 styleType="blank"
               >
-                예약하기
+                <Link href="/education">예약하기</Link>
               </Button>
             </div>
           </div>
