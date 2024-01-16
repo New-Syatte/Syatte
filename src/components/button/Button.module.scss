@@ -4,7 +4,6 @@
   display: inline-flex;
   justify-content: center;
   align-items: center;
-  border: 0;
 
   &[disabled] {
     cursor: not-allowed;
@@ -26,6 +25,13 @@
   color: var(--color-primary);
   border: 1px solid var(--light-gray);
 
+  &[disabled] {
+    background: var(--light-gray);
+    color: var(--dark-gray);
+  }
+}
+
+.blank {
   &[disabled] {
     background: var(--light-gray);
     color: var(--dark-gray);

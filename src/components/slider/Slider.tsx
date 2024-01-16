@@ -1,3 +1,4 @@
+"use client";
 import React, { useCallback, useEffect, useState } from "react";
 import styles from "./Slider.module.scss";
 import Icon from "../icon/Icon";
@@ -8,7 +9,9 @@ interface ISliderProps {
   slidePerView?: number;
   width?: number;
   height?: number;
+  fill?: boolean; // 이 옵션이 true면 width, height 값이 무시되고 부모 요소의 크기를 따라감
   bgColor?: string;
+  arrowSize?: number;
   [key: string]: any;
 }
 
@@ -19,13 +22,15 @@ interface SlidePerViewProperties extends React.CSSProperties {
 const Slider = ({
   datas,
   slidePerView = 1,
-  width = 212,
-  height = 212,
+  width,
+  height,
+  fill = false,
+  arrowSize = 78,
   bgColor = "bg-white",
   ...restProps
 }: ISliderProps) => {
   const [currentSlide, setCurrentSlide] = useState(0);
-
+  console.log(datas);
   // datas 배열을 slidePerView 값에 따라 분할
   const slides: any[] = [];
   for (let i = 0; i < datas.length; i += slidePerView) {
@@ -59,6 +64,7 @@ const Slider = ({
       <Icon
         type="left"
         className={`${styles.arrow} ${styles.prev}`}
+        style={{ width: arrowSize, height: arrowSize }}
         onClick={prevSlide}
       />
       {/* 현재 슬라이드 그룹의 모든 데이터를 렌더링 */}
@@ -68,12 +74,19 @@ const Slider = ({
           style={{ width, height }}
           className={styles.slide + " " + bgColor}
         >
-          <Image src={data.imageUrl} alt="" width={width} height={height} />
+          <Image
+            src={data.imageUrl}
+            alt=""
+            width={width}
+            height={height}
+            fill={fill}
+          />
         </div>
       ))}
       <Icon
         type="right"
         className={`${styles.arrow} ${styles.next}`}
+        style={{ width: arrowSize, height: arrowSize }}
         onClick={nextSlide}
       />
     </div>
