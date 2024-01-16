@@ -14,8 +14,8 @@ module.exports = {
         colorRed: "#ff0000",
       },
       height: {
-        headerHeight: "70px",
-        footerHeight: "384px",
+        headerHeight: "80px",
+        footerHeight: "400px",
       },
       minHeight: {
         contentHeight: "calc(100vh - headerHeight - footerHeight)",
@@ -25,5 +25,5 @@ module.exports = {
   variants: {
     extend: {},
   },
-  plugins: [],
+  plugins: [require('daisyui')],
 };

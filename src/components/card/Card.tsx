@@ -1,11 +1,11 @@
 import NextLink from "@/components/NextLink/NextLink";
-import Image from "next/image";
+import Image, { StaticImageData } from "next/image";
 
 interface EachProductProps {
   title: string;
   width: number;
   height: number;
-  src: string;
+  src: string | StaticImageData
   linkTo: string;
   price?: number;
   titleSize?: string;
