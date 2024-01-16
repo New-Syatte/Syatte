@@ -4,22 +4,32 @@ import styles from "./Button.module.scss";
 
 interface IButtonProps {
   type?: "submit" | "reset" | "button" | undefined;
-  secondary?: boolean;
+  styleType?: "primary" | "secondary" | "blank";
   style?: string;
   [x: string]: any;
 }
 
 const Button = ({
   type = "button",
-  secondary = false,
+  styleType = "primary",
   style = "",
   ...restProps
 }: IButtonProps) => {
-  const composeClasses = classNames(
-    style,
-    styles.button,
-    secondary ? styles.secondary : styles.primary,
-  );
+  let btnType = "";
+  switch (styleType) {
+    case "primary":
+      btnType = styles.primary;
+      break;
+    case "secondary":
+      btnType = styles.secondary;
+      break;
+    case "blank":
+      btnType = styles.blank;
+      break;
+    default:
+      throw new Error("지원하는 버튼 타입이 존재하지 않습니다.");
+  }
+  const composeClasses = classNames(style, styles.button, btnType);
   return <button className={composeClasses} type={type} {...restProps} />;
 };
 

@@ -1,5 +1,5 @@
 import "./globals.css";
-import { EB_Garamond, Inter } from "next/font/google";
+import { EB_Garamond, Crimson_Text, Crimson_Pro } from "next/font/google";
 import Footer from "@/layouts/footer/Footer";
 import Provider from "./Provider";
 import Header from "@/layouts/header/Header";
@@ -12,10 +12,10 @@ export const garamond = EB_Garamond({
   display: "swap",
 });
 
-export const inter = Inter({
+export const crimson = Crimson_Pro({
   subsets: ["latin"],
-  weight: ["700", "600", "500", "400"],
-  variable: "--font-inter",
+  weight: ["700", "600", "500", "400", "300", "200"],
+  variable: "--font-crimson",
   display: "swap",
 });
 
@@ -30,7 +30,7 @@ interface RootLayoutProps {
 
 export default async function RootLayout({ children }: RootLayoutProps) {
   return (
-    <html lang="ko" className={`${garamond.variable} ${inter.variable}`}>
+    <html lang="ko" className={`${garamond.variable} ${crimson.variable}`}>
       <body>
         <Provider>
           {/* @ts-expect-error Async Server Component */}

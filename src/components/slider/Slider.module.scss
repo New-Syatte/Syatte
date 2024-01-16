@@ -1,6 +1,6 @@
 .slider {
   width: 100%;
-  height: 50vh;
+  height: 100%;
   position: relative;
   overflow: hidden;
   display: flex;
@@ -30,10 +30,8 @@
   }
 
   .arrow {
-    background: transparent;
+    background: rgba(255, 255, 255, 0.5);
     color: var(--color-white);
-    width: 78px;
-    height: 78px;
     cursor: pointer;
     position: absolute;
     top: 50%;
@@ -46,12 +44,12 @@
   }
 
   .next {
-    right: 1.5rem;
+    right: 0;
     color: var(--color-primary);
   }
 
   .prev {
-    left: 1.5rem;
+    left: 0;
     color: var(--color-primary);
   }
 }

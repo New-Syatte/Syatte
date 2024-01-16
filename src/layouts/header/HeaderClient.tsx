@@ -39,13 +39,11 @@ const HeaderClient = ({ user }: HeaderProps) => {
   }, [pathname]);
 
   return (
-    <div className={styles.container + ` ${bgColor}`}>
+    <div className={styles.container + ` ${bgColor} ${"font-garamond"}`}>
       <div className="ml-40">
         <Image src={logo} alt="Logo" width={85} height={27} />
       </div>
-      <div
-        className={`flex ml-6 gap-3 mr-4 items-center font-garamond ${textColor}`}
-      >
+      <div className={`flex ml-6 gap-3 mr-4 items-center ${textColor}`}>
         <NavMenu pathname={pathname} textColor={textColor} />
         <NextLink href={"/cart"} className="text-xs font-semibold">
           CART
