@@ -4,8 +4,15 @@ import Image from "next/image";
 import IDPhoto from "@/assets/greetings/greeting-photo.png";
 import clip from "@/assets/greetings/photo-clip.svg";
 import band from "@/assets/greetings/band-removebg.png";
-import award1 from "@/assets/greetings/award1.png";
-import award2 from "@/assets/greetings/award2.png";
+import award1 from "@/assets/greetings/award1.jpg";
+import award2 from "@/assets/greetings/award2.jpg";
+import award3 from "@/assets/greetings/award3.jpg";
+import award4 from "@/assets/greetings/award4.jpg";
+import award5 from "@/assets/greetings/award5.jpg";
+import award6 from "@/assets/greetings/award6.jpg";
+import award7 from "@/assets/greetings/award7.jpg";
+import award8 from "@/assets/greetings/award8.jpg";
+import award9 from "@/assets/greetings/award9.jpg";
 import media1 from "@/assets/greetings/media1.png";
 import media2 from "@/assets/greetings/media2.png";
 import media3 from "@/assets/greetings/media3.png";
@@ -15,7 +22,17 @@ import media5 from "@/assets/greetings/media5.png";
 import { motion } from "framer-motion";
 
 const GreetingClient = () => {
-  const awards = [award1, award2];
+  const awards = [
+    award1,
+    award2,
+    award3,
+    award4,
+    award5,
+    award6,
+    award7,
+    award8,
+    award9,
+  ];
   const medias = [media1, media2, media3, media4, media5];
 
   const container = {
@@ -48,7 +65,7 @@ const GreetingClient = () => {
   return (
     <div className="relative z-30 flex flex-col items-center w-full p-64">
       <motion.div
-        className="h-[750px] w-full flex gap-60 justify-between"
+        className="2xl:h-[750px] lg:h-auto w-full 2xl:flex gap-60 justify-between lg:block"
         initial={{ opacity: 0, y: 100 }}
         whileInView={{
           opacity: 1,
@@ -65,6 +82,7 @@ const GreetingClient = () => {
               alt="clip"
               width={238}
               height={238}
+              style={{ objectFit: "contain" }}
               className="absolute -bottom-[84px] -right-[84px]"
             />
           </div>
@@ -73,7 +91,7 @@ const GreetingClient = () => {
           </p>
         </div>
         <div className="w-1/2">
-          <h2 className="text-[40px] leading-[52px] font-medium mt-10 mb-[72px]">
+          <h2 className="text-[40px] leading-[52px] font-medium mt-10 mb-[72px] whitespace-nowrap">
             <span className="relative text-6xl before:content-[''] before:block before:w-2 before:h-2 before:rounded-full before:bg-slate-300 before:absolute before: before:-top-5 before:left-1/2 before:transform before:-translate-y-1/2">
               샤
             </span>
@@ -174,34 +192,41 @@ const GreetingClient = () => {
         initial="hidden"
         whileInView="visible"
         variants={container}
+        viewport={{ once: true }}
       >
         <h2 className="text-3xl font-bold mb-2">수료증</h2>
         <p className="text-lg mb-6">
           국내외 최고의 기관에서 교육 관정을 수료하였습니다.
         </p>
-        <motion.div className="flex gap-6">
+        <div className="grid 2xl:grid-cols-3 lg:grid-cols-2 md:grid-cols-1 gap-6 2xl:w-[912px] lg:w-[600px] md:w-[300px]">
           {awards.map((award, index) => (
             <motion.div
-              className="relative w-[277px] h-[195px]"
               key={index}
               variants={li}
-              whileHover={hover}
+              whileHover={{
+                scale: 1.3,
+                zIndex: 1,
+                transition: { duration: 0.3, ease: "easeInOut" },
+              }}
+              className="relative w-60 h-60"
             >
               <Image
                 src={award}
                 alt="award"
-                fill={true}
+                fill
                 className="rounded-sm"
+                style={{ objectFit: "contain" }}
               />
             </motion.div>
           ))}
-        </motion.div>
+        </div>
       </motion.div>
       <motion.div
         className="flex flex-col justify-start w-full"
         initial="hidden"
         whileInView="visible"
         variants={container}
+        viewport={{ once: true }}
       >
         <h2 className="text-3xl font-bold mb-2">미디어 출연</h2>
         <p className="text-lg mb-6">
