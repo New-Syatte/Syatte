@@ -4,7 +4,7 @@ export default function Footer() {
   return (
     <footer className={styles.container}>
       <div className={styles.footer}>
-        <div className="font-semibold mb-[10px]">Columbia Tools</div>
+        <div className="font-semibold mb-[10px]">(주) Syatte</div>
         <div className="mb-[10px]">주소 기입</div>
         <div className="flex mb-[30px]">
           <div className="font-semibold">고객센터</div>
@@ -13,11 +13,11 @@ export default function Footer() {
           </div>
         </div>
         <div className="mb-[10px]">
-          (주)회사명ㅣ대표:홍길동ㅣ호스팅 서비스:건식벽 도구회사ㅣ통신판매업
+          (주)회사명ㅣ대표:홍길동ㅣ통신판매업
           신고번호:신고번호ㅣ사업자 등록번호:156-66-100004
         </div>
         <div className="mb-[10px]">개인정보 처리방침ㅣ서비스 이용약관</div>
-        <div>Copyright (c) 2023 Columbia Tools. All rights reserved.</div>
+        <div>Copyright (c) 2024 Syatte. All rights reserved.</div>
       </div>
     </footer>
   );

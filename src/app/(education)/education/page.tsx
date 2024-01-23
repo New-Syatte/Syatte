@@ -10,7 +10,6 @@ export default async function Page() {
   const edu: Edu[] = await getEdu();
   // console.log(edu[0].eduName);
   // console.log(edu[0].eduDescription);
-  console.log(edu[0]);
   return (
     <RouteComplete>
       <div>

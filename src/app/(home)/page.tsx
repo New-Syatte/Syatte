@@ -1,7 +1,6 @@
 import RouteComplete from "@/utils/RouteComplete";
 import Slider from "@/components/slider/Slider";
 import Button from "@/components/button/Button";
-
 import Banner1 from "@/assets/main/main-banner.png";
 import main1 from "@/assets/main/main-art1.png";
 import main2 from "@/assets/main/main-art2.png";
@@ -19,7 +18,6 @@ import introSub5 from "@/assets/main/introduce-sub5.png";
 import eduImg from "@/assets/main/main-edu.png";
 import MMLogo from "@/assets/modern-masters-logo.png";
 import bottomBanner from "@/assets/main/bottom-banner.png";
-
 import { MdArrowForwardIos } from "react-icons/md";
 import Image from "next/image";
 import Link from "next/link";
