@@ -36,7 +36,7 @@ export default async function Home() {
         {/* 메인 */}
         <div className="w-full h-[1070px] flex flex-col justify-center items-center">
           <div className="flex flex-col justify-center items-center h-[230px] font-eng mb-14">
-            <p className="font-normal text-2xl mb-4 tracking-[4.8px]">SYATT</p>
+            <p className="font-normal text-2xl mb-4 tracking-[4.8px]">SYATTE</p>
             <p className="text-6xl font-bold tracking-tighter">
               특수페인팅 세계
             </p>
