@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 :root {
-  --font-family: Helvetica, var(--font-garamond), var(--font-inter), sans-serif;
+  --font-family: Helvetica, var(--font-garamond), sans-serif;
 
   --light-blue: #1f93ff;
 
