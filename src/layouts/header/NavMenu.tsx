@@ -10,14 +10,14 @@ const NavMenu = ({ pathname, textColor }: NavMenuProps) => {
     "education",
     "greetings",
     "modern masters",
-    "midas metal",
+    "midas metall",
     "store",
   ];
   const navLink = [
     "/education",
     "/greetings",
     "/modern-masters",
-    "/midas-metal",
+    "/midas-metall",
     "/store",
   ];
 
