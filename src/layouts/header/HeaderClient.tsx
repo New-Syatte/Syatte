@@ -23,13 +23,13 @@ const HeaderClient = ({ user }: HeaderProps) => {
   const [logo, setLogo] = useState(STLogo);
 
   useEffect(() => {
-    if (pathname === "/modern-masters" || pathname === "/midas-metal") {
+    if (pathname === "/modern-masters" || pathname === "/midas-metall") {
       setTextColor("text-white");
       setBgColor("bg-black");
       if (pathname === "/modern-masters") {
         setLogo(MMLogo);
       }
-      if (pathname === "/midas-metal") {
+      if (pathname === "/midas-metall") {
         setLogo(MDLogo);
       }
     } else {
