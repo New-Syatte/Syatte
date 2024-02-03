@@ -11,7 +11,7 @@ const layout = ({
   params: { category: string };
 }) => {
   const linkArray = categorys.map(category => {
-    return `/products/${category.value}`;
+    return `/store/${category.value}`;
   });
   const listStr = categorys.map(category => category.title);
   const matchingCategory = categorys.find(
@@ -27,13 +27,13 @@ const layout = ({
             <h2 className="text-6xl font-bold text-black mb-9 whitespace-break-spaces w-[660px] z-10">
               {matchingCategory?.title}
             </h2>
-            <Image
+            {/* <Image
               src={`/product-banner/${params.category}.jpg`}
               alt="img"
               className="absolute -bottom-[73px] z-0"
               loading="lazy"
               fill={true}
-            />
+            /> */}
           </div>
           <div className="w-full bg-white h-[84px]" />
         </header>

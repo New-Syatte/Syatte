@@ -4,13 +4,13 @@ import { ProductForList, CategoryForConstant } from "@/model/products";
 interface DetailCategoryProps {
   products: ProductForList[];
   detailCategory: CategoryForConstant[];
-  bigCategory: "all" | "maintenanceKits";
+  isAll?: boolean;
 }
 
 const DetailCategory = ({
   products,
   detailCategory,
-  bigCategory,
+  isAll = false,
 }: DetailCategoryProps) => {
   const categoryValues = detailCategory.map(
     (category: CategoryForConstant) => category.value,
@@ -23,7 +23,7 @@ const DetailCategory = ({
             <Heading title={detailCategory[index].title} fontSize="lg" />
             <ProductCards
               products={products.filter((product: any) =>
-                bigCategory === "all"
+                isAll
                   ? product.category === category
                   : product.detailCategory === category,
               )}

@@ -10,6 +10,7 @@ export default async function Products({
   params: { category: string };
 }) {
   const { category } = params;
+  console.log(category);
   const products =
     category === "all"
       ? await getProducts()
@@ -29,20 +30,24 @@ export default async function Products({
         <DetailCategory
           products={products}
           detailCategory={categorys}
-          bigCategory="all"
+          isAll={true}
         />
       </>
     );
   }
-  if (category === "maintenanceKits") {
+  if (category === "modernMasters") {
     return (
       <>
         <BreadCrumbs root="MENU" category={category.toUpperCase()} />
-        <DetailCategory
-          products={products}
-          detailCategory={detailCategorys}
-          bigCategory="maintenanceKits"
-        />
+        <DetailCategory products={products} detailCategory={detailCategorys} />
+      </>
+    );
+  }
+  if (category === "midasMetal") {
+    return (
+      <>
+        <BreadCrumbs root="MENU" category={category.toUpperCase()} />
+        <DetailCategory products={products} detailCategory={detailCategorys} />
       </>
     );
   } else
