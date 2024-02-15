@@ -39,10 +39,9 @@ export default async function ProductDetails({
               categoryProducts.map(product => (
                 <div key={product._id}>
                   <Card
-                    title={product.productName}
+                    product={product}
                     width={120}
                     height={120}
-                    src={product.mainImage.imageUrl}
                     linkTo={`/product-details/${product._id}`}
                     titleSize="sm"
                   />
@@ -61,7 +60,7 @@ export default async function ProductDetails({
             youtubeUrls={youtubeUrls}
           />
         </div>
-        <footer>
+        {/* <footer>
           <div>
             {recommends && (
               <div className="w-[1280px]">
@@ -72,7 +71,7 @@ export default async function ProductDetails({
                   {recommends.map((recommend, index) => (
                     <Card
                       key={index}
-                      title={recommend.productName}
+                      product={recommend}
                       width={260}
                       height={260}
                       src={recommend.mainImage.imageUrl}
@@ -84,7 +83,7 @@ export default async function ProductDetails({
               </div>
             )}
           </div>
-        </footer>
+        </footer> */}
       </section>
     </RouteComplete>
   );
