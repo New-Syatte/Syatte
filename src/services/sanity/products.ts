@@ -3,7 +3,7 @@ import { client } from "@/services/sanity/sanity";
 export function getProducts() {
   try {
     const products = client.fetch(
-      '*[_type == "product"] {_id, productName, category, price, mainImage {"imageUrl": asset->url}}',
+      '*[_type == "product"] {..., mainImage {"imageUrl": asset->url}}',
     );
     return products;
   } catch (error: any) {
@@ -24,9 +24,6 @@ export function getDetailProduct(id: string) {
           "imageUrl": asset->url
         },
         description,
-        feature,
-        youtubeUrls,
-        recommends[]->{productName, "mainImage": mainImage {"imageUrl": asset->url}, _id}
       }`,
       { id },
     );

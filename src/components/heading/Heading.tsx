@@ -4,10 +4,15 @@ interface IHeadingProps {
   title: string;
   subtitle?: string;
   center?: boolean;
-  fontSize?: "xs" | "sm" | "md" | "lg" | "xl" | "2xl" | "3xl";
+  fontSize?: string;
 }
 
-const Heading = ({ title, subtitle, center, fontSize='3xl' }: IHeadingProps) => {
+const Heading = ({
+  title,
+  subtitle,
+  center,
+  fontSize = "3xl",
+}: IHeadingProps) => {
   return (
     <div className="px-4">
       <div className={center ? "text-center" : ""}>
