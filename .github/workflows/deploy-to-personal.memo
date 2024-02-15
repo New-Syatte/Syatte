@@ -22,7 +22,7 @@
 #         with:
 #           source-directory: "output"
 #           destination-github-username: ruddnjs3769
-#           destination-repository-name: columbiaTools-deploy
+#           destination-repository-name: Syatt-deploy
 #           user-email: ${{ secrets.OFFICIAL_ACCOUNT_EMAIL }}
 #           commit-message: ${{ github.event.commits[0].message }}
 #           target-branch: main
