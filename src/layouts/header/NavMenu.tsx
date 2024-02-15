@@ -18,7 +18,7 @@ const NavMenu = ({ pathname, textColor }: NavMenuProps) => {
     "/greetings",
     "/modern-masters",
     "/midas-metall",
-    "/store/all",
+    "/store",
   ];
 
   return (

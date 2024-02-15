@@ -7,16 +7,16 @@ interface Props {
 
 const ProductCards = ({ products }: Props) => {
   return (
-    <div className="grid grid-cols-3 gap-x-6 gap-y-24 px-4">
+    <div className="grid grid-cols-4 gap-x-6 gap-y-24 px-4 w-full">
       {products.map((product: any) => (
         <Card
           key={product._id}
           title={product.productName}
           src={product.mainImage.imageUrl}
           linkTo={`/product-details/${product._id}`}
-          width={300}
-          height={300}
-          price={product.price}
+          width={312}
+          height={312}
+          product={product}
         />
       ))}
     </div>
