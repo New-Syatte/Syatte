@@ -3,14 +3,14 @@ import { setSearchQuery } from "@/redux/slice/searchSlice";
 import { useDispatch } from "react-redux";
 import { useState } from "react";
 import { usePathname } from "next/navigation";
-import useNextRouter from "@/hooks/useNextRouter";
+import { useRouter } from "next/navigation";
 
 const Search = () => {
   const dispatch = useDispatch();
   const [searchValue, setSearchValue] = useState("");
 
   const pathname = usePathname();
-  const router = useNextRouter();
+  const router = useRouter();
 
   const handleSearch = () => {
     dispatch(setSearchQuery(searchValue));

@@ -3,7 +3,7 @@ import styles from "./CheckoutSuccess.module.scss";
 import priceFormat from "@/utils/priceFormat";
 import { formatTime } from "@/utils/dayjs";
 import Button from "@/components/button/Button";
-import NextLink from "@/components/NextLink/NextLink";
+import Link from "next/link";
 
 type Props = {
   searchParams: {
@@ -64,7 +64,7 @@ export default async function CheckoutSuccess({ searchParams }: Props) {
           )}
         </ul>
         <Button style="py-3 px-12">
-          <NextLink href="/order/order-history">주문 상태 보기</NextLink>
+          <Link href="/order/order-history">주문 상태 보기</Link>
         </Button>
       </section>
     </>

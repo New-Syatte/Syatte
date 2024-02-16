@@ -9,7 +9,7 @@ import {
 } from "@/redux/slice/cartSlice";
 import { useDispatch } from "react-redux";
 import { useState } from "react";
-import useNextRouter from "@/hooks/useNextRouter";
+import { useRouter } from "next/navigation";
 import VideoPlayer from "@/components/videoPlayer/VideoPlayer";
 import Slider from "@/components/slider/Slider";
 
@@ -34,7 +34,7 @@ const ProductContent = ({
   youtubeUrls,
 }: ProductContent) => {
   const dispatch = useDispatch();
-  const router = useNextRouter();
+  const router = useRouter();
   const [count, setCount] = useState(1);
 
   const addToCart = () => {

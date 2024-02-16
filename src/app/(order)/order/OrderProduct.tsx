@@ -2,7 +2,7 @@
 import Image from "next/image";
 import { BsChevronRight } from "react-icons/bs";
 import { Order } from "@/model/order";
-import NextLink from "@/components/NextLink/NextLink";
+import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { ORDER_STATUS } from "@/constants/status";
 
@@ -31,12 +31,12 @@ const OrderProduct = ({ order, index = 0 }: OrderProductProps) => {
           pathname === "/order/order-history" ? "" : ` / ${order._id}`
         }`}</h3>
         {pathname && pathname === "/order/order-history" && (
-          <NextLink
+          <Link
             href={`/order/order-details/${order._id}`}
             className="flex items-center text-darkgray text-md hover:underline"
           >
             <p>주문상세</p> <BsChevronRight />
-          </NextLink>
+          </Link>
         )}
       </div>
       {order.cartItems &&
