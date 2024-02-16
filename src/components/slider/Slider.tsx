@@ -12,6 +12,7 @@ interface ISliderProps {
   fill?: boolean; // 이 옵션이 true면 width, height 값이 무시되고 부모 요소의 크기를 따라감
   bgColor?: string;
   arrowSize?: number;
+  setIndexImage?: (index: number) => void; // React useState Setter 함수
   [key: string]: any;
 }
 
@@ -27,6 +28,7 @@ const Slider = ({
   fill = false,
   arrowSize = 78,
   bgColor = "bg-white",
+  setIndexImage,
   ...restProps
 }: ISliderProps) => {
   const [currentSlide, setCurrentSlide] = useState(0);
@@ -73,8 +75,13 @@ const Slider = ({
           key={index}
           style={{ width, height }}
           className={styles.slide + " " + bgColor}
+          onClick={() => {
+            setIndexImage && setIndexImage(index);
+          }}
+          {...restProps}
         >
           <Image
+            key={index}
             src={data.imageUrl}
             alt=""
             width={width}
