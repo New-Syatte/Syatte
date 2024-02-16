@@ -1,0 +1,30 @@
+"use client";
+
+import Link from "next/link";
+import { useDispatch } from "react-redux";
+import { setSearchQuery } from "@/redux/slice/searchSlice";
+
+interface CategoryToSearchLinkProps {
+  to: string;
+  searchQuery: string;
+  [x: string]: any;
+  children: React.ReactNode;
+}
+const CategoryToSearchLink = ({
+  to,
+  searchQuery,
+  children,
+  ...restProps
+}: CategoryToSearchLinkProps) => {
+  const dispatch = useDispatch();
+  const handleSearch = () => {
+    dispatch(setSearchQuery(searchQuery));
+  };
+  return (
+    <Link href={to} {...restProps} onClick={handleSearch}>
+      {children}
+    </Link>
+  );
+};
+
+export default CategoryToSearchLink;

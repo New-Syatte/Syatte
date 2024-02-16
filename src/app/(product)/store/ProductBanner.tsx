@@ -1,16 +1,21 @@
 import Image from "next/image";
 import Banner1 from "@/assets/product/Product-Banner1.png";
 import Banner2 from "@/assets/product/Product-Banner2.png";
+import CategoryToSearchLink from "./CategoryToSearchLink";
 
 const ProductBanner = () => {
   const banners = [
-    { img: Banner1, title: "메탈이펙트" },
-    { img: Banner2, title: "컬러패스트" },
+    { img: Banner1, title: "메탈이펙트", query: "metalEffect" },
+    { img: Banner2, title: "컬러패스트", query: "colorFast" },
   ];
   return (
     <div className="flex gap-5 mt-24">
       {banners.map((banner, index) => (
-        <div key={index}>
+        <CategoryToSearchLink
+          key={index}
+          to="/store/search"
+          searchQuery={banner.query}
+        >
           <div className="w-[644px] h-[245px] relative bg-zinc-700 rounded-[10px]">
             <div className="left-[40px] top-[47px] absolute text-white text-[50px] font-bold">
               {banner.title}
@@ -28,7 +33,7 @@ const ProductBanner = () => {
               <Image src={banner.img} alt="product-banner" fill />
             </div>
           </div>
-        </div>
+        </CategoryToSearchLink>
       ))}
     </div>
   );
