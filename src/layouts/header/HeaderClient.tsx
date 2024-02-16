@@ -10,7 +10,6 @@ import styles from "./Header.module.scss";
 import { User } from "@/model/user";
 import { usePathname } from "next/navigation";
 import { useState, useEffect } from "react";
-import Link from "next/link";
 
 interface HeaderProps {
   user: User | undefined;
@@ -42,7 +41,7 @@ const HeaderClient = ({ user }: HeaderProps) => {
   return (
     <div className={styles.container + ` ${bgColor} ${"font-garamond"}`}>
       <div className="ml-40">
-        <Link href="/"><Image src={logo} alt="Logo" width={85} height={27} /></Link>
+        <Image src={logo} alt="Logo" width={85} height={27} />
       </div>
       <div className={`flex ml-6 gap-3 mr-4 items-center ${textColor}`}>
         <NavMenu pathname={pathname} textColor={textColor} />
@@ -61,8 +60,8 @@ const HeaderClient = ({ user }: HeaderProps) => {
             </NextLink>
           )}
         </div>
-      </div>
-    </div>
+      </nav>
+    </header>
   );
 };
 

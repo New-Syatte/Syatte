@@ -1,41 +1,73 @@
 import NextLink from "@/components/NextLink/NextLink";
-import Image, { StaticImageData } from "next/image";
+import Image from "next/image";
 
 interface EachProductProps {
-  title: string;
+  product: any;
   width: number;
   height: number;
-  src: string | StaticImageData
+  imgWidth?: number;
+  imgHeight?: number;
+  bgColor?: string;
   linkTo: string;
-  price?: number;
   titleSize?: string;
   [key: string]: any;
 }
 
 export default function Card({
-  title,
-  width,
-  height,
-  src,
+  product,
+  width = 312,
+  height = 312,
+  imgWidth = 212,
+  imgHeight = 212,
+  bgColor = "white", // bg-white
   linkTo,
-  price,
   titleSize = "xl",
-  ...restProps
 }: EachProductProps) {
+  const { productName: title, discount, price, mainImage } = product;
+
+  const discountedPrice = price - price * (discount / 100);
+
   return (
-    <NextLink href={linkTo} className={`w-${width} block`}>
-      <div className="bg-bgGray">
-        <Image src={src} alt="image" width={width} height={width} />
+    <NextLink href={linkTo}>
+      <div
+        style={{ width: width, height: height }}
+        className={`bg-${bgColor} border border-zinc-300 flex items-center justify-center`}
+      >
+        <div
+          className="relative"
+          style={{ width: imgWidth, height: imgHeight }}
+        >
+          <Image
+            src={mainImage.imageUrl}
+            alt="image"
+            fill
+            style={{ objectFit: "cover" }}
+          />
+        </div>
       </div>
-      <div className={`text-${titleSize} font-medium mt-7 hover:underline`}>
+      <div
+        className={`text-${titleSize} text-black text-lg font-normal mt-7 hover:underline`}
+      >
         {title}
       </div>
-      {/* 다른 조건문 필요 */}
-      {price && (
-        <div className="mt-[6px] hover:underline">
+      <div className="hover:underline mt-[10px] flex gap-2 items-end">
+        <span className="text-rose-500 text-2xl font-bold leading-[30px]">
+          {discount + "%"}
+        </span>
+        <span className="text-zinc-400 text-lg font-normal line-through leading-[30px]">
           {price.toLocaleString()}원
-        </div>
-      )}
+        </span>
+        <span className="text-black text-2xl font-bold">
+          {discountedPrice.toLocaleString()}원
+        </span>
+      </div>
+      {/* 나중에 장바구니 이벤트처리로 따로 빼기 */}
+      <article className="flex gap-2 mt-[10px]">
+        <Image src="/download.svg" alt="toCart" width={15} height={15} />
+        <p className="text-center text-neutral-400 text-base font-normal">
+          카트 담기
+        </p>
+      </article>
     </NextLink>
   );
 }
