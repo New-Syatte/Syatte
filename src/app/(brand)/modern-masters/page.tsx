@@ -1,8 +1,7 @@
-'use client'
+"use client";
 
 /* eslint-disable @next/next/no-img-element */
 import Image from "next/image";
-import RouteComplete from "@/utils/RouteComplete";
 import { GrNext, GrPrevious } from "react-icons/gr";
 import logo from "public/brand/modernmasters-img/modernmasters-logo.png";
 import YouTubeVideo from "@/components/youTubeVideo/YouTubeVideo";
@@ -51,7 +50,7 @@ const Modernmasters = () => {
   };
 
   return (
-    <RouteComplete>
+    <>
       {/* 최상단 배너 영역 */}
       <div className="flex w-full flex-col bg-[#F6F6F6] h-[890px]">
         <div className="flex flex-col my-auto">
@@ -92,13 +91,22 @@ const Modernmasters = () => {
       {/* 제품 소개 */}
       <div className="flex w-full h-[960px] p-[140px] relative overflow-hidden">
         <div className="flex w-[400px] absolute top-6 left-[-200px]">
-          <img src={"brand/modernmasters-img/silver_brush.png"} alt={"상단붓"} />
+          <img
+            src={"brand/modernmasters-img/silver_brush.png"}
+            alt={"상단붓"}
+          />
         </div>
         <div className="flex w-[600px] absolute bottom-0 right-[-300px]">
-          <img src={"brand/modernmasters-img/silver_brush.png"} alt={"하단붓"} />
+          <img
+            src={"brand/modernmasters-img/silver_brush.png"}
+            alt={"하단붓"}
+          />
         </div>
         <div className="flex w-[500px] absolute top-20 right-0 translate-x-1/4 transform rotate-[-15deg]">
-          <img src={"brand/modernmasters-img/modernmasters-paint-lg.png"} alt={"페인트통"} />
+          <img
+            src={"brand/modernmasters-img/modernmasters-paint-lg.png"}
+            alt={"페인트통"}
+          />
         </div>
         <div className="flex w-full my-auto px-auto z-10">
           <div className="flex flex-col">
@@ -127,7 +135,7 @@ const Modernmasters = () => {
         </div>
         <div className="flex w-full justify-center my-auto z-10">
           <div className="flex rounded-lg overflow-hidden mt-[100px]">
-            <YouTubeVideo urlId={'qj5TKQbbRYg'} />
+            <YouTubeVideo urlId={"qj5TKQbbRYg"} />
           </div>
         </div>
       </div>
@@ -145,7 +153,12 @@ const Modernmasters = () => {
         <div className="flex justify-center gap-3">
           {brandList.map((data, index) => (
             <>
-              <div className="flex w-[190px] border-[#000000] border-[1px]" onClick={()=>{setActiveBrandIndex(index)}}>
+              <div
+                className="flex w-[190px] border-[#000000] border-[1px]"
+                onClick={() => {
+                  setActiveBrandIndex(index);
+                }}
+              >
                 <img src={data.img} alt={`브랜드${index + 1}`} />
               </div>
             </>
@@ -164,16 +177,26 @@ const Modernmasters = () => {
           {MODERN_MASTERS_ARTWORK_TEXT}
         </div>
         <div className="flex w-full">
-          <img src={"brand/modernmasters-img/modernmasters-artwork.png"} alt={`페인팅 작품`} className="flex w-full"/>
+          <img
+            src={"brand/modernmasters-img/modernmasters-artwork.png"}
+            alt={`페인팅 작품`}
+            className="flex w-full"
+          />
         </div>
       </div>
       {/* 공식 스토어 */}
       <div className="flex flex-col h-full w-full justify-center mt-[150px] mb-[240px] relative overflow-hidden">
         <div className="flex w-[500px] absolute bottom-0 right-[-200px] transform rotate-[-15deg]">
-          <img src={"brand/modernmasters-img/modernmasters-store_right.png"} alt={"페인트통2"} />
+          <img
+            src={"brand/modernmasters-img/modernmasters-store_right.png"}
+            alt={"페인트통2"}
+          />
         </div>
         <div className="flex w-[380px] absolute top-0 left-[-160px] transform rotate-[15deg]">
-          <img src={"brand/modernmasters-img/modernmasters-store_left.png"} alt={"페인트통3"} />
+          <img
+            src={"brand/modernmasters-img/modernmasters-store_left.png"}
+            alt={"페인트통3"}
+          />
         </div>
         <div className="flex justify-center mb-[50px]">
           <SubTitleBox engValue={"STORE"} korValue={"공식 스토어"} />
@@ -187,7 +210,7 @@ const Modernmasters = () => {
           </div>
         </div>
       </div>
-    </RouteComplete>
+    </>
   );
 };
 

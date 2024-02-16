@@ -10,7 +10,7 @@ import {
   selectCartTotalQuantity,
 } from "@/redux/slice/cartSlice";
 import styles from "./CheckjoutForm.module.scss";
-import NextLink from "@/components/NextLink/NextLink";
+import Link from "next/link";
 import priceFormat from "@/utils/priceFormat";
 import Image from "next/image";
 
@@ -32,7 +32,7 @@ export default function CheckoutForm() {
         {cartItems.length === 0 ? (
           <>
             <p>장바구니 상품이 없습니다.</p>
-            <NextLink href={"/"}>홈으로</NextLink>
+            <Link href={"/"}>홈으로</Link>
           </>
         ) : (
           <>

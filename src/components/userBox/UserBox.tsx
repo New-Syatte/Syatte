@@ -2,11 +2,11 @@
 
 import { signOut } from "next-auth/react";
 import { useState } from "react";
-import useNextRouter from "@/hooks/useNextRouter";
+import { useRouter } from "next/navigation";
 
 const UserBox = ({ data }: any) => {
   const [toggleMenu, setToggleMenu] = useState(false);
-  const router = useNextRouter();
+  const router = useRouter();
   const toggleHandler = () => {
     setToggleMenu(toggleMenu => !toggleMenu);
   };

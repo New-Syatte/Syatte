@@ -1,4 +1,4 @@
-import NextLink from "@/components/NextLink/NextLink";
+import Link from "next/link";
 
 type Props = {
   linkArray: Array<string>;
@@ -18,9 +18,9 @@ const SideBar = ({ linkArray, activeParams, listStr, ...restProps }: Props) => {
             activeParams === link ? "font-bold" : ""
           } hover:underline`}
         >
-          <NextLink href={link} className="whitespace-nowrap">
+          <Link href={link} className="whitespace-nowrap">
             {listStr[index].toUpperCase()}
-          </NextLink>
+          </Link>
         </li>
       ))}
     </ul>

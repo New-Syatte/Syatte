@@ -1,4 +1,3 @@
-import RouteComplete from "@/utils/RouteComplete";
 import Slider from "@/components/slider/Slider";
 import Button from "@/components/button/Button";
 import Motion from "@/components/motion/Motion";
@@ -53,7 +52,7 @@ export default async function Home() {
     },
   };
   return (
-    <RouteComplete>
+    <>
       <main className="font-kor overflow-x-hidden">
         {/* 메인 배너 */}
         <Motion initial="hidden" whileInView="visible" variants={fadeIn}>
@@ -309,6 +308,6 @@ export default async function Home() {
           </h2>
         </div>
       </main>
-    </RouteComplete>
+    </>
   );
 }

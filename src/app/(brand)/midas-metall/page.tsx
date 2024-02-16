@@ -2,7 +2,6 @@
 
 /* eslint-disable @next/next/no-img-element */
 import Image from "next/image";
-import RouteComplete from "@/utils/RouteComplete";
 import { GrNext, GrPrevious } from "react-icons/gr";
 import logo from "public/brand/midasmetall-img/midasmetall-logo.png";
 import YouTubeVideo from "@/components/youTubeVideo/YouTubeVideo";
@@ -41,7 +40,7 @@ const MidasMETALL = () => {
   };
 
   return (
-    <RouteComplete>
+    <>
       {/* 최상단 배너 영역 */}
       <div className="flex w-full flex-col bg-[#F6F6F6] h-[890px]">
         <div className="flex flex-col my-auto">
@@ -142,16 +141,26 @@ const MidasMETALL = () => {
           {MIDASMETALL_ARTWORK_TEXT}
         </div>
         <div className="flex w-full">
-          <img src={"brand/midasmetall-img/midasmetall-artwork.png"} alt={`페인팅 작품`} className="flex w-full"/>
+          <img
+            src={"brand/midasmetall-img/midasmetall-artwork.png"}
+            alt={`페인팅 작품`}
+            className="flex w-full"
+          />
         </div>
       </div>
       {/* 공식 스토어 */}
       <div className="flex flex-col h-full w-full justify-center mt-[150px] mb-[240px] relative overflow-hidden">
         <div className="flex w-[500px] absolute bottom-0 right-[-300px] transform rotate-[-15deg]">
-          <img src={"brand/midasmetall-img/midasmetall-paint3-lg.png"} alt={"왼쪽 페인트 이미지"} />
+          <img
+            src={"brand/midasmetall-img/midasmetall-paint3-lg.png"}
+            alt={"왼쪽 페인트 이미지"}
+          />
         </div>
         <div className="flex w-[380px] absolute top-0 left-[-230px] transform rotate-[15deg]">
-          <img src={"brand/midasmetall-img/midasmetall-paint4-lg.png"} alt={"오른쪽 페인트 이미지"} />
+          <img
+            src={"brand/midasmetall-img/midasmetall-paint4-lg.png"}
+            alt={"오른쪽 페인트 이미지"}
+          />
         </div>
         <div className="flex justify-center mb-[50px]">
           <SubTitleBox engValue={"STORE"} korValue={"공식 스토어"} />
@@ -165,7 +174,7 @@ const MidasMETALL = () => {
           </div>
         </div>
       </div>
-    </RouteComplete>
+    </>
   );
 };
 

@@ -2,14 +2,13 @@ export type Product = {
   _id: string;
   productName: string;
   price: number;
+  discount: number;
   mainImage: ProductImages;
   description: string;
   feature: string[];
   images: ProductImages[];
   category: string;
   detailCategory: string;
-  youtubeUrls: string[];
-  recommends: Recommends[];
 };
 
 export type ProductForDetail = Omit<Product, "mainImage">;

@@ -1,4 +1,4 @@
-import NextLink from "@/components/NextLink/NextLink";
+import Link from "next/link";
 import Image from "next/image";
 
 interface EachProductProps {
@@ -28,7 +28,7 @@ export default function Card({
   const discountedPrice = price - price * (discount / 100);
 
   return (
-    <NextLink href={linkTo}>
+    <Link href={linkTo}>
       <div
         style={{ width: width, height: height }}
         className={`bg-${bgColor} border border-zinc-300 flex items-center justify-center`}
@@ -68,6 +68,6 @@ export default function Card({
           카트 담기
         </p>
       </article>
-    </NextLink>
+    </Link>
   );
 }

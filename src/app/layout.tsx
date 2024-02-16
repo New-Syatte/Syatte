@@ -3,7 +3,6 @@ import { EB_Garamond, Crimson_Text, Crimson_Pro } from "next/font/google";
 import Footer from "@/layouts/footer/Footer";
 import Provider from "./Provider";
 import Header from "@/layouts/header/Header";
-import PageLoadingIndicator from "./PageLoadingIndicator";
 
 export const garamond = EB_Garamond({
   subsets: ["latin"],
@@ -35,10 +34,7 @@ export default async function RootLayout({ children }: RootLayoutProps) {
         <Provider>
           {/* @ts-expect-error Async Server Component */}
           <Header />
-          <section className="contents">
-            <PageLoadingIndicator />
-            {children}
-          </section>
+          <section className="contents">{children}</section>
           <Footer />
         </Provider>
         <div id={"portal"} />
