@@ -5,7 +5,6 @@ import {
   getDetailProduct,
   getProductsByCategory,
 } from "@/services/sanity/products";
-import RouteComplete from "@/utils/RouteComplete";
 
 export default async function ProductDetails({
   params,
@@ -31,7 +30,7 @@ export default async function ProductDetails({
     : await getProductsByCategory(category);
 
   return (
-    <RouteComplete>
+    <>
       <section className="w-full mx-auto mb-[200px] flex flex-col justify-around items-center">
         <header className="w-full h-[218px] mb-20 flex flex-col justify-center items-center bg-bgGray">
           <div className="w-[1280px] flex justify-center items-center gap-[73px]">
@@ -85,6 +84,6 @@ export default async function ProductDetails({
           </div>
         </footer> */}
       </section>
-    </RouteComplete>
+    </>
   );
 }

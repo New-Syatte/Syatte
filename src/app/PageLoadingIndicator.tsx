@@ -9,12 +9,10 @@ export default function PageLoadingIndicator() {
 
   useEffect(() => {
     registerRouteChangeListener("start", () => {
-      console.log("route start");
       setIsLoading(true);
     });
 
     registerRouteChangeListener("completed", () => {
-      console.log("route complete");
       setIsLoading(false);
     });
   }, []);

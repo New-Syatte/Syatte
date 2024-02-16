@@ -2,7 +2,6 @@ import OrderProduct from "../../OrderProduct";
 import { getOrder } from "@/services/sanity/orders";
 import deliveryFee from "@/constants/deliveryFee";
 import NextLink from "@/components/NextLink/NextLink";
-import RouteComplete from "@/utils/RouteComplete";
 
 interface OrderDetailsProps {
   params: {
@@ -21,7 +20,7 @@ const OrderDetails = async ({ params }: OrderDetailsProps) => {
   });
 
   return (
-    <RouteComplete>
+    <>
       <div className="w-full border-b-2 border-colorBlack pb-14">
         <OrderProduct order={order} />
       </div>
@@ -72,7 +71,7 @@ const OrderDetails = async ({ params }: OrderDetailsProps) => {
           주문 목록
         </NextLink>
       </div>
-    </RouteComplete>
+    </>
   );
 };
 

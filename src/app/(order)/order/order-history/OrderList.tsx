@@ -4,7 +4,6 @@ import { Order } from "@/model/order";
 import { useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
 import Pagination from "@/components/pagination/Pagination";
-import RouteComplete from "@/utils/RouteComplete";
 import OrderProduct from "../OrderProduct";
 
 interface OrderListProps {
@@ -38,7 +37,7 @@ const OrderList = ({ orders }: OrderListProps) => {
 
   // console.log("orders", orders);
   return (
-    <RouteComplete>
+    <>
       <div>
         {currentOrders?.map((order, index) => (
           <OrderProduct order={order} index={index} key={index} />
@@ -50,7 +49,7 @@ const OrderList = ({ orders }: OrderListProps) => {
           totalProducts={orders.length}
         />
       </div>
-    </RouteComplete>
+    </>
   );
 };
 
