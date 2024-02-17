@@ -25,6 +25,7 @@ export function getDetailProduct(id: string) {
         },
         description,
         discount,
+        "detailImage": detailImage.asset->url,
       }`,
       { id },
     );

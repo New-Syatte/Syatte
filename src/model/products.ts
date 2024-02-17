@@ -9,6 +9,7 @@ export type Product = {
   images: ProductImages[];
   category: string;
   detailCategory: string;
+  detailImage: string;
 };
 
 export type ProductForDetail = Omit<Product, "mainImage">;
