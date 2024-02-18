@@ -1,9 +1,8 @@
 import "./globals.css";
-import { EB_Garamond, Crimson_Pro } from "next/font/google";
+import { EB_Garamond, Crimson_Text, Crimson_Pro } from "next/font/google";
 import Footer from "@/layouts/footer/Footer";
 import Provider from "./Provider";
 import Header from "@/layouts/header/Header";
-import PageLoadingIndicator from "./PageLoadingIndicator";
 
 export const garamond = EB_Garamond({
   subsets: ["latin"],
@@ -20,8 +19,9 @@ export const crimson = Crimson_Pro({
 });
 
 export const metadata = {
-  title: "Syatte Home",
-  description: "샤뜨 공식 페이지",
+  title: "Syatt",
+  description:
+    "SYATT 특수페인팅 세계 독특하고 창의적인 페인팅 기술의 아름다운 세계에서 새로운 예술과 디자인을 경험해보세요.",
 };
 
 interface RootLayoutProps {
@@ -35,10 +35,7 @@ export default async function RootLayout({ children }: RootLayoutProps) {
         <Provider>
           {/* @ts-expect-error Async Server Component */}
           <Header />
-          <section className="contents">
-            <PageLoadingIndicator />
-            {children}
-          </section>
+          <section className="contents">{children}</section>
           <Footer />
         </Provider>
         <div id={"portal"} />

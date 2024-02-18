@@ -19,7 +19,7 @@ import {
   selectBillingAddress,
   selectShippingAddress,
 } from "@/redux/slice/checkoutSlice";
-import useNextRouter from "@/hooks/useNextRouter";
+import { useRouter } from "next/navigation";
 import dayjs from "dayjs";
 import { saveCart } from "@/services/sanity/cart";
 import { IOrder } from "@/type";
@@ -29,7 +29,7 @@ export default function CheckoutClient() {
   const userEmail = session?.user?.email;
 
   const dispatch = useDispatch();
-  const router = useNextRouter();
+  const router = useRouter();
   const cartItems = useSelector(selectCartItems);
   const shippingAddress = useSelector(selectShippingAddress);
   const billingAddress = useSelector(selectBillingAddress);

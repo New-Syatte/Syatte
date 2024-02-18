@@ -3,7 +3,6 @@ import { redirect } from "next/navigation";
 import { getProviders } from "next-auth/react";
 import Signin from "@/components/Login/Signin";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
-import RouteComplete from "@/utils/RouteComplete";
 
 type Props = {
   searchParams: {
@@ -24,10 +23,8 @@ export default async function SingPage({
   const providers = (await getProviders()) ?? redirect("/");
 
   return (
-    <RouteComplete>
-      <section className="flex justify-center pt-20">
-        <Signin providers={providers} callbackUrl={callbackUrl ?? "/"} />
-      </section>
-    </RouteComplete>
+    <section className="flex justify-center pt-20">
+      <Signin providers={providers} callbackUrl={callbackUrl ?? "/"} />
+    </section>
   );
 }

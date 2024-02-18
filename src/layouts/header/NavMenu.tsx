@@ -1,5 +1,5 @@
 "use client";
-import NextLink from "@/components/NextLink/NextLink";
+import Link from "next/link";
 
 interface NavMenuProps {
   pathname: string;
@@ -25,11 +25,7 @@ const NavMenu = ({ pathname, textColor }: NavMenuProps) => {
     <div className={`flex ${textColor} ml-6 items-center font-medium text-sm`}>
       {navMenu.map((menu, index) => (
         //pathname이 navLink와 같으면 underline
-        <NextLink
-          href={navLink[index]}
-          key={index}
-          className="mr-[74px] relative"
-        >
+        <Link href={navLink[index]} key={index} className="mr-[74px] relative">
           <p>{menu.toUpperCase()}</p>
           {pathname === navLink[index] ? (
             <div
@@ -38,7 +34,7 @@ const NavMenu = ({ pathname, textColor }: NavMenuProps) => {
               }`}
             ></div>
           ) : null}
-        </NextLink>
+        </Link>
       ))}
     </div>
   );

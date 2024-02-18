@@ -4,6 +4,7 @@ import { getProducts } from "@/services/sanity/products";
 import BrandSlider from "./BrandsSlider";
 import Heading from "@/components/heading/Heading";
 import ProductBanner from "./ProductBanner";
+import CategoryToSearchLink from "./CategoryToSearchLink";
 
 export default async function Products({}) {
   const products = await getProducts();
@@ -27,9 +28,13 @@ export default async function Products({}) {
           <div key={index}>
             <div className="flex justify-between items-end mb-12">
               <Heading title={categorys[index].title} fontSize="[40px]" />
-              <div className="mb-4 text-center text-black text-lg font-bold">
+              <CategoryToSearchLink
+                to="/store/search"
+                searchQuery={categorys[index].value}
+                className="mb-4 text-center text-black text-lg font-bold"
+              >
                 {"상품 더보기 >"}
-              </div>
+              </CategoryToSearchLink>
             </div>
             <ProductsByCategory
               key={category}

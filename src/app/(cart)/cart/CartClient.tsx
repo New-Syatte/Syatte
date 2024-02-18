@@ -1,6 +1,6 @@
 "use client";
 
-import useNextRouter from "@/hooks/useNextRouter";
+import { useRouter } from "next/navigation";
 import styles from "./CartClient.module.scss"; // 스타일 설정
 import Image from "next/image";
 import { useDispatch, useSelector } from "react-redux";
@@ -18,7 +18,7 @@ import {
 } from "@/redux/slice/cartSlice";
 import { useEffect } from "react";
 import Heading from "@/components/heading/Heading";
-import NextLink from "@/components/NextLink/NextLink";
+import Link from "next/link";
 import priceFormat from "@/utils/priceFormat";
 import Button from "@/components/button/Button";
 import { ICartItem } from "@/type";
@@ -34,7 +34,7 @@ export default function CartClient() {
   const cartTotalQuantity = useSelector(selectCartTotalQuantity);
 
   const dispatch = useDispatch();
-  const router = useNextRouter();
+  const router = useRouter();
 
   const increaseCart = (cart: ICartItem) => {
     // 일단 타입을 any 로 임시 지정
@@ -76,7 +76,7 @@ export default function CartClient() {
           <div
             className={"text-center font-bold text-[30px] border-[2px] mt-4"}
           >
-            <NextLink href={"/products/all"}>계속 쇼핑하기</NextLink>
+            <Link href={"/products/all"}>계속 쇼핑하기</Link>
           </div>
         </>
       ) : (

@@ -28,9 +28,4 @@
   color: var(--dark-gray);
 }
 
-.blank[disabled] {
-  background: var(--light-gray);
-  color: var(--dark-gray);
-}
-
 /*# sourceMappingURL=Button.module.css.map */

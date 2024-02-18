@@ -3,7 +3,7 @@
 import styles from "./CheckoutAddress.module.scss";
 import { ChangeEvent, FormEvent, useEffect, useRef, useState } from "react";
 import { useDispatch } from "react-redux";
-import useNextRouter from "@/hooks/useNextRouter";
+import { useRouter } from "next/navigation";
 import {
   SAVE_BILLING_ADDRESS,
   SAVE_SHIPPING_ADDRESS,
@@ -49,7 +49,7 @@ export default function CheckoutAddressClient() {
   });
 
   const dispatch = useDispatch();
-  const router = useNextRouter();
+  const router = useRouter();
 
   const loadScript = () => {
     const script = document.createElement("script");

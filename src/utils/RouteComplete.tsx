@@ -9,7 +9,6 @@ export default function RouteComplete({
   children: React.ReactNode;
 }) {
   useEffect(() => {
-    console.log("route complete");
     dispatchRouteChangeEvent("completed");
   }, [children]);
   return <div>{children}</div>;
