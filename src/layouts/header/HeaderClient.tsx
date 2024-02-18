@@ -10,6 +10,7 @@ import styles from "./Header.module.scss";
 import { User } from "@/model/user";
 import { usePathname } from "next/navigation";
 import { useState, useEffect } from "react";
+import Link from "next/link";
 
 interface HeaderProps {
   user: User | undefined;
@@ -17,18 +18,18 @@ interface HeaderProps {
 
 const HeaderClient = ({ user }: HeaderProps) => {
   const pathname = usePathname();
-  const [textColor, setTextColor] = useState("text-white");
-  const [bgColor, setBgColor] = useState("bg-black");
-  const [logo, setLogo] = useState(STLogo);
-
+  const [ textColor, setTextColor ] = useState("text-white");
+  const [ bgColor, setBgColor ] = useState("bg-black");
+  const [ logo, setLogo ] = useState(STLogo);
+  
   useEffect(() => {
-    if (pathname === "/modern-masters" || pathname === "/midas-metall") {
+    if ( pathname === "/modern-masters" || pathname === "/midas-metall" ) {
       setTextColor("text-white");
       setBgColor("bg-black");
-      if (pathname === "/modern-masters") {
+      if ( pathname === "/modern-masters" ) {
         setLogo(MMLogo);
       }
-      if (pathname === "/midas-metall") {
+      if ( pathname === "/midas-metall" ) {
         setLogo(MDLogo);
       }
     } else {
@@ -36,32 +37,34 @@ const HeaderClient = ({ user }: HeaderProps) => {
       setBgColor("bg-white");
       setLogo(STLogo);
     }
-  }, [pathname]);
-
+  }, [ pathname ]);
+  
   return (
-    <div className={styles.container + ` ${bgColor} ${"font-garamond"}`}>
+    <div className={ styles.container + ` ${ bgColor } ${ "font-garamond" }` }>
       <div className="ml-40">
-        <Image src={logo} alt="Logo" width={85} height={27} />
+        <Link href={ "/" }>
+          <Image src={ logo } alt="Logo" width={ 85 } height={ 27 } />
+        </Link>
       </div>
-      <div className={`flex ml-6 gap-3 mr-4 items-center ${textColor}`}>
-        <NavMenu pathname={pathname} textColor={textColor} />
-        <NextLink href={"/cart"} className="text-xs font-semibold">
+      <div className={ `flex ml-6 gap-3 mr-4 items-center ${ textColor }` }>
+        <NavMenu pathname={ pathname } textColor={ textColor } />
+        <NextLink href={ "/cart" } className="text-xs font-semibold">
           CART
         </NextLink>
         <div>
-          {user ? (
-            <UserBox data={user} />
+          { user ? (
+            <UserBox data={ user } />
           ) : (
             <NextLink
               href="/signin"
-              className={`flex gap-2 items-end hover:underline text-xs font-semibold before:content-[''] before:w-[2px] before:h-[12px] before:${textColor} before:mr-1`}
+              className={ `flex gap-2 items-end hover:underline text-xs font-semibold before:content-[''] before:w-[2px] before:h-[12px] before:${ textColor } before:mr-1` }
             >
               <p>LOGIN</p>
             </NextLink>
-          )}
+          ) }
         </div>
-      </nav>
-    </header>
+      </div>
+    </div>
   );
 };
 
