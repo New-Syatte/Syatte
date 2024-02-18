@@ -13,8 +13,8 @@ export default function Footer() {
           </div>
         </div>
         <div className="mb-[10px]">
-          (주)회사명ㅣ대표:홍길동ㅣ호스팅 서비스:건식벽 도구회사ㅣ통신판매업
-          신고번호:신고번호ㅣ사업자 등록번호:156-66-100004
+          (주)회사명ㅣ대표:홍길동ㅣ호스팅ㅣ통신판매업
+          신고번호:신고번호ㅣ사업자 등록번호:000-00-000000
         </div>
         <div className="mb-[10px]">개인정보 처리방침ㅣ서비스 이용약관</div>
         <div>Copyright (c) 2023 SYATT. All rights reserved.</div>
