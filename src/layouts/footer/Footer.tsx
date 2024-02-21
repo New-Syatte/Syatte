@@ -4,8 +4,11 @@ export default function Footer() {
   return (
     <footer className={styles.container}>
       <div className={styles.footer}>
+
+        <div className="font-semibold mb-[10px]">(주) Syatte</div>
         <div className="font-semibold mb-[10px]">SYATT</div>
         <div className="mb-[10px]">서울시 은평구 서오릉로 149-26(구산동 2-25번지) 1층</div>
+
         <div className="flex mb-[30px]">
           <div className="font-semibold">고객센터</div>
           <div className="font-normal ml-[19px]">
@@ -13,11 +16,13 @@ export default function Footer() {
           </div>
         </div>
         <div className="mb-[10px]">
+
           (주)회사명ㅣ대표:홍길동ㅣ호스팅ㅣ통신판매업
           신고번호:신고번호ㅣ사업자 등록번호:000-00-000000
         </div>
         <div className="mb-[10px]">개인정보 처리방침ㅣ서비스 이용약관</div>
         <div>Copyright (c) 2023 SYATT. All rights reserved.</div>
+
       </div>
     </footer>
   );
