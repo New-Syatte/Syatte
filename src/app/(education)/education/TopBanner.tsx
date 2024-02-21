@@ -9,8 +9,8 @@ export default function TopBanner() {
       <div className=" flex  justify-between w-[1920px] h-[420px] bg-gray-200 border-b border-neutral-200">
         <div className={ "ml-[141px] mt-[93px]" }>
           <div>
-            <p className={ "text-xl font-['EB\nGaramond']\n tracking-widest" }>ACADEMY INFO</p>
-            <p className={ "mt-[14px] text-6xl font-bold" }>교육 소개</p>
+            <p className={ "text-xl font-['EB\nGaramond']\n tracking-widest text-black" }>ACADEMY INFO</p>
+            <p className={ "mt-[14px] text-6xl font-bold text-black" }>교육 소개</p>
           </div>
           <div className="w-[529px] mt-[30px] text-black text-lg font-light font-['Helvetica'] leading-[30px]">
             <p>창의적이고 특수한 기술을

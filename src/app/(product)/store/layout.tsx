@@ -17,5 +17,4 @@ const layout = ({ children }: { children: React.ReactNode }) => {
     </section>
   );
 };
-
 export default layout;
