@@ -21,7 +21,7 @@ export default function EduSection() {
               </div>
             </div>
             <div className={ "flex flex-col w-[276px] shadow-2xl rounded-3xl" }>
-              <div className={ "h-[320px] relative rounded-t-3xl border" }>
+              <div className={ "h-[320px] relative rounded-t-3xl border-neutral-50" }>
                 <Image src={ master } fill={ true } alt={ "master" } className={ "rounded-t-3xl" } />
               </div>
               <div className={ "bg-black-500 bg-black flex flex-col items-center rounded-b-3xl z-10" }>

@@ -16,7 +16,7 @@ export default async function Page() {
         <span
           className={ "mt-7 w-[851px] text-center text-black text-lg font-normal font-['Helvetica'] leading-[30px]" }>다양한 과정은 패키지로 교육 받으실 수 있습니다. Aplicatior, Master, 그리고<br /> One Day 등 다양한 프로그램이 운영되고 있습니다.</span>
       </div>
-      <div className={ "pt-12 bg-neutral-50 border border-neutral-200" }>
+      <div className={ "pt-12 bg-neutral-50 border border-neutral-50" }>
         <EducationCard />
       </div>
       <div>
@@ -27,7 +27,7 @@ export default async function Page() {
             className={ "w-[851px] mt-7 text-center text-black text-lg font-normal font-['Helvetica'] leading-[30px]" }>
             단과 교육은 짧은 기간 동안에도 효과적인 학습을 제공하는 프로그램으로, 명확한 <br />목표를 가지고 집중적으로 학습하고자 하는 분들에게 적합합니다</span>
         </div>
-        <div>
+        <div className={'border-2 pt-12 border-neutral-50'}>
           <div className={ 'w-4/6 mx-auto flex items-center justify-center space-x-5 flex-wrap' }>
             <EduProcessingCard />
             <EduProcessingCard />
