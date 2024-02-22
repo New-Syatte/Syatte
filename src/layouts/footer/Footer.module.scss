@@ -1,12 +1,16 @@
 .container {
   width: 100%;
-  height: var(--footer-height);
-  background-color: black;
-  color: white;
   display: flex;
-  justify-content: center;
+  color: white;
   align-items: center;
+  justify-content: center;
+  background-color: black;
+  height: var(--footer-height);
   .footer {
-    width: var(--content-width);
+    width: 100%;
+    display: flex;
+    padding: 0 40px;
+    justify-content: space-between;
+    // width: var(--content-width);
   }
 }
