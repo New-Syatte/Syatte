@@ -2,15 +2,14 @@ import { client } from "@/services/sanity/sanity";
 import { IOrder } from "@/type";
 
 export async function getCart(username: string) {
-  const cart = client.fetch(`
-  *[_type == "order" && author->username == "${username}"][0]
-  *[_type == "order" && author->username == "${username}"][0]
+  return client.fetch(`
+  *[_type == "order" && author->username == "${ username }"][0]
+  *[_type == "order" && author->username == "${ username }"][0]
   {
     ...,
     "id":_id,
   }
   `);
-  return cart;
 }
 
 export async function saveCart({
