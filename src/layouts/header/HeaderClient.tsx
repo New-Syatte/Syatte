@@ -40,7 +40,7 @@ const HeaderClient = ({ user }: HeaderProps) => {
 
   return (
     <header className={styles.container + ` ${bgColor} ${"font-garamond"}`}>
-      <Link href="/" className="ml-40">
+      <Link href="/">
         <Image src={logo} alt="Logo" width={85} height={27} />
       </Link>
       <nav className={`flex ml-6 gap-3 mr-4 items-center ${textColor}`}>
