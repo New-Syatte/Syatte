@@ -10,8 +10,10 @@ interface Props {
 const YouTubeVideo = (urlId:Props) => {
   const data = urlId.urlId
   const opts = {
-    height: "360",
-    width: "650",
+    playerVars: {
+      // width를 100%로 설정하여 화면 크기를 100%로 만듭니다.
+      width: "100%",
+    },
   };
 
   const onReady = (event: any) => {
@@ -20,7 +22,7 @@ const YouTubeVideo = (urlId:Props) => {
 
   return (
     <div>
-      <YouTube videoId={data} opts={opts} onReady={onReady} className="flex"/>
+      <YouTube videoId={data} opts={opts} onReady={onReady} className="flex w-full"/>
     </div>
   );
 };
