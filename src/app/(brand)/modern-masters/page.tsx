@@ -52,7 +52,7 @@ const Modernmasters = () => {
   return (
     <>
       {/* 최상단 배너 영역 */}
-      <div className="flex w-full flex-col bg-[#F6F6F6] h-[890px]">
+      <div className="flex w-full flex-col bg-[#F6F6F6] min-h-[890px]">
         <div className="flex flex-col my-auto">
           <div className="flex">
             <div className="flex w-full justify-center items-center">
@@ -65,7 +65,7 @@ const Modernmasters = () => {
               <div className="flex text-[100px] font-[GmarketSansMedium] font-bold">
                 모던마스터즈
               </div>
-              <div className="flex text-[18px] max-w-[767px] h-[140px] mb-[36px]">
+              <div className="flex text-[18px] max-w-[767px] mr-[140px] mb-[36px]">
                 {TITLE_BANNER_TEXT}
               </div>
               <div className="flex text-[18px] w-[200px] h-[50px] border-[1px] border-[#000000] justify-center items-center cursor-pointer">
@@ -73,7 +73,7 @@ const Modernmasters = () => {
               </div>
             </div>
           </div>
-          <div className="flex w-full h-[246px] justify-between mt-[60px]">
+          <div className="flex w-full h-[246px] justify-between mt-[60px] overflow-hidden">
             <div className="flex items-center px-10 text-[24px] hover:bg-[#e5e5e5] cursor-pointer">
               <GrPrevious />
             </div>
@@ -116,15 +116,18 @@ const Modernmasters = () => {
             <div className="flex text-[70px] font-[GmarketSans] font-bold mb-[40px]">
               모던마스터즈
             </div>
-            <div className="flex w-[760px] text-[18px] mb-[40px]">
-              {MODERN_MASTERS_INFO_TEXT_1}
+            <div className="flex flex-col max-w-[760px] mr-10">
+              <div className="flex text-[18px] mb-[40px]">
+                {MODERN_MASTERS_INFO_TEXT_1}
+              </div>
+              <div className="fle] text-[18px] mb-[40px]">
+                {MODERN_MASTERS_INFO_TEXT_2}
+              </div>
+              <div className="flex text-[18px] mb-[50px]">
+                {MODERN_MASTERS_INFO_TEXT_3}
+              </div>
             </div>
-            <div className="flex w-[760px] text-[18px] mb-[40px]">
-              {MODERN_MASTERS_INFO_TEXT_2}
-            </div>
-            <div className="flex w-[760px] text-[18px] mb-[50px]">
-              {MODERN_MASTERS_INFO_TEXT_3}
-            </div>
+
             <div className="flex text-[24px] items-center cursor-pointer">
               STORE
               <div className="flex text-[20px] ml-2 pt-[1px]">
