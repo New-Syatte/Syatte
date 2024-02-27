@@ -67,28 +67,28 @@ const BrandSlider = (activeBrandIndex: any) => {
 
   return (
     <div className="w-[1300px] h-[420px] border border-[#E2E2E2]">
-      {/*<Slider {...settings}>*/}
-      {/*  {slideData.map(slide => (*/}
-      {/*    <div key={slide.id}>*/}
-      {/*      <div className="flex h-[420px]">*/}
-      {/*        <div className="flex w-[40%] h-[240px] justify-center my-auto">*/}
-      {/*          <img src={slide.imageUrl} />*/}
-      {/*        </div>*/}
-      {/*        <div className="flex w-[60%] flex-col my-auto">*/}
-      {/*          <div className="flex w-full">*/}
-      {/*            <img src={slide.brandImgUrl} className="w-[400px]" />*/}
-      {/*          </div>*/}
-      {/*          <div className="flex text-[18px] mt-[45px] mb-[25px]">*/}
-      {/*            {slide.features}*/}
-      {/*          </div>*/}
-      {/*          <div className="flex text-[18px] w-[730px]">*/}
-      {/*            {slide.description}*/}
-      {/*          </div>*/}
-      {/*        </div>*/}
-      {/*      </div>*/}
-      {/*    </div>*/}
-      {/*  ))}*/}
-      {/*</Slider>*/}
+      <Slider {...settings}>
+        {slideData.map(slide => (
+          <div key={slide.id}>
+            <div className="flex h-[420px]">
+              <div className="flex w-[40%] h-[240px] justify-center my-auto">
+                <img src={slide.imageUrl} />
+              </div>
+              <div className="flex w-[60%] flex-col my-auto">
+                <div className="flex w-full">
+                  <img src={slide.brandImgUrl} className="w-[400px]" />
+                </div>
+                <div className="flex text-[18px] mt-[45px] mb-[25px]">
+                  {slide.features}
+                </div>
+                <div className="flex text-[18px] w-[730px]">
+                  {slide.description}
+                </div>
+              </div>
+            </div>
+          </div>
+        ))}
+      </Slider>
     </div>
   );
 };
