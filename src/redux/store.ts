@@ -7,6 +7,7 @@ import checkoutReducer from "./slice/checkoutSlice";
 import orderReducer from "./slice/orderSlice";
 import periodReducer from "./slice/periodSlice";
 import searchReducer from "./slice/searchSlice";
+import deliveryReducer from "./slice/deliverySlice";
 
 const rootReducer = combineReducers({
   auth: authReducer,
@@ -17,6 +18,7 @@ const rootReducer = combineReducers({
   orders: orderReducer,
   period: periodReducer,
   search: searchReducer,
+  delivery: deliveryReducer,
 });
 
 const store = configureStore({

@@ -29,6 +29,10 @@ const initialState: IOrderState = {
     },
     createdAt: "",
     _id: "",
+    shippingInfo: {
+      carrierId: "",
+      trackingNumber: "",
+    },
   },
 };
 
