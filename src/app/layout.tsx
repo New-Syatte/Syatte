@@ -1,5 +1,5 @@
 import "./globals.css";
-import { EB_Garamond, Crimson_Text, Crimson_Pro } from "next/font/google";
+import { EB_Garamond, Crimson_Pro } from "next/font/google";
 import Footer from "@/layouts/footer/Footer";
 import Provider from "./Provider";
 import Header from "@/layouts/header/Header";

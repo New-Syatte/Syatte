@@ -28,7 +28,6 @@ export interface IBillingAddress {
   memo: string;
 }
 
-
 export interface ICartItem {
   id: string;
   imageURL: string;

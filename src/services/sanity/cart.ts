@@ -3,8 +3,8 @@ import { IOrder } from "@/type";
 
 export async function getCart(username: string) {
   return client.fetch(`
-  *[_type == "order" && author->username == "${ username }"][0]
-  *[_type == "order" && author->username == "${ username }"][0]
+  *[_type == "order" && author->username == "${username}"][0]
+  *[_type == "order" && author->username == "${username}"][0]
   {
     ...,
     "id":_id,
@@ -25,7 +25,7 @@ export async function saveCart({
   createdAt,
 }: IOrder) {
   const cart = {
-    _type: "cart",
+    _type: "order",
     _id: id,
     userEmail: userEmail,
     billingAddress: billingAddress,

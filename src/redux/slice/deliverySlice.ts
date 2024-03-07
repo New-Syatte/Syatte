@@ -1,10 +1,9 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { RootState } from "../store";
-import { IDelivery } from "@/type";
 
 const initialState = {
   accessToken: "",
-  delivery: {} as IDelivery,
+  delivery: {},
 };
 
 const deliverySlice = createSlice({
