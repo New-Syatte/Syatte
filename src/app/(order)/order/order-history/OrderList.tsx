@@ -11,6 +11,7 @@ interface OrderListProps {
 }
 
 const OrderList = ({ orders }: OrderListProps) => {
+  //기간 별 filtering
   const startDate = useSelector((state: RootState) => state.period.startDate);
   const endDate = useSelector((state: RootState) => state.period.endDate);
 
@@ -34,6 +35,8 @@ const OrderList = ({ orders }: OrderListProps) => {
     indexOfFirstOrder,
     indexOfLastOrder,
   );
+
+  // 주문 상태별 filtering
 
   // console.log("orders", orders);
   return (

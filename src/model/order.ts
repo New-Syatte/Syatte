@@ -8,6 +8,7 @@ export type Order = {
   cartItems: CartItem[];
   billingAddress: BillingAddress;
   shippingAddress: ShippingAddress;
+  shippingInfo: ShippingInfo;
   _id: string;
 };
 
@@ -41,3 +42,28 @@ type OrderStatus =
   | "moving"
   | "done"
   | "canceled";
+
+type ShippingInfo = {
+  trackingNumber: string;
+  carrierId: string;
+};
+
+export type DeliveryTrackingResponse = {
+  data: {
+    track: {
+      lastEvent: {
+        status: {
+          code: string;
+        };
+      };
+    };
+  };
+  errors?: TrackingResponseError[];
+};
+
+export type TrackingResponseError = {
+  message: string;
+  extensions: {
+    code: string;
+  };
+};

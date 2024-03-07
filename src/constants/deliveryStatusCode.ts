@@ -1,0 +1,11 @@
+const TrackEventStatusCode = [
+  "UNKNOWN",
+  "INFORMATION_RECEIVED",
+  "AT_PICKUP",
+  "IN_TRANSIT",
+  "OUT_FOR_DELIVERY",
+  "ATTEMPT_FAIL",
+  "DELIVERED",
+  "AVAILABLE_FOR_PICKUP",
+  "EXCEPTION",
+];
