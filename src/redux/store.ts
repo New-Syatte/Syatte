@@ -1,4 +1,5 @@
 import { combineReducers, configureStore } from "@reduxjs/toolkit";
+import createSagaMiddleware from "redux-saga";
 import authReducer from "./slice/authSlice";
 import productReducer from "./slice/productSlice";
 import filterReducer from "./slice/filterSlice";
@@ -7,7 +8,9 @@ import checkoutReducer from "./slice/checkoutSlice";
 import orderReducer from "./slice/orderSlice";
 import periodReducer from "./slice/periodSlice";
 import searchReducer from "./slice/searchSlice";
-import deliveryReducer from "./slice/deliverySlice";
+import { rootSaga } from "./saga/sagas";
+
+const sagaMiddleware = createSagaMiddleware();
 
 const rootReducer = combineReducers({
   auth: authReducer,
@@ -18,7 +21,6 @@ const rootReducer = combineReducers({
   orders: orderReducer,
   period: periodReducer,
   search: searchReducer,
-  delivery: deliveryReducer,
 });
 
 const store = configureStore({
@@ -26,8 +28,10 @@ const store = configureStore({
   middleware: getDefaultMiddleware =>
     getDefaultMiddleware({
       serializableCheck: false,
-    }),
+    }).concat(sagaMiddleware),
+  devTools: true,
 });
+sagaMiddleware.run(rootSaga);
 
 export type RootState = ReturnType<typeof store.getState>;
 
