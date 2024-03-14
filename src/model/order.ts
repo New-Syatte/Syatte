@@ -41,11 +41,13 @@ type OrderStatus =
   | "ready"
   | "moving"
   | "done"
-  | "canceled";
+  | "canceled"
+  | "unknown";
 
 type ShippingInfo = {
   trackingNumber: string;
   carrierId: string;
+  lastEventTime?: string;
 };
 
 export type DeliveryTrackingResponse = {
@@ -55,6 +57,7 @@ export type DeliveryTrackingResponse = {
         status: {
           code: string;
         };
+        time: string;
       };
     };
   };
