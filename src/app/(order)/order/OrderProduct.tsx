@@ -1,10 +1,13 @@
 "use client";
 import Image from "next/image";
 import { BsChevronRight } from "react-icons/bs";
-import { Order } from "@/model/order";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { ORDER_STATUS } from "@/constants/status";
+import { Order } from "@/model/order";
+import { useDispatch, useSelector } from "react-redux";
+import { trackDeliveryThunk } from "@/redux/slice/orderSlice";
+import { useEffect } from "react";
 
 interface OrderProductProps {
   order: Order;
@@ -17,6 +20,11 @@ const OrderProduct = ({ order, index = 0 }: OrderProductProps) => {
 
   const statusTitleArr = ORDER_STATUS.map(status => status.title);
   const statusArray = ORDER_STATUS.map(status => status.value);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch<any>(trackDeliveryThunk(order));
+  }, [dispatch, order]);
 
   return (
     <div className={`w-full pb-10`} key={index}>

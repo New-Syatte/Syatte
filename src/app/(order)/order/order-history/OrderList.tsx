@@ -5,18 +5,17 @@ import { useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
 import Pagination from "@/components/pagination/Pagination";
 import OrderProduct from "../OrderProduct";
+import { selectOrders } from "@/redux/slice/orderSlice";
 
-interface OrderListProps {
-  orders: Order[];
-}
-
-const OrderList = ({ orders }: OrderListProps) => {
+const OrderList = () => {
   //기간 별 filtering
   const startDate = useSelector((state: RootState) => state.period.startDate);
   const endDate = useSelector((state: RootState) => state.period.endDate);
 
   const [currentPage, setCurrentPage] = useState(1);
   const ordersPerPage = 10;
+
+  const orders = useSelector(selectOrders);
 
   const filteredOrders: Order[] | undefined = orders
     ?.filter(order => {
@@ -36,9 +35,6 @@ const OrderList = ({ orders }: OrderListProps) => {
     indexOfLastOrder,
   );
 
-  // 주문 상태별 filtering
-
-  // console.log("orders", orders);
   return (
     <>
       <div>

@@ -7,7 +7,6 @@ import { cookies } from "next/headers";
 async function getDeliveryToken(isUnauthenticated: boolean) {
   const cookieStore = cookies();
   const deliveryAccessToken = cookieStore.get("deliveryAccessToken");
-  console.log("deliveryAccessToken", deliveryAccessToken);
 
   // 쿠키에 deliveryAccessToken이 있는 경우
   if (deliveryAccessToken !== undefined) {

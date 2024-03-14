@@ -69,7 +69,12 @@ const orderSlice = createSlice({
   initialState,
   reducers: {
     STORE_ORDER(state, action) {
-      state.push(...action.payload);
+      //중복되지 않게 push
+      action.payload.forEach((order: Order) => {
+        if (!state.find(stateOrder => stateOrder._id === order._id)) {
+          state.push(order);
+        }
+      });
     },
   },
   extraReducers: builder => {
@@ -77,8 +82,6 @@ const orderSlice = createSlice({
       const { data, trackingNumber } = action.payload;
       const deliveryStatus = data.data.track.lastEvent.status.code;
       const deliveryTime = data.data.track.lastEvent.time;
-
-      console.log(action.payload, "action.payload");
 
       if (state.length > 0) {
         state.forEach((order, index) => {

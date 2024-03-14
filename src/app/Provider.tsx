@@ -1,3 +1,4 @@
+"use client";
 import React, { ReactNode } from "react";
 import AuthContext from "@/app/context/AuthContext";
 import Providers from "@/redux/provider";
@@ -14,7 +15,7 @@ const Provider: React.FC<ProviderProps> = ({ children }) => {
       <Providers>
         <SWRConfigContext>
           <AuthContext>
-          <ToastProvider />
+            <ToastProvider />
             {children}
           </AuthContext>
         </SWRConfigContext>
