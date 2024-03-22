@@ -1,7 +1,7 @@
 import "./globals.css";
 import { EB_Garamond, Crimson_Pro } from "next/font/google";
 import Footer from "@/layouts/footer/Footer";
-import Provider from "./Provider";
+import Providers from "./Providers";
 import Header from "@/layouts/header/Header";
 
 export const garamond = EB_Garamond({
@@ -32,12 +32,12 @@ export default async function RootLayout({ children }: RootLayoutProps) {
   return (
     <html lang="ko" className={`${garamond.variable} ${crimson.variable}`}>
       <body>
-        <Provider>
+        <Providers>
           {/* @ts-expect-error Async Server Component */}
           <Header />
           <section className="contents">{children}</section>
           <Footer />
-        </Provider>
+        </Providers>
         <div id={"portal"} />
       </body>
     </html>

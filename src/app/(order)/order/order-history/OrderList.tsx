@@ -4,7 +4,7 @@ import { Order } from "@/model/order";
 import { useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
 import Pagination from "@/components/pagination/Pagination";
-import OrderProduct from "../OrderProduct";
+import OrderProduct from "./OrderProduct";
 import { selectOrders } from "@/redux/slice/orderSlice";
 
 const OrderList = () => {

@@ -17,6 +17,7 @@ interface OrderProductProps {
 const OrderProduct = ({ order, index = 0 }: OrderProductProps) => {
   const pathname = usePathname();
   const orderTime = new Date(order.createdAt).toISOString();
+  const orderStatus = order.orderStatus;
 
   const statusTitleArr = ORDER_STATUS.map(status => status.title);
   const statusArray = ORDER_STATUS.map(status => status.value);
@@ -24,7 +25,7 @@ const OrderProduct = ({ order, index = 0 }: OrderProductProps) => {
 
   useEffect(() => {
     dispatch<any>(trackDeliveryThunk(order));
-  }, [dispatch, order]);
+  }, [dispatch, orderStatus]);
 
   return (
     <div className={`w-full pb-10`} key={index}>
@@ -75,18 +76,6 @@ const OrderProduct = ({ order, index = 0 }: OrderProductProps) => {
               <div className="flex justify-center items-center w-1/2 text-darkgray">
                 {statusTitleArr[statusArray.indexOf(order.orderStatus)]}
               </div>
-            </div>
-            <div className="w-1/3 flex justify-end items-center">
-              {order.orderStatus === "moving" && (
-                <a
-                  className="btn_tiny"
-                  href={"#"}
-                  // href={`https://tracker.delivery/#/${order.deliveryCompany}/${order.deliveryNumber}`}
-                  target="_blank"
-                >
-                  배송조회(준비중)
-                </a>
-              )}
             </div>
           </div>
         ))}

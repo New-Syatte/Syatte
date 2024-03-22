@@ -1,4 +1,4 @@
-import OrderProduct from "../../OrderProduct";
+import OrderProduct from "../../order-history/OrderProduct";
 import { getOrder } from "@/services/sanity/orders";
 import deliveryFee from "@/constants/deliveryFee";
 import Link from "next/link";
