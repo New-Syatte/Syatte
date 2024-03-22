@@ -79,17 +79,26 @@ const orderSlice = createSlice({
   },
   extraReducers: builder => {
     builder.addCase(trackDeliveryThunk.fulfilled, (state, action) => {
-      const { data, trackingNumber } = action.payload;
-      const deliveryStatus = data.data.track.lastEvent.status.code;
-      const deliveryTime = data.data.track.lastEvent.time;
+      const { data, trackingNumber } = action.payload as {
+        data: DeliveryTrackingResponse;
+        trackingNumber: string;
+      };
+      console.log(data.data, "data");
 
-      if (state.length > 0) {
-        state.forEach((order, index) => {
-          if (order.shippingInfo.trackingNumber === trackingNumber) {
-            state[index].orderStatus = changeOrderStatus(deliveryStatus);
-            state[index].shippingInfo.lastEventTime = deliveryTime;
-          }
-        });
+      if (data.data) {
+        const deliveryStatus = data.data.track.lastEvent.status.code;
+        const deliveryTime = data.data.track.lastEvent.time;
+        const deliveryEvents = data.data.track.events.edges;
+
+        if (state.length > 0) {
+          state.forEach((order, index) => {
+            if (order.shippingInfo.trackingNumber === trackingNumber) {
+              state[index].orderStatus = changeOrderStatus(deliveryStatus);
+              state[index].shippingInfo.lastEventTime = deliveryTime;
+              state[index].shippingInfo.events = deliveryEvents;
+            }
+          });
+        }
       }
     });
   },

@@ -48,6 +48,7 @@ type ShippingInfo = {
   trackingNumber: string;
   carrierId: string;
   lastEventTime?: string;
+  events?: {};
 };
 
 export type DeliveryTrackingResponse = {
@@ -59,9 +60,22 @@ export type DeliveryTrackingResponse = {
         };
         time: string;
       };
+      events: {
+        edges: TrackingResponseEvents[];
+      };
     };
   };
   errors?: TrackingResponseError[];
+};
+
+export type TrackingResponseEvents = {
+  node: {
+    status: {
+      code: string;
+    };
+    time: string;
+    description: string;
+  };
 };
 
 export type TrackingResponseError = {

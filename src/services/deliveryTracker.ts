@@ -33,12 +33,32 @@ export async function trackDelivery(
       "https://apis.tracker.delivery/graphql",
       {
         query: `
-        query Track($carrierId: ID!, $trackingNumber: String!) {
-          track(carrierId: $carrierId, trackingNumber: $trackingNumber) {
+        query Track(
+          $carrierId: ID!,
+          $trackingNumber: String!
+        ) {
+          track(
+            carrierId: $carrierId,
+            trackingNumber: $trackingNumber
+          ) {
             lastEvent {
               time
               status {
                 code
+                name
+              }
+              description
+            }
+            events(last: 10) {
+              edges {
+                node {
+                  time
+                  status {
+                    code
+                    name
+                  }
+                  description
+                }
               }
             }
           }
