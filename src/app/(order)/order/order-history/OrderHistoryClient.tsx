@@ -8,6 +8,7 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { STORE_ORDER, selectOrders } from "@/redux/slice/orderSlice";
 import { Order } from "@/model/order";
+import { TrackingResponseEvent } from "@/model/order";
 
 interface OrderHistoryClientProps {
   userEmail: string;
@@ -29,9 +30,16 @@ const OrderHistoryClient = ({ userEmail }: OrderHistoryClientProps) => {
           (order: Order) => order._id === reduxOrder._id,
         );
         if (matchedOrder) {
-          if (matchedOrder.status !== reduxOrder.orderStatus) {
+          if (
+            matchedOrder.status !== reduxOrder.orderStatus &&
+            reduxOrder.shippingInfo.events
+          ) {
             (async () => {
-              await updateOrderStatus(matchedOrder._id, reduxOrder.orderStatus);
+              await updateOrderStatus(
+                matchedOrder._id,
+                reduxOrder.orderStatus,
+                reduxOrder.shippingInfo.events as TrackingResponseEvent[],
+              );
               console.log(matchedOrder, "updated");
               // update된 orders를 mutate로 캐시에 저장.
               mutate();

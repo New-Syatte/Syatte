@@ -56,13 +56,18 @@ export async function getOrder(orderId: string) {
 }
 
 // order에서 shippingInfo가 있는 경우, delivery Tracking하여 orderStatus 수정하는 함수
-export async function updateOrderStatus(orderId: string, status: string) {
+export async function updateOrderStatus(
+  orderId: string,
+  status: string,
+  events: any[],
+) {
   if (!orderId) {
     throw new Error("orderId is required");
   }
 
   try {
     client.patch(orderId).set({ orderStatus: status }).commit();
+    client.patch(orderId).set({ "shippingInfo.events": events }).commit();
   } catch (error: any) {
     console.error(`주문 상태 변경 실패: ${error.message}`);
   }
