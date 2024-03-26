@@ -45,6 +45,7 @@ export async function getOrder(orderId: string) {
         billingAddress,
         shippingAddress,
         createdAt,
+        shippingInfo,
         _id
       }`,
       { orderId },

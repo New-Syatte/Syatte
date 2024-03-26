@@ -2,6 +2,7 @@ import OrderProduct from "../../order-history/OrderProduct";
 import { getOrder } from "@/services/sanity/orders";
 import deliveryFee from "@/constants/deliveryFee";
 import Link from "next/link";
+import { Order } from "@/model/order";
 interface OrderDetailsProps {
   params: {
     id: string;
@@ -10,7 +11,7 @@ interface OrderDetailsProps {
 
 const OrderDetails = async ({ params }: OrderDetailsProps) => {
   const { id } = params;
-  const order = await getOrder(id);
+  const order: Order = await getOrder(id);
   console.log("order", order);
 
   const orderTime = new Date(order.createdAt);
@@ -18,6 +19,8 @@ const OrderDetails = async ({ params }: OrderDetailsProps) => {
     timeZone: "UTC",
   });
 
+  const deliveryEvents = order.shippingInfo?.events;
+  console.log("deliveryEvents", deliveryEvents);
   return (
     <>
       <div className="w-full border-b-2 border-colorBlack pb-14">
@@ -37,7 +40,7 @@ const OrderDetails = async ({ params }: OrderDetailsProps) => {
           </div>
         </div>
       </div>
-      <div className="flex w-full pb-40 p-7 justify-between">
+      <div className="flex w-full pb-24 p-7 justify-between border-b-2 border-colorBlack">
         <div className="flex gap-x-28">
           <h2 className="text-xl font-bold w-32">주문 결제 정보</h2>
           <div className="text-darkGray">
@@ -62,6 +65,18 @@ const OrderDetails = async ({ params }: OrderDetailsProps) => {
           </div>
         </div>
       </div>
+      {deliveryEvents && (
+        <div className="flex flex-col w-full pb-24 p-7">
+          <h2 className="text-xl font-bold w-32 mb-6">배송 현황</h2>
+          {deliveryEvents.map((event, index) => (
+            <div key={index} className="flex h-28 flex-col gap-2 p-6">
+              <p className="font-bold">{event.node.status.code}</p>
+              <p>{new Date(event.node.time).toLocaleString()}</p>
+              <p>{event.node.description}</p>
+            </div>
+          ))}
+        </div>
+      )}
       <div className="flex items-center justify-center w-full">
         <Link
           className="border border-colorBlack w-[350px] h-[80px] text-2xl font-bold flex justify-center items-center"
