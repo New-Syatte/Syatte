@@ -1,16 +1,15 @@
 "use client";
 import { BsChevronRight } from "react-icons/bs";
-import { Order } from "@/model/order";
 import { ORDER_STATUS } from "@/constants/status";
+import { useSelector } from "react-redux";
+import { selectOrders } from "@/redux/slice/orderSlice";
 
-interface StatusProgressProps {
-  orders: Order[];
-}
-
-const StatusProgress = ({ orders }: StatusProgressProps) => {
+const StatusProgress = () => {
   // orders 배열의 status 기준으로, status 별로 몇 개의 주문이 있는지 카운트
   const statusArray = ORDER_STATUS.map(status => status.value).slice(1, 5);
   const statusTitleArr = ORDER_STATUS.map(status => status.title).slice(1, 5);
+  const orders = useSelector(selectOrders);
+
   const statusCount = orders.reduce((acc: any, cur: any) => {
     if (acc[cur.orderStatus]) {
       acc[cur.orderStatus] += 1;

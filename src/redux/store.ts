@@ -25,7 +25,9 @@ const store = configureStore({
     getDefaultMiddleware({
       serializableCheck: false,
     }),
+  devTools: true,
 });
+console.log(store.getState(), "store");
 
 export type RootState = ReturnType<typeof store.getState>;
 
