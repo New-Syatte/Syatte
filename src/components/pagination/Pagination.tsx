@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import styles from "./Pagination.module.scss";
 
 interface IPaginationProps {
   currentPage: number;
@@ -46,11 +45,14 @@ const Pagination = ({
     pageNumbers.push(i);
   }
 
+  const listStyle =
+    "text-lg border border-gray-300 min-w-12 h-12 p-1 flex justify-center items-center cursor-pointer mx-1";
+
   return (
-    <div className={styles.pagination}>
+    <ul className="list-none mt-4 pt-4 border-t-2 border-gray-300 flex justify-center items-center">
       <li
         onClick={paginatePrevPage}
-        className={currentPage === pageNumbers[0] ? `${styles.hidden}` : ""}
+        className={currentPage === pageNumbers[0] ? "hidden" : ""}
       >
         {"<"}
       </li>
@@ -61,7 +63,11 @@ const Pagination = ({
             <li
               key={number}
               onClick={() => paginate(number)}
-              className={currentPage === number ? `${styles.active}` : ""}
+              className={`${listStyle} ${
+                currentPage === number
+                  ? `border border-colorBlack text-colorBlack`
+                  : ""
+              }`}
             >
               {number}
             </li>
@@ -71,15 +77,13 @@ const Pagination = ({
 
       <li
         onClick={paginateNextPage}
-        className={
-          currentPage === pageNumbers[pageNumbers.length - 1]
-            ? `${styles.hidden}`
-            : ""
-        }
+        className={`${listStyle} ${
+          currentPage === pageNumbers[pageNumbers.length - 1] ? "hidden" : ""
+        }`}
       >
         {">"}
       </li>
-    </div>
+    </ul>
   );
 };
 

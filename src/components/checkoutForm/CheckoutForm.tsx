@@ -9,7 +9,6 @@ import {
   selectCartTotalAmount,
   selectCartTotalQuantity,
 } from "@/redux/slice/cartSlice";
-import styles from "./CheckjoutForm.module.scss";
 import Link from "next/link";
 import priceFormat from "@/utils/priceFormat";
 import Image from "next/image";
@@ -26,8 +25,8 @@ export default function CheckoutForm() {
   }, [dispatch, cartItems]);
 
   return (
-    <div className={styles.summary}>
-      <h3>주문 요약</h3>
+    <div>
+      <h3 className="text-[1.7rem] mb-4">주문 요약</h3>
       <div>
         {cartItems.length === 0 ? (
           <>

@@ -1,6 +1,5 @@
 "use client";
 import React, { useCallback, useEffect, useState } from "react";
-import styles from "./Slider.module.scss";
 import Icon from "../icon/Icon";
 import Image from "next/image";
 
@@ -14,10 +13,6 @@ interface ISliderProps {
   arrowSize?: number;
   setIndexImage?: (index: number) => void; // React useState Setter 함수
   [key: string]: any;
-}
-
-interface SlidePerViewProperties extends React.CSSProperties {
-  "--slide-per-view"?: number;
 }
 
 const Slider = ({
@@ -57,14 +52,16 @@ const Slider = ({
     };
   }, [nextSlide]);
 
+  const arrowStyle =
+    "absolute top-1/2 transform -translate-y-1/2 z-10 bg-white bg-opacity-50 text-white cursor-pointer hover:bg-white";
+  const leftStyle = "right-0 text-colorBlack";
+  const rightStyle = "left-0 text-colorBlack";
+
   return (
-    <div
-      className={styles.slider}
-      style={{ "--slide-per-view": slidePerView } as SlidePerViewProperties}
-    >
+    <div className="w-full h-full relative flex justify-center items-center space-x-4 overflow-hidden">
       <Icon
         type="left"
-        className={`${styles.arrow} ${styles.prev}`}
+        className={arrowStyle + " " + leftStyle}
         style={{ width: arrowSize, height: arrowSize }}
         onClick={prevSlide}
       />
@@ -73,7 +70,11 @@ const Slider = ({
         <div
           key={index}
           style={{ width, height }}
-          className={styles.slide + " " + bgColor}
+          className={
+            `transition-all duration-500 flex-shrink-0 w-[calc(100%/${slidePerView})]` +
+            " " +
+            bgColor
+          }
           onClick={() => {
             setIndexImage && setIndexImage(index);
           }}
@@ -81,6 +82,7 @@ const Slider = ({
         >
           <Image
             key={index}
+            className="h-full object-cover"
             src={data.imageUrl}
             alt=""
             width={width}
@@ -91,7 +93,7 @@ const Slider = ({
       ))}
       <Icon
         type="right"
-        className={`${styles.arrow} ${styles.next}`}
+        className={arrowStyle + " " + rightStyle}
         style={{ width: arrowSize, height: arrowSize }}
         onClick={nextSlide}
       />

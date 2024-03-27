@@ -1,6 +1,4 @@
 import React from "react";
-import styles from "./Tooltip.module.scss";
-import classNames from "classnames";
 
 interface ITooltipProps {
   top?: number;
@@ -9,7 +7,7 @@ interface ITooltipProps {
   left?: number;
   color?: string;
   bgColor?: string;
-  orientation?: "top" | "right" | "bottom" | "left";
+  direction?: "top" | "right" | "bottom" | "left";
   message: string;
   [x: string]: any;
 }
@@ -34,26 +32,29 @@ const Tooltip = ({
     backgroundColor: bgColor,
   };
 
-  const setOrientationClass = (type: string) => {
-    switch (type) {
-      case "top":
-        return styles.orientationTop;
-      case "right":
-        return styles.orientationRight;
-      case "bottom":
-        return styles.orientationBottom;
-      case "left":
-        return styles.orientationLeft;
-      default:
-        break;
-    }
-  };
+  let direction = "";
+  switch (orientation) {
+    case "top":
+      direction = "before:top-[-10px] before:border-t-[transparent]";
+      break;
+    case "right":
+      direction = "before:right-[-10px] before:border-r-[transparent]";
+      break;
+    case "bottom":
+      direction = "before:bottom-[-10px] before:border-b-[transparent]";
+      break;
+    case "left":
+      direction = "before:left-[-10px] before:border-l-[transparent]";
+      break;
+    default:
+      break;
+  }
 
   return (
     <span
       role="tooltip"
       style={style}
-      className={classNames(styles.tooltip, setOrientationClass(orientation))}
+      className={`absolute min-w-[225px] py-[0.5em] px-[0.75em] text-[10px] rounded-[2px] bg-[#f4f4f4] text-[#555555] before:content-[""] before:absolute before:border-[5px] before:border-[#f4f4f4] h-full ${direction}`}
       {...restProps}
     >
       {message}
