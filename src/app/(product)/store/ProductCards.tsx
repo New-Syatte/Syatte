@@ -1,5 +1,5 @@
 import Card from "@/components/card/Card";
-import { ProductForList } from "@/model/products";
+import { ProductForList } from "@/type/products";
 
 interface Props {
   products: ProductForList[];

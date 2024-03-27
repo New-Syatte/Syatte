@@ -5,7 +5,7 @@ import {
   Order,
   TrackingResponseError,
   DeliveryTrackingResponse,
-} from "@/model/order";
+} from "@/type/order";
 import { RootState } from "../store";
 
 type IOrderState = Order[];

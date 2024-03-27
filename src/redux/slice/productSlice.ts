@@ -1,9 +1,9 @@
-import { IProduct } from "@/type";
+import { Product } from "@/type/products";
 import { createSlice } from "@reduxjs/toolkit";
 import { RootState } from "../store";
 
 interface IProductState {
-  products: IProduct[];
+  products: Product[];
   minPrice: number;
   maxPrice: number;
 }
@@ -25,7 +25,7 @@ const productSlice = createSlice({
       const { products } = action.payload;
 
       const array: number[] = [];
-      products.map((product: IProduct) => {
+      products.map((product: Product) => {
         const price = product.price;
         return array.push(price);
       });

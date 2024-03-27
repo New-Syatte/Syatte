@@ -7,7 +7,7 @@ import STLogo from "@/assets/SYATT.svg";
 import MMLogo from "@/assets/modern-masters-logo.png";
 import MDLogo from "@/assets/midas-metal-logo.svg";
 import styles from "./Header.module.scss";
-import { User } from "@/model/user";
+import { User } from "@/type/user";
 import { usePathname } from "next/navigation";
 import { useState, useEffect } from "react";
 

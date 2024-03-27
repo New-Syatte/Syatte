@@ -22,7 +22,7 @@ import {
 import { useRouter } from "next/navigation";
 import dayjs from "dayjs";
 import { saveCart } from "@/services/sanity/cart";
-import { IOrder } from "@/type";
+import { Order } from "@/type/order";
 
 export default function CheckoutClient() {
   const { data: session } = useSession();
@@ -87,7 +87,7 @@ export default function CheckoutClient() {
           const time = today.toLocaleTimeString();
 
           const orderData = {
-            id: orderId,
+            _id: orderId,
             userEmail,
             orderDate: date,
             orderTime: time,
@@ -98,8 +98,12 @@ export default function CheckoutClient() {
             shippingAddress: shippingAddress,
             billingAddress: billingAddress,
             createdAt: dayjs().format("YYYY-MM-DD HH:mm:ss"),
+            shippingInfo: {
+              trackingNumber: "",
+              carrierId: "",
+            },
           };
-          await saveCart(orderData as IOrder);
+          await saveCart(orderData as Order);
           // db에 저장
           dispatch(CLEAR_CART());
           router.push(`/checkout-success?orderId=${orderId}`);

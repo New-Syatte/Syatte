@@ -1,34 +1,24 @@
 "use client";
 
-import { ProductForDetail } from "@/model/products";
+import { ProductForDetail } from "@/type/products";
 import Button from "@/components/button/Button";
-import {
-  ADD_TO_CART,
-  CALCULATE_TOTAL_QUANTITY,
-  CLEAR_CART,
-} from "@/redux/slice/cartSlice";
+import { ADD_TO_CART, CALCULATE_TOTAL_QUANTITY } from "@/redux/slice/cartSlice";
 import { useDispatch } from "react-redux";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Slider from "@/components/slider/Slider";
 import Image from "next/image";
 
-interface ProductSummaryProps {
-  _id: string;
-  productName: string;
-  price: number;
-  description: string;
-  feature: string[];
-  images: { imageUrl: string }[];
-  discount: number;
-}
+type ProductSummaryProps = Omit<
+  ProductForDetail,
+  "category" | "detailCategory" | "detailImage"
+>;
 
 const ProductSummary = ({
   _id,
   productName,
   price,
   description,
-  feature,
   images,
   discount,
 }: ProductSummaryProps) => {

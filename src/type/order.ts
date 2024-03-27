@@ -1,3 +1,5 @@
+import { CartItem } from "./cart";
+
 export type Order = {
   userEmail: string;
   orderDate: string;
@@ -12,22 +14,14 @@ export type Order = {
   _id: string;
 };
 
-type CartItem = {
-  id: string;
-  imageURL: string;
-  name: string;
-  price: number;
-  cartQuantity: number;
-};
-
-type BillingAddress = {
+export type BillingAddress = {
   name: string;
   phone: string;
   userEmail: string;
   memo: string;
 };
 
-type ShippingAddress = {
+export type ShippingAddress = {
   name: string;
   postalCode: string;
   city: string;

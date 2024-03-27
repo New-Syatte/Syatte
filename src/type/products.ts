@@ -5,7 +5,6 @@ export type Product = {
   discount: number;
   mainImage: ProductImages;
   description: string;
-  feature: string[];
   images: ProductImages[];
   category: string;
   detailCategory: string;
@@ -21,23 +20,3 @@ export type ProductForList = Pick<
 type ProductImages = {
   imageUrl: string;
 };
-
-type Recommends = {
-  productName: string;
-  mainImage: ProductImages;
-  _id: string;
-};
-
-export type ProductForCategory = Pick<
-  Product,
-  "_id" | "productName" | "price" | "mainImage" | "detailCategory" | "category"
->;
-
-// ----------------for Constants ----------------
-
-export type CategoryForConstant = {
-  title: string;
-  value: string;
-};
-
-export type Categorys = CategoryForConstant[];

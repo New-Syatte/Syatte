@@ -1,5 +1,5 @@
 import { client } from "@/services/sanity/sanity";
-import { IOrder } from "@/type";
+import { Order } from "@/type/order";
 
 export async function getCart(username: string) {
   return client.fetch(`
@@ -13,7 +13,7 @@ export async function getCart(username: string) {
 }
 
 export async function saveCart({
-  id,
+  _id,
   userEmail,
   billingAddress,
   shippingAddress,
@@ -23,10 +23,10 @@ export async function saveCart({
   orderCount,
   orderDate,
   createdAt,
-}: IOrder) {
+}: Order) {
   const cart = {
     _type: "order",
-    _id: id,
+    _id,
     userEmail: userEmail,
     billingAddress: billingAddress,
     shippingAddress: shippingAddress,

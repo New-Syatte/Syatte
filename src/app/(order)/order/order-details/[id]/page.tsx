@@ -2,7 +2,7 @@ import OrderProduct from "../../order-history/OrderProduct";
 import { getOrder } from "@/services/sanity/orders";
 import deliveryFee from "@/constants/deliveryFee";
 import Link from "next/link";
-import { Order } from "@/model/order";
+import { Order } from "@/type/order";
 interface OrderDetailsProps {
   params: {
     id: string;

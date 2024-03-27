@@ -7,8 +7,8 @@ import useSWR from "swr";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { STORE_ORDER, selectOrders } from "@/redux/slice/orderSlice";
-import { Order } from "@/model/order";
-import { TrackingResponseEvent } from "@/model/order";
+import { Order } from "@/type/order";
+import { TrackingResponseEvent } from "@/type/order";
 
 interface OrderHistoryClientProps {
   userEmail: string;

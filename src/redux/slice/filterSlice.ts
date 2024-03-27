@@ -1,9 +1,9 @@
-import { IProduct } from "@/type";
+import { Product } from "@/type/products";
 import { createSlice } from "@reduxjs/toolkit";
 import { RootState } from "../store";
 
 interface IFilterState {
-  filteredProducts: IProduct[];
+  filteredProducts: Product[];
 }
 
 const initialState: IFilterState = {
@@ -16,7 +16,7 @@ const filterSlice = createSlice({
   reducers: {
     FILTER_BY_CATEGORY: (
       state,
-      action: { payload: { products: IProduct[]; category: string } },
+      action: { payload: { products: Product[]; category: string } },
     ) => {
       const { products, category } = action.payload;
       let tempProducts = [];
@@ -29,23 +29,23 @@ const filterSlice = createSlice({
       }
       state.filteredProducts = tempProducts;
     },
-    FILTER_BY_BRAND: (
-      state,
-      action: { payload: { products: IProduct[]; brand: string } },
-    ) => {
-      const { products, brand } = action.payload;
-      console.log("brand", brand);
-      let tempProducts = [];
-      if (brand === "All") {
-        tempProducts = products;
-      } else {
-        tempProducts = products.filter(product => product.brand === brand);
-      }
-      state.filteredProducts = tempProducts;
-    },
+    // FILTER_BY_BRAND: (
+    //   state,
+    //   action: { payload: { products: Product[]; brand: string } },
+    // ) => {
+    //   const { products, brand } = action.payload;
+    //   console.log("brand", brand);
+    //   let tempProducts = [];
+    //   if (brand === "All") {
+    //     tempProducts = products;
+    //   } else {
+    //     tempProducts = products.filter(product => product.brand === brand);
+    //   }
+    //   state.filteredProducts = tempProducts;
+    // },
     FILTER_BY_PRICE: (
       state,
-      action: { payload: { products: IProduct[]; price: number } },
+      action: { payload: { products: Product[]; price: number } },
     ) => {
       const { products, price } = action.payload;
       let tempProducts = [];
@@ -58,7 +58,7 @@ const filterSlice = createSlice({
       state,
       action: {
         payload: {
-          products: IProduct[];
+          products: Product[];
           price: number;
           brand: string;
           category: string;
@@ -75,11 +75,11 @@ const filterSlice = createSlice({
           product => product.category === category,
         );
       }
-      if (brand === "All") {
-        tempProducts = tempProducts;
-      } else {
-        tempProducts = tempProducts.filter(product => product.brand === brand);
-      }
+      // if (brand === "All") {
+      //   tempProducts = tempProducts;
+      // } else {
+      //   tempProducts = tempProducts.filter(product => product.brand === brand);
+      // }
 
       tempProducts = tempProducts.filter(product => product.price <= price);
 
@@ -87,10 +87,10 @@ const filterSlice = createSlice({
     },
     SORT_PRODUCTS: (
       state,
-      action: { payload: { products: IProduct[]; sort: string } },
+      action: { payload: { products: Product[]; sort: string } },
     ) => {
       const { products, sort } = action.payload;
-      let tempProducts: IProduct[] = [];
+      let tempProducts: Product[] = [];
       if (sort === "latest") {
         tempProducts = products;
       }
@@ -111,13 +111,13 @@ const filterSlice = createSlice({
     },
     FILTER_BY_SEARCH: (
       state,
-      action: { payload: { products: IProduct[]; search: string } },
+      action: { payload: { products: Product[]; search: string } },
     ) => {
       const { products, search } = action.payload;
 
       const tempProducts = products.filter(
         product =>
-          product.name.toLowerCase().includes(search.toLowerCase()) ||
+          product.productName.toLowerCase().includes(search.toLowerCase()) ||
           product.category.toLowerCase().includes(search.toLowerCase()),
       );
 
@@ -127,7 +127,7 @@ const filterSlice = createSlice({
 });
 
 export const {
-  FILTER_BY_BRAND,
+  // FILTER_BY_BRAND,
   FILTER_BY_CATEGORY,
   FILTER_BY_PRICE,
   SORT_PRODUCTS,

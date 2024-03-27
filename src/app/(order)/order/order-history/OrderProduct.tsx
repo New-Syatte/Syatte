@@ -4,7 +4,7 @@ import { BsChevronRight } from "react-icons/bs";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { ORDER_STATUS } from "@/constants/status";
-import { Order } from "@/model/order";
+import { Order } from "@/type/order";
 import { useDispatch, useSelector } from "react-redux";
 import { trackDeliveryThunk } from "@/redux/slice/orderSlice";
 import { useEffect } from "react";

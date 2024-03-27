@@ -1,6 +1,6 @@
 "use client";
 import React, { useState } from "react";
-import { Order } from "@/model/order";
+import { Order } from "@/type/order";
 import { useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
 import Pagination from "@/components/pagination/Pagination";
