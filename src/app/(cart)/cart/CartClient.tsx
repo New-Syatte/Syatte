@@ -21,7 +21,7 @@ import Heading from "@/components/heading/Heading";
 import Link from "next/link";
 import priceFormat from "@/utils/priceFormat";
 import Button from "@/components/button/Button";
-import { ICartItem } from "@/type";
+import { CartItem } from "@/type/cart";
 import { AiFillCaretDown, AiFillCaretUp } from "react-icons/ai";
 import deliveryFee from "@/constants/deliveryFee";
 
@@ -36,16 +36,14 @@ export default function CartClient() {
   const dispatch = useDispatch();
   const router = useRouter();
 
-  const increaseCart = (cart: ICartItem) => {
-    // 일단 타입을 any 로 임시 지정
+  const increaseCart = (cart: CartItem) => {
     dispatch(ADD_TO_CART(cart));
   };
-  const decreaseCart = (cart: ICartItem) => {
-    // 일단 타입을 any 로 임시 지정
+  const decreaseCart = (cart: CartItem) => {
     dispatch(DECREASE_CART(cart));
   };
 
-  const removeCart = (cart: ICartItem) => {
+  const removeCart = (cart: CartItem) => {
     dispatch(REMOVE_FROM_CART(cart));
   };
 

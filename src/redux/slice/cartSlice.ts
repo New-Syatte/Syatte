@@ -1,10 +1,10 @@
-import { ICartItem } from "@/type";
+import { CartItem } from "@/type/cart";
 import { createSlice } from "@reduxjs/toolkit";
 import { toast } from "react-toastify";
 import { RootState } from "../store";
 
 interface ICartState {
-  cartItems: ICartItem[];
+  cartItems: CartItem[];
   cartTotalQuantity: number;
   cartTotalAmount: number;
   previousURL: string;
