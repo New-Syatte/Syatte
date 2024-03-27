@@ -25,7 +25,6 @@ const store = configureStore({
     }),
   devTools: true,
 });
-console.log(store.getState(), "store");
 
 export type RootState = ReturnType<typeof store.getState>;
 

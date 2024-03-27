@@ -12,15 +12,12 @@ interface OrderDetailsProps {
 const OrderDetails = async ({ params }: OrderDetailsProps) => {
   const { id } = params;
   const order: Order = await getOrder(id);
-  console.log("order", order);
-
   const orderTime = new Date(order.createdAt);
   const formattedOrderTime = orderTime.toLocaleString("ko-KR", {
     timeZone: "UTC",
   });
 
   const deliveryEvents = order.shippingInfo?.events;
-  console.log("deliveryEvents", deliveryEvents);
   return (
     <>
       <div className="w-full border-b-2 border-colorBlack pb-14">

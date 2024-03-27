@@ -39,18 +39,12 @@ export default function CheckoutClient() {
   const clientkey = process.env.NEXT_PUBLIC_TOSS_CLIENT_KEY;
   const secretkey = process.env.NEXT_PUBLIC_TOSS_SECRET_KEY;
 
-  /*const orderNameCount = cartItems?.length === 1
-      ? cartItems[0].name
-      : cartItems[0].name + " 외 " + (cartItems.length - 1) + "건";*/
-
   const orderNameCount =
     cartItems && cartItems.length
       ? cartItems.length === 1
         ? cartItems[0].name
         : `${cartItems[0].name} 외  ${cartItems.length - 1}건`
       : "";
-
-  // console.log(orderNameCount);
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -112,7 +106,8 @@ export default function CheckoutClient() {
           if (error.code === "USER_CANCEL") {
             toast.error("결재창이 닫아졌습니다.");
           } else {
-            console.log("error", error);
+            toast.error("결재에 실패했습니다. 잠시 후 다시 시도해주세요.");
+            console.error("error", error);
           }
         });
     }

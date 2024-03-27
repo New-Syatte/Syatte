@@ -83,7 +83,6 @@ const orderSlice = createSlice({
         data: DeliveryTrackingResponse;
         trackingNumber: string;
       };
-      console.log(data.data, "data");
 
       if (data.data) {
         const deliveryStatus = data.data.track.lastEvent.status.code;

@@ -40,7 +40,6 @@ const OrderHistoryClient = ({ userEmail }: OrderHistoryClientProps) => {
                 reduxOrder.orderStatus,
                 reduxOrder.shippingInfo.events as TrackingResponseEvent[],
               );
-              console.log(matchedOrder, "updated");
               // update된 orders를 mutate로 캐시에 저장.
               mutate();
             })();

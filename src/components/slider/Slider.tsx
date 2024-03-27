@@ -32,7 +32,6 @@ const Slider = ({
   ...restProps
 }: ISliderProps) => {
   const [currentSlide, setCurrentSlide] = useState(0);
-  console.log(datas);
   // datas 배열을 slidePerView 값에 따라 분할
   const slides: any[] = [];
   for (let i = 0; i < datas.length; i += slidePerView) {
