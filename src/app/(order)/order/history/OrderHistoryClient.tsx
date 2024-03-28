@@ -9,6 +9,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { STORE_ORDER, selectOrders } from "@/redux/slice/orderSlice";
 import { Order } from "@/type/order";
 import { TrackingResponseEvent } from "@/type/order";
+import Loader from "@/components/loader/Loader";
 
 interface OrderHistoryClientProps {
   userEmail: string;
@@ -32,7 +33,7 @@ const OrderHistoryClient = ({ userEmail }: OrderHistoryClientProps) => {
         if (matchedOrder) {
           if (
             matchedOrder.status !== reduxOrder.orderStatus &&
-            reduxOrder.shippingInfo.events
+            reduxOrder.shippingInfo?.events
           ) {
             (async () => {
               await updateOrderStatus(
@@ -56,7 +57,7 @@ const OrderHistoryClient = ({ userEmail }: OrderHistoryClientProps) => {
   }, [orders]);
 
   if (error) return <div>Failed to load orders</div>;
-  if (!orders) return <div>Loading...</div>;
+  if (!orders) return <Loader />;
 
   return (
     <div className="w-full flex flex-col gap-y-40">

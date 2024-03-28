@@ -5,9 +5,10 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { ORDER_STATUS } from "@/constants/status";
 import { Order } from "@/type/order";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { trackDeliveryThunk } from "@/redux/slice/orderSlice";
 import { useEffect } from "react";
+import URLS from "@/constants/urls";
 
 interface OrderProductProps {
   order: Order;
@@ -41,7 +42,7 @@ const OrderProduct = ({ order, index = 0 }: OrderProductProps) => {
         }`}</h3>
         {pathname && pathname === "/order/order-history" && (
           <Link
-            href={`/order/order-details/${order._id}`}
+            href={`${URLS.ORDER_DETAILS}/${order._id}`}
             className="flex items-center text-darkgray text-md hover:underline"
           >
             <p>주문상세</p> <BsChevronRight />

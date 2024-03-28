@@ -10,6 +10,7 @@ import styles from "./Header.module.scss";
 import { User } from "@/type/user";
 import { usePathname } from "next/navigation";
 import { useState, useEffect } from "react";
+import URLS from "@/constants/urls";
 
 interface HeaderProps {
   user: User | undefined;
@@ -45,7 +46,7 @@ const HeaderClient = ({ user }: HeaderProps) => {
       </Link>
       <nav className={`flex ml-6 gap-3 mr-4 items-center ${textColor}`}>
         <NavMenu pathname={pathname} textColor={textColor} />
-        <Link href={"/cart"} className="text-xs font-semibold">
+        <Link href={URLS.CART} className="text-xs font-semibold">
           CART
         </Link>
         <div>
@@ -53,7 +54,7 @@ const HeaderClient = ({ user }: HeaderProps) => {
             <UserBox data={user} />
           ) : (
             <Link
-              href="/signin"
+              href={URLS.SIGNIN}
               className={`flex gap-2 items-end hover:underline text-xs font-semibold before:content-[''] before:w-[2px] before:h-[12px] before:${textColor} before:mr-1`}
             >
               <p>LOGIN</p>

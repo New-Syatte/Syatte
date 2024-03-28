@@ -1,4 +1,5 @@
 import Card from "@/components/card/Card";
+import URLS from "@/constants/urls";
 import { ProductForList } from "@/type/products";
 
 interface Props {
@@ -13,7 +14,7 @@ const ProductCards = ({ products }: Props) => {
           key={product._id}
           title={product.productName}
           src={product.mainImage.imageUrl}
-          linkTo={`/product-details/${product._id}`}
+          linkTo={`${URLS.PRODUCT_DETAILS}/${product._id}`}
           width={312}
           height={312}
           product={product}

@@ -6,7 +6,7 @@ import { GrNext, GrPrevious } from "react-icons/gr";
 import logo from "public/brand/midasmetall-img/midasmetall-logo.png";
 import YouTubeVideo from "@/components/youTubeVideo/YouTubeVideo";
 import SubTitleBox from "@/components/subTitleBox/SubTitleBox";
-import BrandSlider from "@/components/brandSlider/BrandSlider";
+// import BrandSlider from "@/components/brandSlider/BrandSlider";
 import StoreSlider from "@/components/storeSlider/StoreSlider";
 import { useState } from "react";
 import ProductInfoList from "@/components/productInfoList/ProductInfoList";

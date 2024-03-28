@@ -2,14 +2,15 @@ import SideBar from "@/layouts/sideBar/SideBar";
 import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
+import URLS from "@/constants/urls";
 
 const OrderLayout = async ({ children }: { children: React.ReactNode }) => {
   const session = await getServerSession(authOptions); // 서버에서 session 정보 호출
   const user = session?.user;
   if (!user) {
-    redirect("/signin");
+    redirect(URLS.SIGNIN);
   }
-  const links = ["/cart", "/order/order-history"];
+  const links = [URLS.CART, URLS.ORDER_HISTORY];
   const listStr = ["장바구니", "주문내역"];
   return (
     <section className="w-[1280px] mx-auto mb-[200px]">

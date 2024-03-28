@@ -4,6 +4,7 @@ import { useDispatch } from "react-redux";
 import { useState } from "react";
 import { usePathname } from "next/navigation";
 import { useRouter } from "next/navigation";
+import URLS from "@/constants/urls";
 
 const Search = () => {
   const dispatch = useDispatch();
@@ -15,7 +16,7 @@ const Search = () => {
   const handleSearch = () => {
     dispatch(setSearchQuery(searchValue));
     if (pathname === "/store") {
-      router.push(`/store/search`);
+      router.push(URLS.PRODUCT_STORE_SEARCH);
     }
   };
 

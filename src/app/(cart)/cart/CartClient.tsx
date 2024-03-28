@@ -24,6 +24,7 @@ import Button from "@/components/button/Button";
 import { CartItem } from "@/type/cart";
 import { AiFillCaretDown, AiFillCaretUp } from "react-icons/ai";
 import deliveryFee from "@/constants/deliveryFee";
+import URLS from "@/constants/urls";
 
 const ICON_CLASS =
   "flex text-[24px] transition-all cursor-pointer hover:text-brand hover:scale-200 mx-1 ";
@@ -53,7 +54,7 @@ export default function CartClient() {
 
   const url = typeof window !== "undefined" ? window.location.href : "";
   const checkout = () => {
-    router.push("/checkout-address");
+    router.push(URLS.CHECKOUT_ADDRESS);
   };
   // url, checkout은 사용되지 않고 잇다
 
@@ -74,7 +75,7 @@ export default function CartClient() {
           <div
             className={"text-center font-bold text-[30px] border-[2px] mt-4"}
           >
-            <Link href={"/products/all"}>계속 쇼핑하기</Link>
+            <Link href={URLS.PRODUCT_STORE}>계속 쇼핑하기</Link>
           </div>
         </>
       ) : (
@@ -83,7 +84,7 @@ export default function CartClient() {
           {cartItems.map(cart => {
             const { id, name, imageURL, price, cartQuantity } = cart;
             return (
-              <>
+              <div key={cart.id}>
                 <div
                   className={"flex justify-between items-center px-3"}
                   key={id}
@@ -125,7 +126,7 @@ export default function CartClient() {
                   </div>
                 </div>
                 <div className={"border-[1px] mt-4"} />
-              </>
+              </div>
             );
           })}
         </>

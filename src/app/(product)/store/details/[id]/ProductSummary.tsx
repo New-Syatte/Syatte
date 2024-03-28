@@ -8,6 +8,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Slider from "@/components/slider/Slider";
 import Image from "next/image";
+import URLS from "@/constants/urls";
 
 type ProductSummaryProps = Omit<
   ProductForDetail,
@@ -131,7 +132,6 @@ const ProductSummary = ({
             <Button
               onClick={() => {
                 addToCart();
-                router.push("/cart");
               }}
               styleType="blank"
               style="w-[200px] h-[62px] py-[17.80px] bg-white rounded-[50px] border-2 border-gray-400 justify-center items-center inline-flex text-gray-400 text-lg font-bold"
@@ -141,7 +141,7 @@ const ProductSummary = ({
             <Button
               onClick={() => {
                 addToCart();
-                router.push("/cart");
+                router.push(URLS.CART);
               }}
               styleType="blank"
               style="w-[200px] h-[62px] py-[17.80px] bg-gray-400 rounded-[50px] justify-center items-center inline-flex text-white text-lg font-bold"

@@ -23,6 +23,7 @@ import { useRouter } from "next/navigation";
 import dayjs from "dayjs";
 import { saveCart } from "@/services/sanity/cart";
 import { Order } from "@/type/order";
+import URLS from "@/constants/urls";
 
 export default function CheckoutClient() {
   const { data: session } = useSession();
@@ -63,7 +64,7 @@ export default function CheckoutClient() {
           const basicToken = Buffer.from(`${secretkey}:`, "utf-8").toString(
             "base64",
           );
-          const confirmResponse = await fetch(url, {
+          await fetch(url, {
             method: "post",
             body: JSON.stringify({
               orderId,
@@ -74,7 +75,7 @@ export default function CheckoutClient() {
               Authorization: `Basic ${basicToken}`,
               "Content-Type": "application/json",
             },
-          }).then(response => response.json());
+          });
 
           const today = new Date();
           const date = today.toDateString();
@@ -100,7 +101,7 @@ export default function CheckoutClient() {
           await saveCart(orderData as Order);
           // db에 저장
           dispatch(CLEAR_CART());
-          router.push(`/checkout-success?orderId=${orderId}`);
+          router.push(`${URLS.CHECKOUT_SUCCESS}?orderId=${orderId}`);
         })
         .catch(error => {
           if (error.code === "USER_CANCEL") {

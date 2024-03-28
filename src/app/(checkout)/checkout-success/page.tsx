@@ -4,6 +4,7 @@ import priceFormat from "@/utils/priceFormat";
 import { formatTime } from "@/utils/dayjs";
 import Button from "@/components/button/Button";
 import Link from "next/link";
+import URLS from "@/constants/urls";
 
 type Props = {
   searchParams: {
@@ -63,7 +64,7 @@ export default async function CheckoutSuccess({ searchParams }: Props) {
           )}
         </ul>
         <Button style="py-3 px-12">
-          <Link href="/order/order-history">주문 상태 보기</Link>
+          <Link href={URLS.ORDER_HISTORY}>주문 상태 보기</Link>
         </Button>
       </section>
     </>

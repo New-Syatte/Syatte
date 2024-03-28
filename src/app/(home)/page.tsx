@@ -18,11 +18,13 @@ import introSub4 from "@/assets/main/introduce-sub4.png";
 import introSub5 from "@/assets/main/introduce-sub5.png";
 import eduImg from "@/assets/main/main-edu.png";
 import MMLogo from "@/assets/modern-masters-logo.png";
+import MDLogo from "@/assets/midas-metal-logo.svg";
 import bottomBanner from "@/assets/main/bottom-banner.png";
 
 import { MdArrowForwardIos } from "react-icons/md";
 import Image from "next/image";
 import Link from "next/link";
+import URLS from "@/constants/urls";
 
 export default async function Home() {
   const datas = [{ imageUrl: Banner1 }];
@@ -169,8 +171,8 @@ export default async function Home() {
           </div>
         </Motion>
         {/* *****************모던마스터즈 & 마이더스메탈소개***************** */}
-        <div className="w-full h-[1100px] flex flex-col items-center">
-          <Motion initial="hidden" whileInView="visible" variants={container}>
+        <Motion initial="hidden" whileInView="visible" variants={container}>
+          <div className="w-full h-[1100px] flex flex-col items-center">
             <div className="w-[85%]">
               <p className="font-garamond font-normal text-2xl mb-4 tracking-[2.4px]">
                 MODERN MASTERS
@@ -201,14 +203,14 @@ export default async function Home() {
                   </p>
                   <div className="flex gap-12">
                     <Link
-                      href="/modern-masters"
+                      href={URLS.MODERN_MASTERS}
                       className="font-garamond text-2xl flex gap-3 hover:underline"
                     >
                       GALLERY
                       <MdArrowForwardIos className="text-xl mt-[6px]" />
                     </Link>
                     <Link
-                      href="/modern-masters/store"
+                      href={URLS.PRODUCT_STORE} // 추후 수정(Issue #20)
                       className="font-garamond text-2xl flex gap-3 hover:underline"
                     >
                       STORE
@@ -219,29 +221,33 @@ export default async function Home() {
               </div>
               <div className="w-full h-[304px] flex border border-[#ececec]">
                 <div className="w-[531px] h-full bg-black flex justify-center items-center">
-                  <Image src={MMLogo} alt="MMLogo" width={309} height={186} />
+                  <Image
+                    src={MDLogo}
+                    alt="MidasMetalLogo"
+                    width={309}
+                    height={186}
+                  />
                 </div>
                 <div className="w-full h-full p-14">
                   <p className="font-garamond font-normal text-sm mb-[6px]">
-                    MODERN MASTERS
+                    MIDAS METAL
                   </p>
-                  <h2 className="text-3xl font-bold mb-5">모던마스터즈</h2>
+                  <h2 className="text-3xl font-bold mb-5">마이다스 메탈</h2>
                   <p className="text-lg mb-8">
-                    고급 특수 페인트 및 금속 마감 솔루션 전문 제조업체로,
-                    독특하고 혁신적인 디자인을 위한 제품을 선보이며 세계적인{" "}
-                    <br /> 평가를 받고 있습니다. 미국을 중심으로 전 세계의
-                    건축가, 디자이너, 예술가들에게 폭넓게 사용되고 있습니다.
+                    우수한 금속 마감 솔루션을 제공합니다. 금속 선택부터 혼합물
+                    준비, 그리고 표면 마감까지 모든 과정에서 자체 개발한 제품을
+                    활용하여 다양한 금속 솔루션을 고객의 요구에 맞게 제작합니다.
                   </p>
                   <div className="flex gap-12">
                     <Link
-                      href="/modern-masters"
+                      href={URLS.MIDAS_METAL}
                       className="font-garamond text-2xl flex gap-3 hover:underline"
                     >
                       GALLERY
                       <MdArrowForwardIos className="text-xl mt-[6px]" />
                     </Link>
                     <Link
-                      href="/modern-masters/store"
+                      href={URLS.PRODUCT_STORE} // 추후 수정(Issue #20)
                       className="font-garamond text-2xl flex gap-3 hover:underline"
                     >
                       STORE
@@ -251,8 +257,8 @@ export default async function Home() {
                 </div>
               </div>
             </div>
-          </Motion>
-        </div>
+          </div>
+        </Motion>
         {/* 교육소개 */}
         <Motion initial="hidden" whileInView="visible" variants={container}>
           <div className="w-full h-[990px] flex flex-col justify-center items-center mb-48">
@@ -289,7 +295,7 @@ export default async function Home() {
                   style="w-[166px] h-[50px] border-white border text-white"
                   styleType="blank"
                 >
-                  <Link href="/education">예약하기</Link>
+                  <Link href={URLS.EDUCATION}>예약하기</Link>
                 </Button>
               </div>
             </div>

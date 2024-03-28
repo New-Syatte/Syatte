@@ -11,6 +11,7 @@ import {
 import Heading from "@/components/heading/Heading";
 import Button from "@/components/button/Button";
 import { useSession } from "next-auth/react";
+import URLS from "@/constants/urls";
 
 const initialState = {
   name: "",
@@ -101,7 +102,7 @@ export default function CheckoutAddressClient() {
     dispatch(
       SAVE_BILLING_ADDRESS({ ...billingAddress, userEmail: user?.user.email }),
     );
-    router.push("/checkout");
+    router.push(URLS.CHECKOUT);
   };
 
   return (

@@ -3,6 +3,7 @@
 import { signOut } from "next-auth/react";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import URLS from "@/constants/urls";
 
 const UserBox = ({ data }: any) => {
   const [toggleMenu, setToggleMenu] = useState(false);
@@ -22,7 +23,7 @@ const UserBox = ({ data }: any) => {
             <li
               onClick={() => {
                 setToggleMenu(!toggleMenu);
-                router.push("/order/order-history");
+                router.push(URLS.ORDER_HISTORY);
               }}
               className="flex text-[16px] text-black cursor-pointer hover:underline"
             >

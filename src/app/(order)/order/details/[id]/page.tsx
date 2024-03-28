@@ -1,8 +1,9 @@
-import OrderProduct from "../../order-history/OrderProduct";
+import OrderProduct from "@/app/(order)/order/history/OrderProduct";
 import { getOrder } from "@/services/sanity/orders";
 import deliveryFee from "@/constants/deliveryFee";
 import Link from "next/link";
 import { Order } from "@/type/order";
+import URLS from "@/constants/urls";
 interface OrderDetailsProps {
   params: {
     id: string;
@@ -77,7 +78,7 @@ const OrderDetails = async ({ params }: OrderDetailsProps) => {
       <div className="flex items-center justify-center w-full">
         <Link
           className="border border-colorBlack w-[350px] h-[80px] text-2xl font-bold flex justify-center items-center"
-          href="/order/order-history"
+          href={URLS.ORDER_HISTORY}
         >
           주문 목록
         </Link>
