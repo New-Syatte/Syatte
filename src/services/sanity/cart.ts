@@ -1,17 +1,6 @@
 import { client } from "@/services/sanity/sanity";
 import { Order } from "@/type/order";
 
-export async function getCart(username: string) {
-  return client.fetch(`
-  *[_type == "order" && author->username == "${username}"][0]
-  *[_type == "order" && author->username == "${username}"][0]
-  {
-    ...,
-    "id":_id,
-  }
-  `);
-}
-
 export async function saveCart({
   _id,
   userEmail,
