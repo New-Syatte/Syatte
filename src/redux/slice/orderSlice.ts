@@ -91,6 +91,7 @@ const orderSlice = createSlice({
 
         if (state.length > 0) {
           state.forEach((order, index) => {
+            if (!order.shippingInfo) return;
             if (order.shippingInfo.trackingNumber === trackingNumber) {
               state[index].orderStatus = changeOrderStatus(deliveryStatus);
               state[index].shippingInfo.lastEventTime = deliveryTime;
