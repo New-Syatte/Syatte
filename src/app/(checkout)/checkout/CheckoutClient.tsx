@@ -1,6 +1,4 @@
 "use client";
-
-import styles from "./Checkout.module.scss";
 import Heading from "@/components/heading/Heading";
 import Button from "@/components/button/Button";
 import { FormEvent } from "react";
@@ -116,7 +114,7 @@ export default function CheckoutClient() {
 
   return (
     <section>
-      <div className={styles.checkout}>
+      <div className="w-[1020px] mx-auto my-12">
         <Heading title={"주문하기"} />
         <form onSubmit={handleSubmit}>
           <div>

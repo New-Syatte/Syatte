@@ -2,7 +2,7 @@
 
 interface IButtonProps {
   type?: "submit" | "reset" | "button" | undefined;
-  styleType?: "primary" | "secondary" | "blank";
+  styleType?: "primary" | "blank";
   style?: string;
   [x: string]: any;
 }
@@ -17,13 +17,8 @@ const Button = ({
   let btnType = "";
   switch (styleType) {
     case "primary":
-      btnType = `bg-colorBlack text-white ${
+      btnType = `w-[166px] h-[50px] bg-colorBlack text-white ${
         disabled ? "bg-gray-600 text-gray-300" : ""
-      }`;
-      break;
-    case "secondary":
-      btnType = `bg-white text-colorBlack border border-gray-300 ${
-        disabled ? "bg-gray-300 text-gray-600" : ""
       }`;
       break;
     case "blank":

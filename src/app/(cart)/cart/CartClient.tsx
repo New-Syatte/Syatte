@@ -1,7 +1,6 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import styles from "./CartClient.module.scss"; // 스타일 설정
 import Image from "next/image";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -65,7 +64,7 @@ export default function CartClient() {
   }, [dispatch, cartItems]);
 
   return (
-    <section className={styles.table}>
+    <section className="w-[1280px] mx-auto my-12 min-h-[44.6vh]">
       <Heading title={"장바구니"} />
       {cartItems.length === 0 ? (
         <>
@@ -116,13 +115,7 @@ export default function CartClient() {
                     {priceFormat(price * cartQuantity)} 원
                   </p>
                   <div>
-                    <Button
-                      type="button"
-                      style="py-3 px-12"
-                      onClick={() => removeCart(cart)}
-                    >
-                      삭 제
-                    </Button>
+                    <Button onClick={() => removeCart(cart)}>삭 제</Button>
                   </div>
                 </div>
                 <div className={"border-[1px] mt-4"} />
@@ -131,12 +124,12 @@ export default function CartClient() {
           })}
         </>
       )}
-      <div className={styles.summary}>
+      <div className="mt-8 flex justify-between items-start">
         <Button type="button" style="py-3 px-12" onClick={clearCart}>
           카트 비우기
         </Button>
 
-        <div className={styles.checkout}>
+        <div>
           <div className={"flex justify-between items-center"}>
             <p className={"text-[20px]"}>전체 상품 개수</p>
             <p className={"text-[24px]"}>{cartTotalQuantity} 개</p>
