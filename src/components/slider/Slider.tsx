@@ -2,6 +2,7 @@
 import React, { useCallback, useEffect, useState } from "react";
 import Icon from "../icon/Icon";
 import Image from "next/image";
+import SlideImage from "./SlideImage";
 
 interface ISliderProps {
   datas: any[];
@@ -80,11 +81,10 @@ const Slider = ({
           }}
           {...restProps}
         >
-          <Image
-            key={index}
-            className="h-full object-cover"
-            src={data.imageUrl}
-            alt=""
+          {/* @ts-expect-error Async Server Component */}
+          <SlideImage
+            data={data}
+            index={index}
             width={width}
             height={height}
             fill={fill}

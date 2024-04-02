@@ -1,4 +1,5 @@
 /** @type {import('next').NextConfig} */
+const { withPlaceholder } = require("@plaiceholder/next");
 const nextConfig = {
   images: {
     domains: ["cdn.sanity.io"],
@@ -12,4 +13,4 @@ const nextConfig = {
   },
 };
 
-module.exports = nextConfig;
+module.exports = withPlaceholder(nextConfig);

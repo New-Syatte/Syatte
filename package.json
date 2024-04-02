@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@emailjs/browser": "^3.11.0",
+    "@plaiceholder/next": "^3.0.0",
     "@reduxjs/toolkit": "^1.9.5",
     "@sanity/client": "^6.9.1",
     "@sanity/image-url": "^1.0.2",
@@ -23,6 +24,7 @@
     "next": "13.4.4",
     "next-auth": "^4.24.5",
     "notiflix": "^3.2.6",
+    "plaiceholder": "^3.0.0",
     "react": "18.2.0",
     "react-chartjs-2": "^5.2.0",
     "react-datepicker": "^4.24.0",

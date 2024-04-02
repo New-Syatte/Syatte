@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { trackDelivery } from "@/services/deliveryTracker";
-import getDeliveryToken from "@/app/actions";
+import { getDeliveryToken } from "@/app/actions";
 import {
   Order,
   TrackingResponseError,
