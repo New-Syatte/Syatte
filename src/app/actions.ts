@@ -1,11 +1,10 @@
 "use server";
 import { getAccessToken } from "@/services/deliveryTracker";
 import { cookies } from "next/headers";
-import { getPlaiceholder } from "plaiceholder";
 
 // isUnauthenticated가 true인 경우 새로운 토큰을 가져오고,
 // false인 경우 쿠키에 저장된 토큰을 반환하는 함수
-export async function getDeliveryToken(isUnauthenticated: boolean) {
+async function getDeliveryToken(isUnauthenticated: boolean) {
   const cookieStore = cookies();
   const deliveryAccessToken = cookieStore.get("deliveryAccessToken");
 
@@ -34,15 +33,4 @@ export async function getDeliveryToken(isUnauthenticated: boolean) {
   }
 }
 
-// plaiceholder get
-export async function getImageWithPlaceholder(url: string) {
-  const buffer = await fetch(url).then(async res =>
-    Buffer.from(await res.arrayBuffer()),
-  );
-  const {
-    metadata: { height, width },
-    ...plaiceholder
-  } = await getPlaiceholder(buffer, { size: 10 });
-
-  return { ...plaiceholder, img: { url, height, width } };
-}
+export default getDeliveryToken;
