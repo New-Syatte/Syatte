@@ -44,7 +44,7 @@ const ProductSummary = ({
   };
 
   return (
-    <div>
+    <>
       <div className="flex flex-col justify-center items-center w-[415px]">
         {/* Image */}
         <div className="flex justify-center items-center w-[415px] h-[302px] bg-zinc-100 rounded border border-zinc-400">
@@ -151,7 +151,7 @@ const ProductSummary = ({
           </div>
         </div>
       </div>
-    </div>
+    </>
   );
 };
 

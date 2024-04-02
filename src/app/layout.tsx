@@ -35,7 +35,9 @@ export default async function RootLayout({ children }: RootLayoutProps) {
         <Providers>
           {/* @ts-expect-error Async Server Component */}
           <Header />
-          <section className="contents">{children}</section>
+          <section className="block min-h-contentHeight bg-white">
+            {children}
+          </section>
           <Footer />
         </Providers>
         <div id={"portal"} />

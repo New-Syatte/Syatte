@@ -69,31 +69,66 @@ export default async function Home() {
                 <div className="w-[338px] h-full flex flex-col gap-[14px]">
                   <div className="w-[338px] h-[243px]"></div>
                   <div className="w-[338px] h-[281px] relative">
-                    <Image src={main4} fill={true} alt="main4" />
+                    <Image
+                      src={main4}
+                      fill={true}
+                      sizes="(max-width: 720px) 90vw, (max-width: 1023px) 45vw, 338px"
+                      alt="main4"
+                    />
                   </div>
                 </div>
                 <div className="w-[516px] h-full flex flex-col gap-[14px]">
                   <div className="w-[516px] h-[306px] relative">
-                    <Image src={main1} fill={true} alt="main1" />
+                    <Image
+                      src={main1}
+                      fill={true}
+                      sizes="(max-width: 720px) 90vw, (max-width: 1023px) 45vw, 516px"
+                      alt="main1"
+                    />
                   </div>
                   <div className="w-[514px] h-[216px] relative">
-                    <Image src={main5} fill={true} alt="main5" />
+                    <Image
+                      src={main5}
+                      fill={true}
+                      sizes="(max-width: 720px) 90vw, (max-width: 1023px) 45vw, 514px"
+                      alt="main5"
+                    />
                   </div>
                 </div>
                 <div className="w-[409px] h-full flex flex-col gap-[14px]">
                   <div className="w-[409px] h-[243px] relative">
-                    <Image src={main2} fill={true} alt="main2" />
+                    <Image
+                      src={main2}
+                      fill={true}
+                      sizes="(max-width: 720px) 90vw, (max-width: 1023px) 45vw, 409px"
+                      alt="main2"
+                    />
                   </div>
                   <div className="w-[409px] h-[281px] relative">
-                    <Image src={main6} fill={true} alt="main6" />
+                    <Image
+                      src={main6}
+                      fill={true}
+                      sizes="(max-width: 720px) 90vw, (max-width: 1023px) 45vw, 409px"
+                      alt="main6"
+                    />
                   </div>
                 </div>
                 <div className="w-[338px] h-full flex flex-col gap-[14px]">
                   <div className="w-[221px] h-[142px] relative">
-                    <Image src={main3} fill={true} alt="main3" />
+                    <Image
+                      src={main3}
+                      fill={true}
+                      sizes="(max-width: 720px) 90vw, (max-width: 1023px) 45vw, 221px"
+                      alt="main3"
+                    />
                   </div>
                   <div className="w-[338px] h-[216px] relative">
-                    <Image src={main7} fill={true} alt="main7" />
+                    <Image
+                      src={main7}
+                      fill={true}
+                      sizes="(max-width: 720px) 90vw, (max-width: 1023px) 45vw, 338px"
+                      alt="main7"
+                    />
                   </div>
                 </div>
               </div>
