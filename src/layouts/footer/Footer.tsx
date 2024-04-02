@@ -31,8 +31,8 @@ export default function Footer() {
   ];
 
   return (
-    <footer className={styles.container}>
-      <div className={styles.footer}>
+    <footer className="w-full flex items-center justify-center text-white h-footerHeight bg-black">
+      <div className="w-full flex px-10 justify-between">
         {/* 왼쪽 메뉴 */}
         <div className="flex flex-col w-[30%]">
           <div className="flex items-center mb-6">
@@ -66,7 +66,9 @@ export default function Footer() {
           {pagesData.map(data => (
             <>
               <ul className="flex flex-col">
-                <li className="text-[18px] font-bold mb-[12px]">{data.title}</li>
+                <li className="text-[18px] font-bold mb-[12px]">
+                  {data.title}
+                </li>
                 <li className="cursor-pointer">
                   {data.manu1 === null ? "" : "• " + data.manu1}
                 </li>

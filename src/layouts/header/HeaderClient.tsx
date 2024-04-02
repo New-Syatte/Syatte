@@ -6,7 +6,6 @@ import Link from "next/link";
 import STLogo from "@/assets/SYATT.svg";
 import MMLogo from "@/assets/modern-masters-logo.png";
 import MDLogo from "@/assets/midas-metal-logo.svg";
-import styles from "./Header.module.scss";
 import { User } from "@/type/user";
 import { usePathname } from "next/navigation";
 import { useState, useEffect } from "react";
@@ -40,7 +39,12 @@ const HeaderClient = ({ user }: HeaderProps) => {
   }, [pathname]);
 
   return (
-    <header className={styles.container + ` ${bgColor} ${"font-garamond"}`}>
+    <header
+      className={
+        "flex relative z-10 w-full h-headerHeight px-[50px] justify-between items-center border-b border-tableBorderGray gap-1" +
+        ` ${bgColor} ${"font-garamond"}`
+      }
+    >
       <Link href="/">
         <Image src={logo} alt="Logo" width={85} height={27} />
       </Link>
