@@ -1,5 +1,6 @@
 "use client";
 import Link from "next/link";
+import URLS from "@/constants/urls";
 
 interface NavMenuProps {
   pathname: string;
@@ -14,11 +15,11 @@ const NavMenu = ({ pathname, textColor }: NavMenuProps) => {
     "store",
   ];
   const navLink = [
-    "/education",
-    "/greetings",
-    "/modern-masters",
-    "/midas-metall",
-    "/store",
+    URLS.EDUCATION,
+    URLS.GREETINGS,
+    URLS.MODERN_MASTERS,
+    URLS.MIDAS_METAL,
+    URLS.PRODUCT_STORE,
   ];
 
   return (

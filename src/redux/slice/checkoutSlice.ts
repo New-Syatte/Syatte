@@ -1,10 +1,10 @@
-import { IBillingAddress, IShippingAddress } from "@/type";
+import { BillingAddress, ShippingAddress } from "@/type/order";
 import { createSlice } from "@reduxjs/toolkit";
 import { RootState } from "../store";
 
 const initialState = {
-  shippingAddress: {} as IShippingAddress,
-  billingAddress: {} as IBillingAddress
+  shippingAddress: {} as ShippingAddress,
+  billingAddress: {} as BillingAddress,
 };
 
 const checkoutSlice = createSlice({

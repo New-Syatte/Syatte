@@ -10,6 +10,7 @@ import MetalEffectLogo from "@/assets/product/metal-effect-logo.png";
 import ColorFastLogo from "@/assets/product/color-fast-logo.png";
 import Image from "next/image";
 import CategoryToSearchLink from "./CategoryToSearchLink";
+import URLS from "@/constants/urls";
 
 const slideData = [
   {
@@ -61,7 +62,7 @@ const BrandSlider = () => {
       {slideData.map(slide => (
         <CategoryToSearchLink
           key={slide.id}
-          to="/store/search"
+          to={URLS.PRODUCT_STORE_SEARCH} // 추후 수정 (Issue #20)
           searchQuery={slide.query}
         >
           <div className="flex flex-col w-56 h-auto items-center justify-center mx-2">

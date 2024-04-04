@@ -5,12 +5,14 @@ import BrandSlider from "./BrandsSlider";
 import Heading from "@/components/heading/Heading";
 import ProductBanner from "./ProductBanner";
 import CategoryToSearchLink from "./CategoryToSearchLink";
+import Loader from "@/components/loader/Loader";
+import URLS from "@/constants/urls";
 
 export default async function Products({}) {
   const products = await getProducts();
   const categoryValues = categorys.map(category => category.value);
 
-  if (!products) return <div>loading...</div>;
+  if (!products) return <Loader />;
   if (products.length === 0)
     return (
       <div className="flex justify-center items-center text-lg w-[300px] bg-bgGray">
@@ -29,7 +31,7 @@ export default async function Products({}) {
             <div className="flex justify-between items-end mb-12">
               <Heading title={categorys[index].title} fontSize="[40px]" />
               <CategoryToSearchLink
-                to="/store/search"
+                to={URLS.PRODUCT_STORE_SEARCH} // 추후 수정 (Issue #20)
                 searchQuery={categorys[index].value}
                 className="mb-4 text-center text-black text-lg font-bold"
               >

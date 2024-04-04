@@ -1,5 +1,4 @@
 import { combineReducers, configureStore } from "@reduxjs/toolkit";
-import authReducer from "./slice/authSlice";
 import productReducer from "./slice/productSlice";
 import filterReducer from "./slice/filterSlice";
 import cartReducer from "./slice/cartSlice";
@@ -9,7 +8,6 @@ import periodReducer from "./slice/periodSlice";
 import searchReducer from "./slice/searchSlice";
 
 const rootReducer = combineReducers({
-  auth: authReducer,
   product: productReducer,
   filter: filterReducer,
   cart: cartReducer,
@@ -27,7 +25,6 @@ const store = configureStore({
     }),
   devTools: true,
 });
-console.log(store.getState(), "store");
 
 export type RootState = ReturnType<typeof store.getState>;
 

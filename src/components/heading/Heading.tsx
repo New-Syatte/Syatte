@@ -1,5 +1,3 @@
-import styles from "./Heading.module.scss";
-
 interface IHeadingProps {
   title: string;
   subtitle?: string;

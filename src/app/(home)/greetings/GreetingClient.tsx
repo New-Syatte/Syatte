@@ -62,6 +62,9 @@ const GreetingClient = () => {
     transition: { duration: 0.2, ease: "easeInOut" },
   };
 
+  const spanStyle =
+    "relative text-6xl before:content-[''] before:block before:w-2 before:h-2 before:rounded-full before:bg-slate-300 before:absolute before: before:-top-5 before:left-1/2 before:transform before:-translate-y-1/2";
+
   return (
     <div className="relative z-30 flex flex-col items-center w-full p-64">
       <motion.div
@@ -92,19 +95,10 @@ const GreetingClient = () => {
         </div>
         <div className="w-1/2">
           <h2 className="text-[40px] leading-[52px] font-medium mt-10 mb-[72px] whitespace-nowrap">
-            <span className="relative text-6xl before:content-[''] before:block before:w-2 before:h-2 before:rounded-full before:bg-slate-300 before:absolute before: before:-top-5 before:left-1/2 before:transform before:-translate-y-1/2">
-              샤
-            </span>
-            <span className="relative text-6xl before:content-[''] before:block before:w-2 before:h-2 before:rounded-full before:bg-slate-300 before:absolute before: before:-top-5 before:left-1/2 before:transform before:-translate-y-1/2">
-              뜨
-            </span>
-            와{" "}
-            <span className="relative text-6xl before:content-[''] before:block before:w-2 before:h-2 before:rounded-full before:bg-slate-300 before:absolute before: before:-top-5 before:left-1/2 before:transform before:-translate-y-1/2">
-              함
-            </span>
-            <span className="relative text-6xl before:content-[''] before:block before:w-2 before:h-2 before:rounded-full before:bg-slate-300 before:absolute before: before:-top-5 before:left-1/2 before:transform before:-translate-y-1/2">
-              께
-            </span>
+            <span className={spanStyle}>샤</span>
+            <span className={spanStyle}>뜨</span>와
+            <span className={spanStyle}>함</span>
+            <span className={spanStyle}>께</span>
             하세요
           </h2>
           <div className="w-full">

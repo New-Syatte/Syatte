@@ -5,6 +5,7 @@ import { useState, useEffect } from "react";
 import useSWR from "swr";
 import { getProducts } from "@/services/sanity/products";
 import ProductCards from "../ProductCards";
+import { Product } from "@/type/products";
 
 const SearchClient = () => {
   const { data, error } = useSWR("getProducts", getProducts);
@@ -16,7 +17,7 @@ const SearchClient = () => {
   useEffect(() => {
     if (data) {
       const results = data.filter(
-        (product: any) =>
+        (product: Product) =>
           product.productName.includes(searchQuery) ||
           product.category.includes(searchQuery) ||
           product.detailCategory.includes(searchQuery),
@@ -24,6 +25,8 @@ const SearchClient = () => {
       setMatchingResults(results);
     }
   }, [data, searchQuery]);
+
+  if (error) return <div>Failed to load products</div>;
 
   return (
     <div className="w-full">

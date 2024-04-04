@@ -6,10 +6,10 @@ import Link from "next/link";
 import STLogo from "@/assets/SYATT.svg";
 import MMLogo from "@/assets/modern-masters-logo.png";
 import MDLogo from "@/assets/midas-metal-logo.svg";
-import styles from "./Header.module.scss";
-import { User } from "@/model/user";
+import { User } from "@/type/user";
 import { usePathname } from "next/navigation";
 import { useState, useEffect } from "react";
+import URLS from "@/constants/urls";
 
 interface HeaderProps {
   user: User | undefined;
@@ -39,13 +39,18 @@ const HeaderClient = ({ user }: HeaderProps) => {
   }, [pathname]);
 
   return (
-    <header className={styles.container + ` ${bgColor} ${"font-garamond"}`}>
+    <header
+      className={
+        "flex relative z-10 w-full h-headerHeight px-[50px] justify-between items-center border-b border-tableBorderGray gap-1" +
+        ` ${bgColor} ${"font-garamond"}`
+      }
+    >
       <Link href="/">
         <Image src={logo} alt="Logo" width={85} height={27} />
       </Link>
       <nav className={`flex ml-6 gap-3 mr-4 items-center ${textColor}`}>
         <NavMenu pathname={pathname} textColor={textColor} />
-        <Link href={"/cart"} className="text-xs font-semibold">
+        <Link href={URLS.CART} className="text-xs font-semibold">
           CART
         </Link>
         <div>
@@ -53,7 +58,7 @@ const HeaderClient = ({ user }: HeaderProps) => {
             <UserBox data={user} />
           ) : (
             <Link
-              href="/signin"
+              href={URLS.SIGNIN}
               className={`flex gap-2 items-end hover:underline text-xs font-semibold before:content-[''] before:w-[2px] before:h-[12px] before:${textColor} before:mr-1`}
             >
               <p>LOGIN</p>

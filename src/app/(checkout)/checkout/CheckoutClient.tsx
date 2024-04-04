@@ -1,6 +1,4 @@
 "use client";
-
-import styles from "./Checkout.module.scss";
 import Heading from "@/components/heading/Heading";
 import Button from "@/components/button/Button";
 import { FormEvent } from "react";
@@ -22,7 +20,8 @@ import {
 import { useRouter } from "next/navigation";
 import dayjs from "dayjs";
 import { saveCart } from "@/services/sanity/cart";
-import { IOrder } from "@/type";
+import { Order } from "@/type/order";
+import URLS from "@/constants/urls";
 
 export default function CheckoutClient() {
   const { data: session } = useSession();
@@ -39,18 +38,12 @@ export default function CheckoutClient() {
   const clientkey = process.env.NEXT_PUBLIC_TOSS_CLIENT_KEY;
   const secretkey = process.env.NEXT_PUBLIC_TOSS_SECRET_KEY;
 
-  /*const orderNameCount = cartItems?.length === 1
-      ? cartItems[0].name
-      : cartItems[0].name + " 외 " + (cartItems.length - 1) + "건";*/
-
   const orderNameCount =
     cartItems && cartItems.length
       ? cartItems.length === 1
         ? cartItems[0].name
         : `${cartItems[0].name} 외  ${cartItems.length - 1}건`
       : "";
-
-  // console.log(orderNameCount);
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -69,7 +62,7 @@ export default function CheckoutClient() {
           const basicToken = Buffer.from(`${secretkey}:`, "utf-8").toString(
             "base64",
           );
-          const confirmResponse = await fetch(url, {
+          await fetch(url, {
             method: "post",
             body: JSON.stringify({
               orderId,
@@ -80,14 +73,14 @@ export default function CheckoutClient() {
               Authorization: `Basic ${basicToken}`,
               "Content-Type": "application/json",
             },
-          }).then(response => response.json());
+          });
 
           const today = new Date();
           const date = today.toDateString();
           const time = today.toLocaleTimeString();
 
           const orderData = {
-            id: orderId,
+            _id: orderId,
             userEmail,
             orderDate: date,
             orderTime: time,
@@ -98,17 +91,22 @@ export default function CheckoutClient() {
             shippingAddress: shippingAddress,
             billingAddress: billingAddress,
             createdAt: dayjs().format("YYYY-MM-DD HH:mm:ss"),
+            shippingInfo: {
+              trackingNumber: "",
+              carrierId: "",
+            },
           };
-          await saveCart(orderData as IOrder);
+          await saveCart(orderData as Order);
           // db에 저장
           dispatch(CLEAR_CART());
-          router.push(`/checkout-success?orderId=${orderId}`);
+          router.push(`${URLS.CHECKOUT_SUCCESS}?orderId=${orderId}`);
         })
         .catch(error => {
           if (error.code === "USER_CANCEL") {
             toast.error("결재창이 닫아졌습니다.");
           } else {
-            console.log("error", error);
+            toast.error("결재에 실패했습니다. 잠시 후 다시 시도해주세요.");
+            console.error("error", error);
           }
         });
     }
@@ -116,7 +114,7 @@ export default function CheckoutClient() {
 
   return (
     <section>
-      <div className={styles.checkout}>
+      <div className="w-[1020px] mx-auto my-12">
         <Heading title={"주문하기"} />
         <form onSubmit={handleSubmit}>
           <div>

@@ -1,7 +1,6 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import styles from "./CartClient.module.scss"; // 스타일 설정
 import Image from "next/image";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -21,9 +20,10 @@ import Heading from "@/components/heading/Heading";
 import Link from "next/link";
 import priceFormat from "@/utils/priceFormat";
 import Button from "@/components/button/Button";
-import { ICartItem } from "@/type";
+import { CartItem } from "@/type/cart";
 import { AiFillCaretDown, AiFillCaretUp } from "react-icons/ai";
 import deliveryFee from "@/constants/deliveryFee";
+import URLS from "@/constants/urls";
 
 const ICON_CLASS =
   "flex text-[24px] transition-all cursor-pointer hover:text-brand hover:scale-200 mx-1 ";
@@ -36,16 +36,14 @@ export default function CartClient() {
   const dispatch = useDispatch();
   const router = useRouter();
 
-  const increaseCart = (cart: ICartItem) => {
-    // 일단 타입을 any 로 임시 지정
+  const increaseCart = (cart: CartItem) => {
     dispatch(ADD_TO_CART(cart));
   };
-  const decreaseCart = (cart: ICartItem) => {
-    // 일단 타입을 any 로 임시 지정
+  const decreaseCart = (cart: CartItem) => {
     dispatch(DECREASE_CART(cart));
   };
 
-  const removeCart = (cart: ICartItem) => {
+  const removeCart = (cart: CartItem) => {
     dispatch(REMOVE_FROM_CART(cart));
   };
 
@@ -55,7 +53,7 @@ export default function CartClient() {
 
   const url = typeof window !== "undefined" ? window.location.href : "";
   const checkout = () => {
-    router.push("/checkout-address");
+    router.push(URLS.CHECKOUT_ADDRESS);
   };
   // url, checkout은 사용되지 않고 잇다
 
@@ -66,7 +64,7 @@ export default function CartClient() {
   }, [dispatch, cartItems]);
 
   return (
-    <section className={styles.table}>
+    <section className="w-[1280px] mx-auto my-12 min-h-[44.6vh]">
       <Heading title={"장바구니"} />
       {cartItems.length === 0 ? (
         <>
@@ -76,7 +74,7 @@ export default function CartClient() {
           <div
             className={"text-center font-bold text-[30px] border-[2px] mt-4"}
           >
-            <Link href={"/products/all"}>계속 쇼핑하기</Link>
+            <Link href={URLS.PRODUCT_STORE}>계속 쇼핑하기</Link>
           </div>
         </>
       ) : (
@@ -85,7 +83,7 @@ export default function CartClient() {
           {cartItems.map(cart => {
             const { id, name, imageURL, price, cartQuantity } = cart;
             return (
-              <>
+              <div key={cart.id}>
                 <div
                   className={"flex justify-between items-center px-3"}
                   key={id}
@@ -117,27 +115,21 @@ export default function CartClient() {
                     {priceFormat(price * cartQuantity)} 원
                   </p>
                   <div>
-                    <Button
-                      type="button"
-                      style="py-3 px-12"
-                      onClick={() => removeCart(cart)}
-                    >
-                      삭 제
-                    </Button>
+                    <Button onClick={() => removeCart(cart)}>삭 제</Button>
                   </div>
                 </div>
                 <div className={"border-[1px] mt-4"} />
-              </>
+              </div>
             );
           })}
         </>
       )}
-      <div className={styles.summary}>
+      <div className="mt-8 flex justify-between items-start">
         <Button type="button" style="py-3 px-12" onClick={clearCart}>
           카트 비우기
         </Button>
 
-        <div className={styles.checkout}>
+        <div>
           <div className={"flex justify-between items-center"}>
             <p className={"text-[20px]"}>전체 상품 개수</p>
             <p className={"text-[24px]"}>{cartTotalQuantity} 개</p>

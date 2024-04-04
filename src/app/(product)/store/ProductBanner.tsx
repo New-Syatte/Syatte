@@ -2,6 +2,7 @@ import Image from "next/image";
 import Banner1 from "@/assets/product/Product-Banner1.png";
 import Banner2 from "@/assets/product/Product-Banner2.png";
 import CategoryToSearchLink from "./CategoryToSearchLink";
+import URLS from "@/constants/urls";
 
 const ProductBanner = () => {
   const banners = [
@@ -13,7 +14,7 @@ const ProductBanner = () => {
       {banners.map((banner, index) => (
         <CategoryToSearchLink
           key={index}
-          to="/store/search"
+          to={URLS.PRODUCT_STORE_SEARCH} // 추후 수정 (Issue #20)
           searchQuery={banner.query}
         >
           <div className="w-[644px] h-[245px] relative bg-zinc-700 rounded-[10px]">

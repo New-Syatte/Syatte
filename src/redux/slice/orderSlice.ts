@@ -1,11 +1,11 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { trackDelivery } from "@/services/deliveryTracker";
-import getDeliveryToken from "@/app/actions/getDeliveryToken";
+import getDeliveryToken from "@/app/actions";
 import {
   Order,
   TrackingResponseError,
   DeliveryTrackingResponse,
-} from "@/model/order";
+} from "@/type/order";
 import { RootState } from "../store";
 
 type IOrderState = Order[];
@@ -83,7 +83,6 @@ const orderSlice = createSlice({
         data: DeliveryTrackingResponse;
         trackingNumber: string;
       };
-      console.log(data.data, "data");
 
       if (data.data) {
         const deliveryStatus = data.data.track.lastEvent.status.code;
@@ -92,6 +91,7 @@ const orderSlice = createSlice({
 
         if (state.length > 0) {
           state.forEach((order, index) => {
+            if (!order.shippingInfo) return;
             if (order.shippingInfo.trackingNumber === trackingNumber) {
               state[index].orderStatus = changeOrderStatus(deliveryStatus);
               state[index].shippingInfo.lastEventTime = deliveryTime;

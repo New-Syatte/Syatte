@@ -6,7 +6,6 @@ const LogoutBtn = () => {
     <button
       onClick={() => {
         signOut();
-        console.log("logout");
       }}
     >
       로그아웃

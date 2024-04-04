@@ -1,5 +1,5 @@
 import ProductCards from "./ProductCards";
-import { ProductForList } from "@/model/products";
+import { ProductForList } from "@/type/products";
 interface DetailCategoryProps {
   products: ProductForList[];
   category: string;

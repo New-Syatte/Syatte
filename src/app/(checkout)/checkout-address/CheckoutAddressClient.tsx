@@ -1,7 +1,6 @@
 "use client";
 
-import styles from "./CheckoutAddress.module.scss";
-import { ChangeEvent, FormEvent, useEffect, useRef, useState } from "react";
+import { ChangeEvent, FormEvent, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useRouter } from "next/navigation";
 import {
@@ -11,6 +10,7 @@ import {
 import Heading from "@/components/heading/Heading";
 import Button from "@/components/button/Button";
 import { useSession } from "next-auth/react";
+import URLS from "@/constants/urls";
 
 const initialState = {
   name: "",
@@ -29,9 +29,6 @@ const initialState2 = {
 
 const id = "daum-postcode"; // script가 이미 rendering 되어 있는지 확인하기 위한 ID
 const src = "//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js";
-
-const LABELSTYLE = "mt-[50px] mb-[22px] text-[20px] text-darkgray";
-const INPUTSTYLE = "w-full text-[20px] px-2 border-b-2 border-black";
 
 export default function CheckoutAddressClient() {
   const { data: user } = useSession();
@@ -101,15 +98,20 @@ export default function CheckoutAddressClient() {
     dispatch(
       SAVE_BILLING_ADDRESS({ ...billingAddress, userEmail: user?.user.email }),
     );
-    router.push("/checkout");
+    router.push(URLS.CHECKOUT);
   };
 
+  const LABELSTYLE =
+    "block font-medium mt-[50px] mb-[22px] text-[20px] text-darkgray";
+  const INPUTSTYLE =
+    "block w-full text-2xl font-light p-4 mx-auto my-0 border border-black rounded-md outline-none";
+
   return (
-    <section className={styles.checkout}>
+    <section className="w-[1020px] mx-auto my-12">
       <Heading title={"상세주문"} fontSize={"3xl"} />
-      <form onSubmit={handleSubmit}>
-        <div className={styles.card}>
-          <h3>배송지 주소</h3>
+      <form className="w-full flex" onSubmit={handleSubmit}>
+        <div className="w-full p-4">
+          <h3 className="font-bold text-[1.4rem] mx-0 my-4">배송지 주소</h3>
           <label className={LABELSTYLE}>받는 사람 이름</label>
           <input
             required
@@ -120,50 +122,53 @@ export default function CheckoutAddressClient() {
             placeholder="받는 사람 이름"
             type="text"
           />
-
-          <div>
-            <div className={"flex justify-between items-center mr-3"}>
-              <label>우편번호</label>
-              <Button onClick={ZipCodeSearch} style="py-3 px-12">
-                우편번호 검색
-              </Button>
-            </div>
-            <input
-              required
-              readOnly
-              name={"postalCode"}
-              // value={ shippingAddress.postalCode }
-              value={zipCode}
-              // onChange={ (e) => handleShipping(e) }
-              placeholder="우편번호 입력"
-              type="text"
-            />
+          <div className="flex justify-between items-center mr-3">
+            <label className={LABELSTYLE}>우편번호</label>
+            <Button
+              onClick={ZipCodeSearch}
+              styleType="blank"
+              style={
+                "mt-[46px] mb-[18px] bg-colorBlack text-white text-medium p-2"
+              }
+            >
+              우편번호 검색
+            </Button>
           </div>
-
-          <label>주소</label>
           <input
             required
             readOnly
+            className={INPUTSTYLE}
+            name={"postalCode"}
+            value={zipCode}
+            placeholder="우편번호 입력"
+            type="text"
+          />
+
+          <label className={LABELSTYLE}>주소</label>
+          <input
+            required
+            readOnly
+            className={INPUTSTYLE}
             name={"city"}
-            // value={ shippingAddress.city }
             value={roadAddress}
-            // onChange={ (e) => handleShipping(e) }
             placeholder="도시"
             type="text"
           />
 
-          <label>상세 주소 입력</label>
+          <label className={LABELSTYLE}>상세 주소 입력</label>
           <input
             required
+            className={INPUTSTYLE}
             name={"line"}
             value={shippingAddress.line}
             onChange={e => handleShipping(e)}
             placeholder="상세 주소 입력"
             type="text"
           />
-          <label>연락처</label>
+          <label className={LABELSTYLE}>연락처</label>
           <input
             required
+            className={INPUTSTYLE}
             name={"phone"}
             value={shippingAddress.phone}
             onChange={e => handleShipping(e)}
@@ -172,11 +177,12 @@ export default function CheckoutAddressClient() {
           />
         </div>
 
-        <div className={styles.card}>
-          <h3>주문하신 분</h3>
+        <div className="w-full p-4">
+          <h3 className="font-bold text-[1.4rem] mx-0 my-4">주문하신 분</h3>
           <label className={LABELSTYLE}>보내는 사람 이름</label>
           <input
             required
+            className={INPUTSTYLE}
             name={"name"}
             value={billingAddress.name}
             onChange={e => handleBilling(e)}
@@ -184,18 +190,20 @@ export default function CheckoutAddressClient() {
             type="text"
           />
 
-          <label>연락처</label>
+          <label className={LABELSTYLE}>연락처</label>
           <input
             required
+            className={INPUTSTYLE}
             name={"phone"}
             value={billingAddress.phone}
             onChange={e => handleBilling(e)}
             placeholder="연락처를 입력하세요"
             type="text"
           />
-          <label>배송 요청 사항</label>
+          <label className={LABELSTYLE}>배송 요청 사항</label>
           <input
             required
+            className={INPUTSTYLE + " mb-6"}
             name={"memo"}
             value={billingAddress.memo}
             onChange={e => handleBilling(e)}
@@ -203,9 +211,7 @@ export default function CheckoutAddressClient() {
             type="text"
           />
 
-          <Button type={"submit"} style="py-3 px-12">
-            주문하기
-          </Button>
+          <Button type={"submit"}>주문하기</Button>
         </div>
       </form>
     </section>

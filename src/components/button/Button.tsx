@@ -1,10 +1,8 @@
 "use client";
-import classNames from "classnames";
-import styles from "./Button.module.scss";
 
 interface IButtonProps {
   type?: "submit" | "reset" | "button" | undefined;
-  styleType?: "primary" | "secondary" | "blank";
+  styleType?: "primary" | "blank";
   style?: string;
   [x: string]: any;
 }
@@ -13,24 +11,32 @@ const Button = ({
   type = "button",
   styleType = "primary",
   style = "",
+  disabled = false,
   ...restProps
 }: IButtonProps) => {
   let btnType = "";
   switch (styleType) {
     case "primary":
-      btnType = styles.primary;
-      break;
-    case "secondary":
-      btnType = styles.secondary;
+      btnType = `w-[166px] h-[50px] bg-colorBlack text-white ${
+        disabled ? "bg-gray-600 text-gray-300" : ""
+      }`;
       break;
     case "blank":
-      btnType = styles.blank;
+      btnType = style;
       break;
     default:
       throw new Error("지원하는 버튼 타입이 존재하지 않습니다.");
   }
-  const composeClasses = classNames(style, styles.button, btnType);
-  return <button className={composeClasses} type={type} {...restProps} />;
+  return (
+    <button
+      className={`cursor-pointer box-border inline-flex justify-center items-center ${
+        disabled ? "cursor-not-allowed" : ""
+      } ${btnType}`}
+      type={type}
+      disabled={disabled}
+      {...restProps}
+    />
+  );
 };
 
 export default Button;

@@ -1,10 +1,8 @@
 import { client } from "@/services/sanity/sanity";
 
 export async function getEdu() {
-  return await client.fetch(
-    '*[_type == "education"]');
+  return await client.fetch('*[_type == "education"]');
 }
-
 
 /*
   eduname,
@@ -13,4 +11,3 @@ export async function getEdu() {
   eduType,
   count,
   money,*/
-  
