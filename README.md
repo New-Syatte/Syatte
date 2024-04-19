@@ -1,4 +1,4 @@
-![Syatt 로고](/src/assets/SYATT.svg)
+![SYATT](https://github.com/New-Syatte/Syatte/assets/84277185/6e3e7514-d349-4808-85b4-468acd01b78d)![Syatt 로고](/src/assets/SYATT.svg)
 
 ## 소개
 
@@ -47,10 +47,8 @@
 
 
 ## 🎊배포 주소
+<a href="https://syatt-deploy.vercel.app" target="_blank">![SYATT](https://github.com/New-Syatte/Syatte/assets/84277185/c3fce81b-e391-4bb3-a73b-73b8a2f3eb76)</a>
 
-<a href="https://syatt-deploy.vercel.app" target="_blank">
-  ![SYATT](/src/assets/SYATT.svg)
-</a>
 
 <br/>
 <br/>
