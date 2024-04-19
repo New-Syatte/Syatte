@@ -8,7 +8,7 @@ const URLS = {
       : "https://syatt-deploy.vercel.app",
   GREETINGS: "/greetings",
   SIGNIN: "/signin",
-  MIDAS_METAL: "/midas-metal",
+  MIDAS_METAL: "/midas-metall",
   MODERN_MASTERS: "/modern-masters",
   CART: "/cart",
   CHECKOUT: "/checkout",

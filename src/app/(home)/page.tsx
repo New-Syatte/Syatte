@@ -2,7 +2,8 @@ import Slider from "@/components/slider/Slider";
 import Button from "@/components/button/Button";
 import Motion from "@/components/motion/Motion";
 
-import Banner1 from "@/assets/main/main-banner.png";
+// assets
+import Banner from "@/assets/main/main-banner.png";
 import main1 from "@/assets/main/main-art1.png";
 import main2 from "@/assets/main/main-art2.png";
 import main3 from "@/assets/main/main-art3.png";
@@ -10,12 +11,11 @@ import main4 from "@/assets/main/main-art4.png";
 import main5 from "@/assets/main/main-art5.png";
 import main6 from "@/assets/main/main-art6.png";
 import main7 from "@/assets/main/main-art7.png";
-import intro1 from "@/assets/main/introduce-img1.png";
-import introSub1 from "@/assets/main/introduce-sub1.png";
-import introSub2 from "@/assets/main/introduce-sub2.png";
-import introSub3 from "@/assets/main/introduce-sub3.png";
-import introSub4 from "@/assets/main/introduce-sub4.png";
-import introSub5 from "@/assets/main/introduce-sub5.png";
+import intro1 from "@/assets/main/introduce1.png";
+import intro2 from "@/assets/main/introduce2.png";
+import intro3 from "@/assets/main/introduce3.png";
+import intro4 from "@/assets/main/introduce4.png";
+import intro5 from "@/assets/main/introduce5.png";
 import eduImg from "@/assets/main/main-edu.png";
 import bottomBanner from "@/assets/main/bottom-banner.png";
 
@@ -24,11 +24,17 @@ import Link from "next/link";
 import URLS from "@/constants/urls";
 import BrandBox from "./BrandBox";
 import SectionTitle from "./SectionTitle";
+import SliderPreview from "@/components/slider/SliderPreview";
 
 export default async function Home() {
-  const datas = [{ imageUrl: Banner1 }];
-  const introDatas = [{ imageUrl: intro1 }];
-  const introSubArray = [introSub1, introSub2, introSub3, introSub4, introSub5];
+  const datas = [{ imageUrl: Banner }];
+  const introDatas = [
+    { imageUrl: intro1 },
+    { imageUrl: intro2 },
+    { imageUrl: intro3 },
+    { imageUrl: intro4 },
+    { imageUrl: intro5 },
+  ];
 
   const container = {
     hidden: { opacity: 0, y: 100 },
@@ -57,8 +63,8 @@ export default async function Home() {
       <main className="font-kor overflow-x-hidden">
         {/* 메인 배너 */}
         <Motion initial="hidden" whileInView="visible" variants={fadeIn}>
-          <div className="w-full h-[890px]">
-            <Slider datas={datas} fill={true} arrowSize={54} />
+          <div className="w-full h-[970px] relative">
+            <Slider id="main-banner" datas={datas} fill={true} arrowSize={54} />
           </div>
         </Motion>
         {/* 메인 */}
@@ -137,10 +143,15 @@ export default async function Home() {
         </Motion>
         {/* *****************회사소개***************** */}
         <Motion initial="hidden" whileInView="visible" variants={container}>
-          <SectionTitle type="syatte">
-            <div className="w-full h-[624px] bg-[#f9f6f3] flex">
+          <SectionTitle type="syatt">
+            <div className="w-full h-[624px] bg-white flex">
               <div className="w-1/2 h-full">
-                <Slider datas={introDatas} fill={true} arrowSize={44} />
+                <Slider
+                  id="introduce-syatt"
+                  datas={introDatas}
+                  fill={true}
+                  arrowSize={44}
+                />
               </div>
               <div className="p-14 pl-24 w-1/2 h-full">
                 <p className="font-garamond font-normal text-xl pl-2 mb-5 tracking-[2px]">
@@ -149,7 +160,7 @@ export default async function Home() {
                 <h2 className="text-[50px] font-bold mb-11 whitespace-break-spaces">
                   샤뜨
                 </h2>
-                <p className="text-lg mb-16">
+                <p className="text-lg mb-16 whitespace-break-spaces">
                   주식회사 샤뜨는 외단열 시스템의 현장 적용과 시공 감리를
                   체계적으로 진행하여 에너지 손실을 최소화하고 외단열 현장의
                   다양한 고객 요구를 충족시키기 위해 도전을 계속하고 있습니다.
@@ -160,13 +171,12 @@ export default async function Home() {
                   샤뜨만의 노하우를 통해 여러분의 공간에 생기를 불어넣겠습니다.
                 </p>
                 <div className="flex gap-[15px] p-auto">
-                  {introSubArray.map((data, index) => (
-                    <Image
+                  {introDatas.map((data, index) => (
+                    <SliderPreview
                       key={index}
-                      src={data}
-                      width={97}
-                      height={68}
-                      alt="introSub"
+                      index={index}
+                      id="introduce-syatt"
+                      imgUrl={data.imageUrl}
                     />
                   ))}
                 </div>
@@ -213,7 +223,7 @@ export default async function Home() {
           </SectionTitle>
         </Motion>
         {/* 하단 배너 */}
-        <div className="w-full h-[430px] relative bg-black flex justify-center items-center">
+        <div className="w-full h-[430px] relative bg-black flex justify-center items-center mt-40">
           <Image
             src={bottomBanner}
             fill={true}
