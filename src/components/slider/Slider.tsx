@@ -1,9 +1,18 @@
 "use client";
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import Icon from "../icon/Icon";
 import Image from "next/image";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "@/redux/store";
+import {
+  nextSlide,
+  prevSlide,
+  setSliderLength,
+  removeSlider,
+} from "@/redux/slice/sliderSlice";
 
 interface ISliderProps {
+  id: string;
   datas: any[];
   slidePerView?: number;
   width?: number;
@@ -16,6 +25,7 @@ interface ISliderProps {
 }
 
 const Slider = ({
+  id,
   datas,
   slidePerView = 1,
   width,
@@ -26,45 +36,47 @@ const Slider = ({
   setIndexImage,
   ...restProps
 }: ISliderProps) => {
-  const [currentSlide, setCurrentSlide] = useState(0);
+  const dispatch = useDispatch();
+  const currentSlide =
+    useSelector((state: RootState) => state.slider[id]?.currentSlide) || 0;
   // datas 배열을 slidePerView 값에 따라 분할
   const slides: any[] = [];
   for (let i = 0; i < datas.length; i += slidePerView) {
     slides.push(datas.slice(i, i + slidePerView));
   }
 
-  const sliderLength = slides.length;
+  const handleNextSlide = () => {
+    dispatch(nextSlide(id));
+  };
 
-  const intervalTime = 5000;
-
-  const nextSlide = useCallback(() => {
-    setCurrentSlide(currentSlide === sliderLength - 1 ? 0 : currentSlide + 1);
-  }, [currentSlide, sliderLength]);
-
-  const prevSlide = useCallback(() => {
-    setCurrentSlide(currentSlide === 0 ? sliderLength - 1 : currentSlide - 1);
-  }, [currentSlide, sliderLength]);
+  const handlePrevSlide = () => {
+    dispatch(prevSlide(id));
+  };
 
   useEffect(() => {
-    const interval = setInterval(nextSlide, intervalTime);
+    dispatch(setSliderLength({ id, length: slides.length }));
+
     return () => {
-      clearInterval(interval);
+      dispatch(removeSlider(id));
     };
-  }, [nextSlide]);
+  }, [dispatch, id, slides.length]);
 
   const arrowStyle =
     "absolute top-1/2 transform -translate-y-1/2 z-10 bg-white bg-opacity-50 text-white cursor-pointer hover:bg-white";
   const leftStyle = "right-0 text-colorBlack";
   const rightStyle = "left-0 text-colorBlack";
+  console.log(datas.length);
 
   return (
-    <div className="w-full h-full relative flex justify-center items-center space-x-4 overflow-hidden">
-      <Icon
-        type="left"
-        className={arrowStyle + " " + leftStyle}
-        style={{ width: arrowSize, height: arrowSize }}
-        onClick={prevSlide}
-      />
+    <div className="w-full h-full relative flex justify-center items-center overflow-hidden">
+      {datas.length !== 1 && (
+        <Icon
+          type="right"
+          className={arrowStyle + " " + leftStyle}
+          style={{ width: arrowSize, height: arrowSize }}
+          onClick={handlePrevSlide}
+        />
+      )}
       {/* 현재 슬라이드 그룹의 모든 데이터를 렌더링 */}
       {slides[currentSlide].map((data: any, index: number) => (
         <div
@@ -88,15 +100,18 @@ const Slider = ({
             width={width}
             height={height}
             fill={fill}
+            unoptimized
           />
         </div>
       ))}
-      <Icon
-        type="right"
-        className={arrowStyle + " " + rightStyle}
-        style={{ width: arrowSize, height: arrowSize }}
-        onClick={nextSlide}
-      />
+      {datas.length !== 1 && (
+        <Icon
+          type="left"
+          className={arrowStyle + " " + rightStyle}
+          style={{ width: arrowSize, height: arrowSize }}
+          onClick={handleNextSlide}
+        />
+      )}
     </div>
   );
 };

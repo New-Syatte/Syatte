@@ -6,6 +6,7 @@ import checkoutReducer from "./slice/checkoutSlice";
 import orderReducer from "./slice/orderSlice";
 import periodReducer from "./slice/periodSlice";
 import searchReducer from "./slice/searchSlice";
+import sliderSlice from "./slice/sliderSlice";
 
 const rootReducer = combineReducers({
   product: productReducer,
@@ -15,6 +16,7 @@ const rootReducer = combineReducers({
   orders: orderReducer,
   period: periodReducer,
   search: searchReducer,
+  slider: sliderSlice,
 });
 
 const store = configureStore({

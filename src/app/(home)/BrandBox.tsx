@@ -37,7 +37,7 @@ const BrandBox = ({ brand }: BrandBoxProps) => {
   return (
     <div
       className={
-        "w-full h-[304px] flex border border-[#ececec]" +
+        "w-full h-[304px] flex border border-[#ececec] bg-bgGray" +
         " " +
         (isModernMasters ? "mb-[10px]" : "")
       }
@@ -54,14 +54,14 @@ const BrandBox = ({ brand }: BrandBoxProps) => {
         <div className="flex gap-12">
           <Link
             href={gallery}
-            className="font-garamond text-2xl flex gap-3 hover:underline"
+            className="font-garamond text-2xl flex gap-3 hover:underline tracking-widest"
           >
             GALLERY
             <MdArrowForwardIos className="text-xl mt-[6px]" />
           </Link>
           <Link
             href={store} // 추후 수정(Issue #20)
-            className="font-garamond text-2xl flex gap-3 hover:underline"
+            className="font-garamond text-2xl flex gap-3 hover:underline tracking-widest"
           >
             STORE
             <MdArrowForwardIos className="text-xl mt-[6px]" />
