@@ -42,6 +42,9 @@
 <img src="https://img.shields.io/badge/github Actions-gray?style=for-the-badge&logo=github&logoColor=white">
 
 ## 🔨 아키텍처
+![arc](https://github.com/New-Syatte/Syatte/assets/84277185/9a9b93e6-e5cf-401e-a666-54ecce68be4a)
+
+
 
 ## 🎊배포 주소
 
