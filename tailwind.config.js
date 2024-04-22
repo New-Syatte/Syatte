@@ -28,6 +28,7 @@ module.exports = {
         kor: ["Helvetica", "Arial", "sans-serif"],
         eng: ["var(--font-garamond)", "Helvetica", "Arial", "sans-serif"],
         crimson: ["var(--font-crimson)"],
+        GmarketSans: ["GmarketSans", "Helvetica", "Arial", "sans-serif"],
       },
     },
   },

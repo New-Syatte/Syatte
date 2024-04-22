@@ -103,7 +103,7 @@ const GreetingClient = () => {
               className="rounded-[92px]"
             />
           </div>
-          <p className="text-sm text-center">
+          <p className="text-sm text-center text-darkGray">
             E-Mail : 이메일@gmail.com <br /> Kakaotalk : @카카오톡ID
           </p>
         </div>
