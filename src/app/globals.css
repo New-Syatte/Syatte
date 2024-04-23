@@ -88,6 +88,11 @@ body {
   font-family: var(--font-family);
   position: relative;
   overflow-x: hidden;
+  overflow-y: auto;
+}
+
+body * {
+  touch-action: none;
 }
 
 a {
