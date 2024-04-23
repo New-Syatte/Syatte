@@ -10,23 +10,19 @@ export default function EducationCard() {
   const ApplicatiorCards = [1, 2, 3, 4];
 
   return (
-    <div className={"w-4/6 border-2 mx-auto shadow-xl rounded-2xl mb-[82px]"}>
-      <div
-        className={
-          "flex items-center pt-7 px-14 space-x-44 bg-black rounded-t-2xl pb-10"
-        }
-      >
+    <div
+      className={
+        "w-[1163px] h-[533px] border-2 shadow-xl rounded-2xl p-12 mb-[82px] bg-white"
+      }
+    >
+      <div className={"flex items-end justify-between pb-6"}>
         <div className={"flex flex-col items-start justify-center"}>
-          <span
-            className={
-              "text-white text-[40px] font-bold font-['Helvetica'] leading-[68px]"
-            }
-          >
+          <span className={"text-black text-[40px] font-bold leading-[68px]"}>
             Aplicatior 교육패키지
           </span>
           <span
             className={
-              "w-[676px] text-white text-lg font-normal font-['Helvetica'] mt-1 leading-normal"
+              "w-[676px] text-black text-lg font-normal mt-1 leading-normal"
             }
           >
             실무 중심의 강력한 역량 강화를 위한 프로그램으로, 업계 수요를 반영한
@@ -37,10 +33,10 @@ export default function EducationCard() {
         <button
           onClick={handleClick}
           className={
-            "px-6 py-3 bg-blue-500 border-white border-2 text-center text-white text-2xl font-bold font-['Helvetica'] rounded-md"
+            "py-4 px-8 bg-primaryBlue border-white border-2 text-center text-white text-xl font-bold rounded-md whitespace-nowrap"
           }
         >
-          코스 신청하기
+          풀코스 신청하기
         </button>
       </div>
       <div

@@ -1,5 +1,5 @@
 import "./globals.css";
-import { EB_Garamond, Crimson_Pro } from "next/font/google";
+import { EB_Garamond, Crimson_Pro, Noto_Sans_KR } from "next/font/google";
 import Footer from "@/layouts/footer/Footer";
 import Providers from "./Providers";
 import Header from "@/layouts/header/Header";
@@ -18,6 +18,13 @@ export const crimson = Crimson_Pro({
   display: "swap",
 });
 
+export const notoSansKR = Noto_Sans_KR({
+  subsets: ["latin"],
+  weight: ["900", "700", "500", "400", "300"],
+  variable: "--font-noto-sans-kr",
+  display: "swap",
+});
+
 export const metadata = {
   title: "Syatt",
   description:
@@ -30,7 +37,10 @@ interface RootLayoutProps {
 
 export default async function RootLayout({ children }: RootLayoutProps) {
   return (
-    <html lang="ko" className={`${garamond.variable} ${crimson.variable}`}>
+    <html
+      lang="ko"
+      className={`${garamond.variable} ${crimson.variable} ${notoSansKR.variable}`}
+    >
       <body>
         <Providers>
           {/* @ts-expect-error Async Server Component */}

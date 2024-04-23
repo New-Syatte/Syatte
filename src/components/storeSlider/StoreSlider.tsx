@@ -89,6 +89,7 @@ const StoreSlider = () => {
     slidesToScroll: 1,
     arrow: true,
     speed: 1000,
+    autoplay: true,
   };
 
   return (
