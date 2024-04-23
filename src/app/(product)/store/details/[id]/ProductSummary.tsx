@@ -58,6 +58,7 @@ const ProductSummary = ({
         {/* Carousel 자리 */}
         <div className="w-[415px] mb-12 mt-5">
           <Slider
+            id="productDetailSlider"
             datas={images}
             width={89}
             height={54}
