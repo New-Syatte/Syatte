@@ -1,6 +1,3 @@
-import Image from "next/image";
-import Banner from "@/assets/education/edubanner.jpg";
-import edubackground from "@/assets/education/eduback.jpg";
 import EduDesignCard from "./EduDesignCard";
 
 export default function TopBanner() {
