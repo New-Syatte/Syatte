@@ -3,6 +3,7 @@ import { EB_Garamond, Crimson_Pro, Noto_Sans_KR } from "next/font/google";
 import Footer from "@/layouts/footer/Footer";
 import Providers from "./Providers";
 import Header from "@/layouts/header/Header";
+import Head from "next/head";
 
 export const garamond = EB_Garamond({
   subsets: ["latin"],
@@ -41,6 +42,14 @@ export default async function RootLayout({ children }: RootLayoutProps) {
       lang="ko"
       className={`${garamond.variable} ${crimson.variable} ${notoSansKR.variable}`}
     >
+      <Head>
+        <title>{metadata.title}</title>
+        <meta name="description" content={metadata.description} />
+        <meta
+          name="viewport"
+          content="width=device-width, initial-scale=1.0, maximum-scale=1, minimum-scale=1"
+        />
+      </Head>
       <body>
         <Providers>
           {/* @ts-expect-error Async Server Component */}

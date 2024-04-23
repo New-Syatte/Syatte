@@ -82,13 +82,12 @@
 
 html {
   font-size: 16px;
+  overflow-x: hidden;
 }
 
 body {
   font-family: var(--font-family);
   position: relative;
-  overflow-x: hidden;
-  overflow-y: auto;
 }
 
 a {
@@ -107,5 +106,4 @@ a {
 
 .edu-slick .slick-list {
   overflow: visible;
-  touch-action: none;
 }

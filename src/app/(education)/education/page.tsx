@@ -11,7 +11,7 @@ export default async function Page() {
       <TopBanner />
       <div
         className={
-          "flex flex-col justify-center items-center pt-24 pb-44 bg-bgGray"
+          "w-full h-[1140px] flex flex-col justify-center items-center pt-24 bg-bgGray"
         }
       >
         <span
