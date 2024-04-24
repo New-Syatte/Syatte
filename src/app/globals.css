@@ -107,3 +107,7 @@ a {
 .edu-slick .slick-list {
   overflow: visible;
 }
+
+.edu-slick .slick-track {
+  touch-action: pan-y;
+}
