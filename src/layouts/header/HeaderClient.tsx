@@ -10,6 +10,9 @@ import { User } from "@/type/user";
 import { usePathname } from "next/navigation";
 import { useState, useEffect } from "react";
 import URLS from "@/constants/urls";
+import { Mobile } from "@/hooks/useMediaQuery";
+import Portal from "@/utils/Portal";
+import MobileNavModal from "./MobileNavModal";
 
 interface HeaderProps {
   user: User | undefined;
@@ -20,6 +23,9 @@ const HeaderClient = ({ user }: HeaderProps) => {
   const [textColor, setTextColor] = useState("text-white");
   const [bgColor, setBgColor] = useState("bg-black");
   const [logo, setLogo] = useState(STLogo);
+  const isMobile = Mobile();
+
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
     if (pathname === "/modern-masters" || pathname === "/midas-metall") {
@@ -38,36 +44,78 @@ const HeaderClient = ({ user }: HeaderProps) => {
     }
   }, [pathname]);
 
-  return (
-    <header
-      className={
-        "flex relative z-10 w-full h-headerHeight px-[50px] justify-between items-center border-b border-tableBorderGray gap-1" +
-        ` ${bgColor} ${"font-garamond"}`
-      }
-    >
-      <Link href="/">
-        <Image src={logo} alt="Logo" width={85} height={27} />
-      </Link>
-      <nav className={`flex ml-6 gap-3 mr-4 items-center ${textColor}`}>
-        <NavMenu pathname={pathname} textColor={textColor} />
-        <Link href={URLS.CART} className="text-xs font-semibold">
-          CART
+  if (!isMobile)
+    return (
+      <header
+        className={
+          "flex relative z-10 w-full h-headerHeight px-[50px] justify-between items-center border-b border-tableBorderGray gap-1" +
+          ` ${bgColor} ${"font-garamond"}`
+        }
+      >
+        <Link href="/">
+          <Image src={logo} alt="Logo" width={85} height={27} />
         </Link>
-        <div>
-          {user ? (
-            <UserBox data={user} />
-          ) : (
-            <Link
-              href={URLS.SIGNIN}
-              className={`flex gap-2 items-end hover:underline text-xs font-semibold before:content-[''] before:w-[2px] before:h-[12px] before:${textColor} before:mr-1`}
-            >
-              <p>LOGIN</p>
-            </Link>
-          )}
+        <nav className={`flex ml-6 gap-3 mr-4 items-center ${textColor}`}>
+          <NavMenu pathname={pathname} textColor={textColor} />
+          <Link href={URLS.CART} className="text-xs font-semibold">
+            CART
+          </Link>
+          <div>
+            {user ? (
+              <UserBox data={user} />
+            ) : (
+              <Link
+                href={URLS.SIGNIN}
+                className={`flex gap-2 items-end hover:underline text-xs font-semibold before:content-[''] before:w-[2px] before:h-[12px] before:${textColor} before:mr-1`}
+              >
+                <p>LOGIN</p>
+              </Link>
+            )}
+          </div>
+        </nav>
+      </header>
+    );
+
+  if (isMobile)
+    return (
+      <header
+        className={
+          "w-screen h-[55px] flex justify-between items-center fixed z-50 " +
+          `${bgColor}`
+        }
+      >
+        <div
+          className="flex flex-col gap-1 ml-4"
+          onClick={() => setIsModalOpen(!isModalOpen)}
+        >
+          <div className="w-5 h-1 bg-[#e2e2e2]" />
+          <div className="w-5 h-1 bg-[#e2e2e2]" />
+          <div className="w-5 h-1 bg-[#e2e2e2]" />
         </div>
-      </nav>
-    </header>
-  );
+        <Link href="/">
+          <Image src={logo} alt="Logo" width={85} height={27} />
+        </Link>
+        <div className="w-[20px]" />
+        {isModalOpen && (
+          <Portal selector="#portal">
+            <div className="fixed top-0 left-0 w-screen h-screen bg-black bg-opacity-50 z-50">
+              <div className="flex flex-col items-center justify-start w-4/5 h-full bg-white">
+                <MobileNavModal
+                  user={user}
+                  pathName={pathname}
+                  setIsModalOpen={setIsModalOpen}
+                />
+              </div>
+              <div
+                className="absolute w-1/5 top-0 right-0 h-screen"
+                onClick={() => setIsModalOpen(false)}
+              />
+            </div>
+          </Portal>
+        )}
+      </header>
+    );
+  else return null;
 };
 
 export default HeaderClient;
