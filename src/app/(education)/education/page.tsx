@@ -1,5 +1,5 @@
 import TopBanner from "@/app/(education)/education/TopBanner";
-import RouteComplete from "@/utils/RouteComplete";
+
 import EducationSlider from "./EducationSlider";
 import EduProcessingCard from "@/app/(education)/education/EduProcessingCard";
 import Button from "@/components/button/Button";
@@ -7,7 +7,7 @@ import Button from "@/components/button/Button";
 export default async function Page() {
   // const edu: Edu[] = await getEdu();
   return (
-    <RouteComplete>
+    <main>
       <TopBanner />
       <div
         className={
@@ -89,6 +89,6 @@ export default async function Page() {
           더 보기
         </Button>
       </div>
-    </RouteComplete>
+    </main>
   );
 }
