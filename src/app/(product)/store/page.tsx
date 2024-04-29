@@ -22,14 +22,19 @@ export default async function Products({}) {
 
   return (
     <>
-      <section className="w-full flex justify-center items-center gap-5 mb-28">
+      <section className="sm:w-[86%] w-full flex justify-center items-center gap-5 sm:mb-24 mb-28">
         <BrandSlider />
       </section>
-      <section className="flex flex-col gap-[73px]">
+      <section className="flex sm:w-full flex-col gap-[73px] justify-center items-center">
         {categoryValues.map((category: string, index: number) => (
-          <div key={index}>
-            <div className="flex justify-between items-end mb-12">
-              <Heading title={categorys[index].title} fontSize="[40px]" />
+          <div
+            key={index}
+            className="flex flex-col justify-center items-center sm:w-[90%]"
+          >
+            <div className="flex w-full justify-between sm:flex-col sm:items-center items-end mb-12 sm:font-GmarketSans">
+              <div className="text-[40px] font-bold sm:pb-5">
+                {categorys[index].title}
+              </div>
               <CategoryToSearchLink
                 to={URLS.PRODUCT_STORE_SEARCH} // 추후 수정 (Issue #20)
                 searchQuery={categorys[index].value}

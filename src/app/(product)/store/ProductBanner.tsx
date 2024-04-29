@@ -10,27 +10,39 @@ const ProductBanner = () => {
     { img: Banner2, title: "컬러패스트", query: "colorFast" },
   ];
   return (
-    <div className="flex gap-5 mt-24">
+    <div className="flex sm:w-full sm:flex-col gap-5 mt-24">
       {banners.map((banner, index) => (
         <CategoryToSearchLink
           key={index}
           to={URLS.PRODUCT_STORE_SEARCH} // 추후 수정 (Issue #20)
           searchQuery={banner.query}
         >
-          <div className="w-[644px] h-[245px] relative bg-zinc-700 rounded-[10px]">
-            <div className="left-[40px] top-[47px] absolute text-white text-[50px] font-bold">
+          <div
+            className={
+              "sm:w-[80%] w-[644px] sm:h-[121px] h-[245px] relative rounded-[10px]" +
+              (banner.query === "colorFast" ? " bg-[#8b6b5c]" : " bg-zinc-700")
+            }
+          >
+            <div className="left-[5%] top-[7%] absolute text-white sm:text-2xl text-[50px] font-bold">
               {banner.title}
             </div>
-            <div className="left-[40px] top-[109px] absolute text-white text-[40px] font-normal">
+            <div className="left-[5%] top-[33%] absolute text-white sm:text-xl text-[40px] font-normal">
               시리즈
             </div>
-            <div className="w-[138px] h-[30px] left-[40px] top-[169px] absolute border border-white justify-center items-center gap-2.5 inline-flex">
-              <span className="text-center text-white text-base font-bold whitespace-nowrap">
+            <div className="px-3 sm:py-0 py-1 left-[5%] top-[72%] absolute border border-white justify-center items-center inline-flex">
+              <span className="sm:text-[8px] text-center text-white text-base font-bold whitespace-nowrap">
                 시리즈 상품 보기
               </span>
             </div>
-            <div className="w-[312px] h-[245px] left-[332px] top-0 absolute bg-gradient-to-r from-zinc-700 to-[rgba(0,0,0,0)] z-10" />
-            <div className="absolute right-0 top-0 w-[312px] h-[245px]">
+            <div
+              className={
+                "sm:h-[121px] w-1/2 h-[245px] left-1/2 top-0 absolute bg-gradient-to-r to-[rgba(0,0,0,0)] z-10" +
+                (banner.query === "colorFast"
+                  ? " from-[#8b6b5c]"
+                  : " from-zinc-700")
+              }
+            />
+            <div className="absolute right-0 top-0 sm:w-[49%] w-1/2 sm:h-[121px] h-[245px]">
               <Image src={banner.img} alt="product-banner" fill />
             </div>
           </div>

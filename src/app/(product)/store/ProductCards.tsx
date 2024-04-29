@@ -7,17 +7,14 @@ interface Props {
 }
 
 const ProductCards = ({ products }: Props) => {
-  console.log(products);
   return (
-    <div className="grid grid-cols-4 gap-x-6 gap-y-24 px-4 w-full">
+    <div className="grid grid-cols-4 sm:grid-cols-2 sm:gap-x-5 sm:gap-y-7 gap-x-6 gap-y-24 sm:px-0 px-4 sm:w-full sm:max-w-[400px] items-center justify-center">
       {products.map((product: any) => (
         <Card
           key={product._id}
           title={product.productName}
           src={product.mainImage.imageUrl}
           linkTo={`${URLS.PRODUCT_DETAILS}/${product._id}`}
-          width={312}
-          height={312}
           product={product}
           bgColor={product.category === "midasMetal" ? "[#f4f4f4]" : "white"}
         />
