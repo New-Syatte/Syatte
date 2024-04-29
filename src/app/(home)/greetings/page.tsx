@@ -1,11 +1,7 @@
 import GreetingClient from "./GreetingClient";
 
 const About = () => {
-  return (
-    <div className="relative w-full">
-      <GreetingClient />
-    </div>
-  );
+  return <GreetingClient />;
 };
 
 export default About;
