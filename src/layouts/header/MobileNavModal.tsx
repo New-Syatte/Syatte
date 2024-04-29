@@ -8,16 +8,11 @@ import { useSelector } from "react-redux";
 import { selectCartItems } from "@/redux/slice/cartSlice";
 
 interface MobileNavModalProps {
-  pathName: string;
   user: any;
   setIsModalOpen: Dispatch<SetStateAction<boolean>>;
 }
 
-const MobileNavModal = ({
-  user,
-  pathName,
-  setIsModalOpen,
-}: MobileNavModalProps) => {
+const MobileNavModal = ({ user, setIsModalOpen }: MobileNavModalProps) => {
   const cartLength = useSelector(selectCartItems).length;
 
   const navMenu = [
@@ -59,10 +54,18 @@ const MobileNavModal = ({
             <h2>{name}</h2>
           </div>
           <div className="w-full flex flex-col items-center justify-center gap-2 mb-6">
-            <Link href={URLS.ORDER_HISTORY} className={ButtonStyle}>
+            <Link
+              href={URLS.ORDER_HISTORY}
+              className={ButtonStyle}
+              onClick={() => setIsModalOpen(false)}
+            >
               마이페이지
             </Link>
-            <Link href={URLS.CART} className={ButtonStyle}>
+            <Link
+              href={URLS.CART}
+              className={ButtonStyle}
+              onClick={() => setIsModalOpen(false)}
+            >
               장바구니 &nbsp;
               <span className="text-white text-[10px] bg-primaryBlue rounded-full w-4 h-4 flex justify-center items-center">
                 {cartLength}
@@ -78,7 +81,9 @@ const MobileNavModal = ({
         <ul className="flex flex-col gap-5">
           {navMenu.map((menu, index) => (
             <li key={index}>
-              <Link href={navLink[index]}>{menu.toUpperCase()}</Link>
+              <Link href={navLink[index]} onClick={() => setIsModalOpen(false)}>
+                {menu.toUpperCase()}
+              </Link>
             </li>
           ))}
         </ul>

@@ -2,7 +2,6 @@
 import { useDispatch } from "react-redux";
 import { setCurrentSlide } from "@/redux/slice/sliderSlice";
 import Image, { StaticImageData } from "next/image";
-import { Mobile } from "@/hooks/useMediaQuery";
 
 interface SliderPreviewProps {
   id: string;
@@ -12,7 +11,6 @@ interface SliderPreviewProps {
 
 const SliderPreview = ({ id, imgUrl, index }: SliderPreviewProps) => {
   const dispatch = useDispatch();
-  const isMobile = Mobile();
   return (
     <Image
       src={imgUrl}

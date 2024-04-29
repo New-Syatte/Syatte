@@ -108,11 +108,7 @@ const HeaderClient = ({ user }: HeaderProps) => {
           <Portal selector="#portal">
             <div className="fixed top-0 left-0 w-screen h-screen bg-black bg-opacity-50 z-50">
               <div className="flex flex-col items-center justify-start w-4/5 h-full bg-white">
-                <MobileNavModal
-                  user={user}
-                  pathName={pathname}
-                  setIsModalOpen={setIsModalOpen}
-                />
+                <MobileNavModal user={user} setIsModalOpen={setIsModalOpen} />
               </div>
               <div
                 className="absolute w-1/5 top-0 right-0 h-screen"

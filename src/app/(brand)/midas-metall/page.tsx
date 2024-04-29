@@ -8,7 +8,6 @@ import YouTubeVideo from "@/components/youTubeVideo/YouTubeVideo";
 import SubTitleBox from "@/components/subTitleBox/SubTitleBox";
 // import BrandSlider from "@/components/brandSlider/BrandSlider";
 import StoreSlider from "@/components/storeSlider/StoreSlider";
-import { useState } from "react";
 import ProductInfoList from "@/components/productInfoList/ProductInfoList";
 import { getProducts } from "@/services/sanity/products";
 
@@ -18,7 +17,7 @@ const MIDASMETALL_INFO_TEXT_2 = `뿐만 아니라, Thuringia Newspaper Group의 
 const MIDASMETALL_INFO_TEXT_3 = `이어진 2010년에는 튀링겐 창립자상에서 성공적인 젊은 기업 부문에서 3위를 차지하여 지속적인 성장과 혁신적인 업적을 선보이고 있습니다. 마이다스 메탈은 훌륭한 품질과 혁신적인 디자인을 바탕으로 꾸준한 성공을 이루어내고 있습니다.`;
 const MIDASMETALL_ARTWORK_TEXT = `마이다스 메탈 페인트로 창조된 다채로운 작품들을 확인하세요. 고유한 텍스처와 색상으로 표현된 예술적인 아트워크를 확인할 수 있습니다.`;
 
-const MidasMETALL = async() => {
+const MidasMETALL = async () => {
   // const [activeBrandIndex, setActiveBrandIndex] = useState(0);
   const paintList = [];
 
@@ -41,18 +40,6 @@ const MidasMETALL = async() => {
       img: `brand/midasmetall-img/midasmetall-paint_${i}.png`,
     });
   }
-
-  const opts = {
-    height: "315",
-    width: "560",
-    playerVars: {
-      autoplay: 1,
-    },
-  };
-
-  const onReady = (event: any) => {
-    console.log("동영상 플레이어가 준비되었습니다.");
-  };
 
   return (
     <>
@@ -101,7 +88,7 @@ const MidasMETALL = async() => {
             alt={"상단 페인트 이미지"}
           />
         </div>
-        <div className="flex w-full my-auto px-auto z-10">
+        <div className="flex w-full my-auto px-auto sm:pb-10 z-10">
           <div className="flex flex-col">
             <div className="flex text-[20px] font-[GmarketSans] sm:text-[20px] sm:mx-auto">
               MIDAS METALL
@@ -122,8 +109,8 @@ const MidasMETALL = async() => {
             </div>
           </div>
         </div>
-        <div className="flex w-full justify-center my-auto z-10">
-          <div className="flex rounded-lg overflow-hidden mt-[100px] sm:mx-[35px]">
+        <div className="flex w-full justify-center items-center my-auto z-10">
+          <div className="w-2/3">
             <YouTubeVideo urlId={"03mGS92FB50"} />
           </div>
         </div>
