@@ -51,14 +51,14 @@ const slideData = [
 ];
 
 const BrandSlider = () => {
-  const settings = {
-    infinite: false,
-    slidesToShow: slideData.length,
-    slidesToScroll: 1,
-    arrow: false,
-  };
   return (
-    <Slider {...settings}>
+    <Slider
+      infinite={false}
+      slidesToShow={slideData.length}
+      slidesToScroll={1}
+      arrows={false}
+      autoplay={false}
+    >
       {slideData.map(slide => (
         <CategoryToSearchLink
           key={slide.id}
@@ -66,9 +66,14 @@ const BrandSlider = () => {
           searchQuery={slide.query}
         >
           <div className="flex flex-col w-56 h-auto items-center justify-center mx-2">
-            <div className="flex w-56 h-32 justify-center items-center border border-stone-300 rounded-lg  relative">
-              <div className="flex relative justify-center items-center w-32">
-                <Image src={slide.imageUrl} alt="brandLogo" />
+            <div className="flex w-56 h-32 justify-center items-center border border-stone-300 rounded-lg relative">
+              <div className="flex relative justify-center items-center w-32 h-auto">
+                <Image
+                  src={slide.imageUrl}
+                  alt="brandLogo"
+                  sizes="100vw"
+                  style={{ width: "100%", height: "auto" }}
+                />
               </div>
             </div>
             <div className="text-center text-black text-lg font-bold mt-5">

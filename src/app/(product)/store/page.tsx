@@ -43,7 +43,7 @@ export default async function Products({}) {
               products={products}
               category={category}
             />
-            {index === 1 && <ProductBanner />}
+            {index === 0 && <ProductBanner />}
           </div>
         ))}
       </section>

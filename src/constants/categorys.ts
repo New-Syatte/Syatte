@@ -1,9 +1,5 @@
 export const categorys = [
   {
-    title: "모든 상품",
-    value: "all",
-  },
-  {
     title: "모던 마스터즈",
     value: "modernMasters",
   },

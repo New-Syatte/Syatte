@@ -7,6 +7,7 @@ interface Props {
 }
 
 const ProductCards = ({ products }: Props) => {
+  console.log(products);
   return (
     <div className="grid grid-cols-4 gap-x-6 gap-y-24 px-4 w-full">
       {products.map((product: any) => (
@@ -18,6 +19,7 @@ const ProductCards = ({ products }: Props) => {
           width={312}
           height={312}
           product={product}
+          bgColor={product.category === "midasMetal" ? "[#f4f4f4]" : "white"}
         />
       ))}
     </div>
