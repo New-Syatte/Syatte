@@ -14,9 +14,9 @@ const SliderPreview = ({ id, imgUrl, index }: SliderPreviewProps) => {
   return (
     <Image
       src={imgUrl}
-      width={97}
-      height={68}
       alt="introSub"
+      sizes="100vw"
+      style={{ width: "100%", height: "auto" }}
       onClick={() => dispatch(setCurrentSlide({ id, index }))}
       className="cursor-pointer"
     />

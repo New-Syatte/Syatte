@@ -1,14 +1,10 @@
 export const categorys = [
   {
-    title: "모든 상품",
-    value: "all",
-  },
-  {
-    title: "모던 마스터즈",
+    title: "모던마스터즈",
     value: "modernMasters",
   },
   {
-    title: "마이다스 메탈",
+    title: "마이다스메탈",
     value: "midasMetal",
   },
 ];

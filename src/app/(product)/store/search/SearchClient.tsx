@@ -36,7 +36,7 @@ const SearchClient = () => {
       {matchingResults.length > 0 ? (
         <ProductCards products={matchingResults} />
       ) : (
-        <div>검색 결과가 없습니다.</div>
+        <div>준비중입니다.</div>
       )}
     </div>
   );

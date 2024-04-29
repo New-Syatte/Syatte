@@ -26,11 +26,6 @@ const ProductSummary = ({
   const dispatch = useDispatch();
   const router = useRouter();
   const [count, setCount] = useState(1);
-  const [selectedImage, setSelectedImage] = useState(images[0].imageUrl);
-
-  const setIndexImage = (index: number) => {
-    setSelectedImage(images[index].imageUrl);
-  };
 
   const addToCart = () => {
     const product = {
@@ -48,11 +43,13 @@ const ProductSummary = ({
       <div className="flex flex-col justify-center items-center w-[415px]">
         {/* Image */}
         <div className="flex justify-center items-center w-[415px] h-[302px] bg-zinc-100 rounded border border-zinc-400">
-          <Image
-            src={selectedImage}
-            alt={productName}
+          <Slider
+            id="productDetailSlider"
+            datas={images}
             width={190}
             height={190}
+            slidePerView={1}
+            arrowSize={30}
           />
         </div>
         {/* Carousel 자리 */}
@@ -64,7 +61,6 @@ const ProductSummary = ({
             height={54}
             slidePerView={4}
             arrowSize={30}
-            setIndexImage={setIndexImage}
           />
         </div>
         <div className="w-full">
@@ -95,7 +91,7 @@ const ProductSummary = ({
             </p>
           </article>
           {/* 수량 버튼 */}
-          <div className="flex justify-start items-center border-b-2 gap-8 w-[415px] h-[61px] bg-zinc-100 rounded mt-7 p-3">
+          <div className="flex justify-between items-center border-b-2 gap-8 w-[415px] h-[61px] bg-zinc-100 rounded mt-7 p-3">
             <div className="w-[103px] h-9">
               <div className="flex justify-between items-center h-9 bg-white border border-zinc-300 rounded">
                 <Button
@@ -118,6 +114,11 @@ const ProductSummary = ({
                 </Button>
               </div>
             </div>
+            <div>
+              <p className="text-neutral-800 sm:text-base text-[22px] font-bold">
+                {(price - (price * discount) / 100).toLocaleString()}원
+              </p>
+            </div>
           </div>
           {/* 주문 금액 */}
           <div>
@@ -135,7 +136,7 @@ const ProductSummary = ({
                 addToCart();
               }}
               styleType="blank"
-              style="w-[200px] h-[62px] py-[17.80px] bg-white rounded-[50px] border-2 border-gray-400 justify-center items-center inline-flex text-gray-400 text-lg font-bold"
+              style="w-[200px] h-[62px] py-[17.80px] bg-white rounded-[50px] border-2 border-primaryBlue justify-center items-center inline-flex text-primaryBlue text-lg font-bold hover:bg-primaryBlue hover:text-white"
             >
               장바구니
             </Button>
@@ -145,7 +146,7 @@ const ProductSummary = ({
                 router.push(URLS.CART);
               }}
               styleType="blank"
-              style="w-[200px] h-[62px] py-[17.80px] bg-gray-400 rounded-[50px] justify-center items-center inline-flex text-white text-lg font-bold"
+              style="w-[200px] h-[62px] py-[17.80px] bg-primaryBlue rounded-[50px] justify-center items-center inline-flex text-white text-lg font-bold hover:bg-white hover:text-primaryBlue hover:border-primaryBlue hover:border-2"
             >
               바로구매
             </Button>

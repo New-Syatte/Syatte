@@ -11,12 +11,13 @@ const UserBox = ({ data }: any) => {
   const toggleHandler = () => {
     setToggleMenu(toggleMenu => !toggleMenu);
   };
+  const name = data.name ? data.name : data.username;
 
   return (
     <div className="flex items-center gap-2 font-garamond before:content-[''] before:w-[2px] before:h-[12px] before:bg-black ">
       <div className="hover:underline cursor-pointer flex items-center justify-center gap-1 relative">
         <div className="text-xs font-kor font-medium" onClick={toggleHandler}>
-          <p>{data.name}</p>
+          <p>{name}</p>
         </div>
         {toggleMenu ? (
           <ul className="flex flex-col gap-2 w-[130px] top-10 right-0 absolute bg-white border border-lightGray p-2 justify-center items-center">

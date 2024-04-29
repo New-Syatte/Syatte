@@ -13,20 +13,18 @@ export default async function ProductDetails({
   const { productName, price, description, images, discount, detailImage } =
     product;
   return (
-    <>
-      <section className="w-full mx-auto mb-[200px] flex justify-center items-start px-60 py-20 gap-28">
-        <ProductSummary
-          _id={id}
-          productName={productName}
-          price={price}
-          description={description}
-          images={images}
-          discount={discount}
-        />
-        <section className="w-full">
-          <ProductInfoNav detailImage={detailImage} />
-        </section>
+    <section className="w-full mx-auto mb-[200px] flex sm:flex-col justify-center sm:items-center items-start sm:px-0 px-60 py-20 gap-28 overflow-x-hidden">
+      <ProductSummary
+        _id={id}
+        productName={productName}
+        price={price}
+        description={description}
+        images={images}
+        discount={discount}
+      />
+      <section className="w-full">
+        <ProductInfoNav detailImage={detailImage} />
       </section>
-    </>
+    </section>
   );
 }

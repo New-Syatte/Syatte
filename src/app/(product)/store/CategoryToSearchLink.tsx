@@ -21,7 +21,12 @@ const CategoryToSearchLink = ({
     dispatch(setSearchQuery(searchQuery));
   };
   return (
-    <Link href={to} {...restProps} onClick={handleSearch}>
+    <Link
+      href={to}
+      {...restProps}
+      onClick={handleSearch}
+      className="sm:flex sm:justify-center sm:items-center"
+    >
       {children}
     </Link>
   );

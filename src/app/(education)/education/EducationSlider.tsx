@@ -6,6 +6,7 @@ import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import EducationCard from "./EducationCard";
+import { Mobile } from "@/hooks/useMediaQuery";
 
 const slideData = [
   {
@@ -23,11 +24,12 @@ const slideData = [
 ];
 
 const EducationSlider = () => {
+  const isMobile = Mobile();
   const settings = {
     arrows: false,
     dots: true,
     centerMode: true,
-    centerPadding: "-20px",
+    centerPadding: isMobile ? "-10px" : "-20px",
     slidesToShow: 1,
     slidesToScroll: 1,
     speed: 1000,
@@ -35,7 +37,7 @@ const EducationSlider = () => {
 
   return (
     <div className="w-full h-full flex justify-center items-center overflow-hidden">
-      <div className="w-[1163px] h-full edu-slick">
+      <div className="sm:w-[320px] w-[1163px] h-full edu-slick">
         <Slider {...settings}>
           {slideData.map(slide => (
             <EducationCard key={slide.id} />

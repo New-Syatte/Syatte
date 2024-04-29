@@ -111,3 +111,7 @@ a {
 .edu-slick .slick-track {
   touch-action: pan-y;
 }
+
+.edu-slick .slick-dots {
+  bottom: 20px;
+}

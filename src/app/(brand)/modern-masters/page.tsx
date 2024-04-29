@@ -8,14 +8,8 @@ import YouTubeVideo from "@/components/youTubeVideo/YouTubeVideo";
 import SubTitleBox from "@/components/subTitleBox/SubTitleBox";
 import BrandSlider from "@/components/brandSlider/BrandSlider";
 import StoreSlider from "@/components/storeSlider/StoreSlider";
-// import { categorys } from "@/constants/categorys";
 import { getProducts } from "@/services/sanity/products";
 import { useState } from "react";
-import Heading from "@/components/heading/Heading";
-import CategoryToSearchLink from "@/app/(product)/store/CategoryToSearchLink";
-import ProductsByCategory from "@/app/(product)/store/ProductsByCategory";
-import ProductBanner from "@/app/(product)/store/ProductBanner";
-import URLS from "@/constants/urls";
 
 const TITLE_BANNER_TEXT = `Modern Masters는 고급 특수 페인트를 제조하는 세계 최고의 회사입니다. 제품은 미국을 비롯한 다양한 국가의 4,000개 이상의 소매점에서 판매며, 회사의 제품 라인에는 건축가, 디자이너, 계약자, 그리고 장식 화가를 위해 특별히 제작된 다양한 제품이 포함되어 있습니다. Metallic Paint Collection, Metal Effects, 건축 텍스처, 테마 페인트, 블랙라이트 페인트, 유약, 광택제, 그리고 Crackles 등이 그 중에 속합니다. Modern Masters의 제품은 전 세계적으로 유명한 장소에서 사용되고 있습니다.`;
 const MODERN_MASTERS_INFO_TEXT_1 = `Modern Masters는 1960년대 초에 캘리포니아의 San Fernando Valley에서 시작된 회사로, 처음에는 Custom Paint & Chemical로 알려져 있었습니다. 주로 가구, 장식용 액세서리, 주거용 조명, 그리고 벽 장식용 코팅 제품을 생산했습니다. 회사는 최고 품질의 코팅을 제공하고 "지불한 만큼 얻는다"는 모토를 따르며 성장했습니다.`;
@@ -56,18 +50,6 @@ const Modernmasters = async () => {
       img: `brand/modernmasters-img/modernmasters-brand_${i}.png`,
     });
   }
-
-  const opts = {
-    height: "315",
-    width: "560",
-    playerVars: {
-      autoplay: 1,
-    },
-  };
-
-  const onReady = (event: any) => {
-    console.log("동영상 플레이어가 준비되었습니다.");
-  };
 
   return (
     <>
@@ -150,8 +132,8 @@ const Modernmasters = async () => {
             </div>
           </div>
         </div>
-        <div className="flex w-full justify-center my-auto z-10">
-          <div className="flex rounded-lg overflow-hidden mt-[100px] sm:mx-[35px]">
+        <div className="flex w-full justify-center items-center my-auto z-10">
+          <div className="w-2/3">
             <YouTubeVideo urlId={"qj5TKQbbRYg"} />
           </div>
         </div>
