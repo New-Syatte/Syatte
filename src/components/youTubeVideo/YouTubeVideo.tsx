@@ -18,7 +18,7 @@ const YouTubeVideo = (urlId: Props) => {
 
   return (
     <div>
-      <YouTube videoId={data} opts={opts} className="flex w-full" />
+      <YouTube videoId={data} opts={opts} className="flex w-full sm:h-[190px]" />
     </div>
   );
 };

@@ -66,22 +66,22 @@ const BrandSlider = (activeBrandIndex: any) => {
   };
 
   return (
-    <div className="w-[1300px] h-[420px] border border-[#E2E2E2]">
+    <div className="w-[1300px] h-[420px] border border-[#E2E2E2] sm:w-full sm:h-full">
       <Slider {...settings}>
         {slideData.map(slide => (
           <div key={slide.id}>
-            <div className="flex h-[420px]">
-              <div className="flex w-[40%] h-[240px] justify-center my-auto">
+            <div className="flex h-[420px] sm:flex-col sm:h-full sm:py-[20px] sm:px-[35px]">
+              <div className="flex w-[40%] h-[240px] justify-center my-auto sm:h-full sm:w-[30%] sm:mx-auto">
                 <img src={slide.imageUrl} />
               </div>
-              <div className="flex w-[60%] flex-col my-auto">
+              <div className="flex w-[60%] flex-col my-auto sm:w-full">
                 <div className="flex w-full">
-                  <img src={slide.brandImgUrl} className="w-[400px]" />
+                  <img src={slide.brandImgUrl} className="w-[400px] sm:w-[150px] sm:mx-auto sm:mt-[20px]" />
                 </div>
-                <div className="flex text-[18px] mt-[45px] mb-[25px]">
+                <div className="flex text-[18px] mt-[45px] mb-[25px] sm:text-[10px] sm:my-[20px] sm:mx-auto">
                   {slide.features}
                 </div>
-                <div className="flex text-[18px] w-[730px]">
+                <div className="flex text-[18px] w-[730px] sm:w-full sm:text-[14px]">
                   {slide.description}
                 </div>
               </div>
