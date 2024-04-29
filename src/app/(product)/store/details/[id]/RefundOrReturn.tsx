@@ -1,15 +1,15 @@
 const RefundOrReturn = () => {
   return (
-    <div className="w-[830px] h-[487px] relative">
-      <div className="w-[830px] h-[222px] left-0 top-0 absolute">
-        <div className="left-0 top-0 absolute text-neutral-800 text-2xl font-bold font-['Helvetica']">
+    <div className="w-full h-full relative">
+      <div className="w-full">
+        <div className="text-neutral-800 text-2xl font-bold font-helvetica my-10">
           교환/반품
         </div>
-        <div className="w-[830px] h-[174px] left-0 top-[48px] absolute flex-col justify-start items-start gap-[13px] inline-flex">
-          <div className="w-[952px] text-neutral-800 text-lg font-normal leading-[27px]">
+        <div className="w-full flex-col justify-start items-start gap-[13px] inline-flex">
+          <div className="w-full text-neutral-800 text-lg font-normal leading-[27px]">
             반품배송비(편도) : 3,000원 (최초 배송비 미결제시 6,000원 부과)
           </div>
-          <div className="w-[952px] text-neutral-800 text-lg font-normal leading-[27px]">
+          <div className="w-full text-neutral-800 text-lg font-normal leading-[27px]">
             교환배송비(왕복) : 6,000원
           </div>
           <div className="text-neutral-800 text-lg font-normal leading-[27px]">
@@ -22,15 +22,15 @@ const RefundOrReturn = () => {
           </div>
         </div>
       </div>
-      <div className="w-[830px] h-[195px] left-0 top-[292px] absolute">
-        <div className="left-0 top-0 absolute text-neutral-800 text-2xl font-bold font-['Helvetica']">
+      <div className="w-full">
+        <div className="text-neutral-800 text-2xl font-bold font-helvetica my-10">
           교환/반품 불가한 경우
         </div>
-        <div className="w-[830px] h-[147px] left-0 top-[48px] absolute flex-col justify-start items-start gap-[13px] inline-flex">
-          <div className="w-[952px] text-neutral-800 text-lg font-normal leading-[27px]">
+        <div className="w-full h-[147px] flex-col justify-start items-start gap-[13px] inline-flex">
+          <div className="w-full text-neutral-800 text-lg font-normal leading-[27px]">
             교환/반품 요청이 기간이 지난 경우
           </div>
-          <div className="w-[952px] text-neutral-800 text-lg font-normal leading-[27px]">
+          <div className="w-full text-neutral-800 text-lg font-normal leading-[27px]">
             소비자의 책임 있는 사유로 상품 등이 분실/파손/훼손된 경우
           </div>
           <div className="text-neutral-800 text-lg font-normal leading-[27px]">
