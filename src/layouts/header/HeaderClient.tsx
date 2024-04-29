@@ -92,8 +92,16 @@ const HeaderClient = ({ user }: HeaderProps) => {
           <div className="w-5 h-1 bg-[#e2e2e2]" />
           <div className="w-5 h-1 bg-[#e2e2e2]" />
         </div>
-        <Link href="/">
-          <Image src={logo} alt="Logo" width={85} height={27} />
+        <Link
+          href="/"
+          className={bgColor === "bg-black" ? "w-12 h-auto" : "w-20 h-auto"}
+        >
+          <Image
+            src={logo}
+            alt="Logo"
+            sizes="100vw"
+            style={{ width: "100%", height: "auto" }}
+          />
         </Link>
         <div className="w-[20px]" />
         {isModalOpen && (
