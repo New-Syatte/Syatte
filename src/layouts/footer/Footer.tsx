@@ -1,5 +1,4 @@
 import Image from "next/image";
-// import styles from "./Footer.module.scss";
 
 export default function Footer() {
   const personalData = [
@@ -42,7 +41,9 @@ export default function Footer() {
                 AM 09:00 ~ PM 05:00
               </div>
             </div>
-            <div className="flex text-[56px] my-auto leading-10 sm:mt-[10px] sm:text-[40px]">1566-1000</div>
+            <div className="flex text-[56px] my-auto leading-10 sm:mt-[10px] sm:text-[40px]">
+              1566-1000
+            </div>
           </div>
           <div className="text-[18px] font-bold mb-3">SYATT</div>
           <div className="text-[12px] mb-6">
@@ -65,8 +66,8 @@ export default function Footer() {
         <div className="flex w-[35%] px-6 justify-between sm:w-full sm:flex-col sm:px-0 sm:mb-[50px]">
           {pagesData.map(data => (
             <>
-              <ul className="flex flex-col">
-                <li className="text-[18px] font-bold mb-[12px]">
+              <ul className="flex flex-col gap-2 sm:gap-0">
+                <li className="text-[18px] font-bold sm:mb-[12px]">
                   {data.title}
                 </li>
                 <li className="cursor-pointer sm:text-[12px]">
@@ -119,7 +120,9 @@ export default function Footer() {
               />
             </div>
           </div>
-          <div className="text-[12px]">© 2023. SYATT All rights reserved.</div>
+          <div className="text-sm sm:text-xs">
+            © 2023. SYATT All rights reserved.
+          </div>
         </div>
       </div>
     </footer>
