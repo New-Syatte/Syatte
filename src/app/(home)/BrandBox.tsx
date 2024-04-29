@@ -37,12 +37,12 @@ const BrandBox = ({ brand }: BrandBoxProps) => {
   return (
     <div
       className={
-        "w-[95%] sm:w-full h-full sm:h-[304px] flex flex-col sm:flex-row border border-[#ececec] bg-bgGray" +
+        "sm:w-[95%] w-full sm:h-full h-[304px] flex sm:flex-col flex-row border border-[#ececec] bg-bgGray" +
         " " +
-        (isModernMasters ? "mb-[20px] sm:mb-[10px]" : "")
+        (isModernMasters ? "sm:mb-[20px] mb-[10px]" : "")
       }
     >
-      <div className="w-full p-6 sm:p-0 sm:w-[531px] h-full bg-black flex justify-center items-center">
+      <div className="sm:w-full w-[531px] sm:p-6 p-0 h-full bg-black flex justify-center items-center">
         <Image
           src={logo}
           alt="MidasMetalLogo"
@@ -52,15 +52,15 @@ const BrandBox = ({ brand }: BrandBoxProps) => {
           style={{ width: "70%", height: "auto" }}
         />
       </div>
-      <div className="w-full h-full p-5 sm:p-14 flex flex-col justify-center items-center sm:block">
-        <p className="font-garamond font-normal text-base sm:text-sm mb-[6px]">
+      <div className="w-full h-full sm:p-5 p-14 sm:flex flex-col justify-center items-center block">
+        <p className="font-garamond font-normal sm:text-base text-sm mb-[6px]">
           {EngBrand}
         </p>
         <h2 className="text-3xl font-bold mb-5">{KrBrand}</h2>
-        <p className="text-sm sm:text-lg mb-8 whitespace-break-spaces break-keep">
+        <p className="sm:text-sm text-lg mb-8 whitespace-break-spaces break-keep">
           {description}
         </p>
-        <div className="self-start sm:flex sm:gap-12">
+        <div className="self-start flex sm:block gap-12">
           <Link
             href={gallery}
             className="font-garamond text-2xl flex gap-3 hover:underline tracking-widest"
@@ -70,7 +70,7 @@ const BrandBox = ({ brand }: BrandBoxProps) => {
           </Link>
           <Link
             href={store} // 추후 수정(Issue #20)
-            className="font-garamond text-2xl flex gap-3 hover:underline tracking-widest mt-2 sm:my-0"
+            className="font-garamond text-2xl flex gap-3 hover:underline tracking-widest sm:mt-2 my-0"
           >
             STORE
             <MdArrowForwardIos className="text-xl mt-[6px]" />

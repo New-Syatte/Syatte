@@ -56,7 +56,7 @@ const SectionTitle = ({ type, children }: SectionTitleProps) => {
   return (
     <div
       className={
-        "w-full h-auto flex flex-col items-center my-20 sm:my-36 justify-center sm:justify-normal" +
+        "w-full h-auto flex flex-col items-center sm:my-20 my-36 sm:justify-center justify-normal" +
         " " +
         (isCenter && "justify-center") +
         " " +
@@ -67,12 +67,12 @@ const SectionTitle = ({ type, children }: SectionTitleProps) => {
         className={
           isCenter
             ? "flex flex-col justify-center items-center w-[90%] h-[250px] font-eng mb-14"
-            : "flex flex-col justify-center items-center font-eng mb-14 sm:w-[85%] sm:block sm:mb-0"
+            : "sm:flex flex-col justify-center items-center font-eng sm:mb-14 sm:w-auto w-[85%] block mb-0"
         }
       >
         <p
           className={
-            "font-garamond font-normal text-base sm:text-2xl mb-4 mt-8" +
+            "font-garamond font-normal sm:text-base text-2xl mb-4 mt-8" +
             " " +
             (isCenter ? "tracking-[4.8px]" : "tracking-[2.4px]")
           }
@@ -81,7 +81,7 @@ const SectionTitle = ({ type, children }: SectionTitleProps) => {
         </p>
         <h2
           className={
-            "text-3xl sm:text-6xl font-bold whitespace-nowrap relative" +
+            "sm:text-3xl text-6xl font-bold whitespace-nowrap relative" +
             " " +
             (isCenter && "tracking-tighter")
           }
@@ -94,8 +94,8 @@ const SectionTitle = ({ type, children }: SectionTitleProps) => {
         <p
           className={
             isCenter
-              ? "text-left px-6 font-medium mt-9 leading-8 sm:break-keep sm:text-center text-sm sm:text-lg sm:px-0"
-              : "text-sm text-center sm:text-left sm:text-lg sm:px-0 px-6 pt-3 sm:pt-9 sm:mb-20 sm:w-1/2 break-keep"
+              ? " font-medium mt-9 leading-8 break-keep sm:break-words sm:text-left text-center sm:text-sm text-lg sm:px-6"
+              : "sm:text-center text-left sm:text-sm text-lg px-0 sm:px-6 sm:pt-3 pt-9 mb-20 w-1/2 sm:w-auto sm:break-keep"
           }
         >
           <ResponsiveDesc desc={description} />

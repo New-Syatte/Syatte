@@ -27,7 +27,7 @@ const IntroduceSlider = ({ introDatas, children }: IntroSliderProps) => {
         </div>
         <div className="p-14 pl-24 w-1/2 h-full">
           {children}
-          <div className="flex gap-[15px] p-auto">
+          <div className="flex w-1/6 h-auto gap-[15px] p-auto">
             {introDatas.map((data, index) => (
               <SliderPreview
                 key={index}
@@ -52,8 +52,8 @@ const IntroduceSlider = ({ introDatas, children }: IntroSliderProps) => {
             arrowSize={44}
           />
         </div>
-        <div className="flex flex-col justify-center items-center w-[90%] h-full">
-          <div className="flex gap-[15px] py-6">
+        <div className="flex flex-col justify-center items-start w-[90%] h-full">
+          <div className="flex w-[19%] h-auto gap-2 pt-6 mb-6">
             {introDatas.map((data, index) => (
               <SliderPreview
                 key={index}

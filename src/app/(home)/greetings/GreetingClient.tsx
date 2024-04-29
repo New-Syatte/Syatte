@@ -73,12 +73,12 @@ const GreetingClient = () => {
   ];
 
   const spanStyle =
-    "relative text-5xl sm:text-6xl before:content-[''] before:block before:w-2 before:h-2 before:rounded-full before:bg-slate-300 before:absolute before:top-0 before:left-1/2 before:-translate-y-[230%]";
+    "relative sm:text-5xl text-6xl before:content-[''] before:block before:w-2 before:h-2 before:rounded-full before:bg-slate-300 before:absolute before:top-0 before:left-1/2 before:-translate-y-[230%]";
 
   return (
-    <main className="font-kor overflow-hidden relative z-30 flex flex-col items-center w-screen sm:w-full p-8 sm:p-64">
+    <main className="font-kor overflow-hidden relative z-30 flex flex-col items-center sm:w-screen w-full sm:p-8 p-64">
       <motion.div
-        className="h-full w-full flex flex-col sm:flex-row gap-10 2xl:gap-60 justify-center items-center sm:items-stretch sm:justify-evenly my-24 sm:mt-0"
+        className="h-full w-full flex sm:flex-col flex-row gap-10 2xl:gap-60 sm:justify-center sm:items-center items-stretch justify-evenly sm:my-24 mt-0"
         initial={{ opacity: 0, y: 100 }}
         whileInView={{
           opacity: 1,
@@ -87,33 +87,33 @@ const GreetingClient = () => {
         }}
         viewport={{ once: true }}
       >
-        <div className="w-full h-full flex flex-col justify-center items-center sm:w-[425px] sm:h-[640px] sm:ml-14">
-          <div className="w-1/2 sm:w-full h-auto sm:h-[547px] relative mb-12">
+        <div className=" flex flex-col justify-center items-center sm:w-full w-[425px] sm:h-full h-[640px] sm:ml-0 ml-14">
+          <div className="sm:w-1/2 w-full sm:h-auto h-[547px] relative mb-12">
             <Image
               src={IDPhoto}
               alt="IDphoto"
               sizes="100vh"
               style={{ width: "100%", height: "auto" }}
-              className=" rounded-[36px] sm:rounded-[92px]"
+              className=" sm:rounded-[36px] rounded-[92px]"
             />
           </div>
-          <p className="text-xs sm:text-sm text-center text-darkGray">
+          <p className="sm:text-xs text-sm text-center text-darkGray">
             E-Mail : 이메일@gmail.com <br /> Kakaotalk : @카카오톡ID
           </p>
         </div>
-        <div className="w-full flex flex-col items-center sm:w-1/2 sm:block">
-          <h2 className="text-sm sm:text-3xl font-bold mb-2 ml-1">CEO</h2>
-          <h2 className="text-3xl sm:text-5xl font-bold tracking-tighter mb-8">
+        <div className="sm:w-full w-1/2 sm:flex block flex-col items-center">
+          <h2 className="sm:text-sm text-3xl font-bold mb-2 ml-1">CEO</h2>
+          <h2 className="sm:text-3xl text-5xl font-bold tracking-tighter mb-8">
             이주연
           </h2>
-          <h2 className=" self-start font-GmarketSans text-4xl sm:text-[40px] leading-[52px] font-medium mt-10 mb-6 sm:mb-8 whitespace-nowrap">
+          <h2 className="self-start font-GmarketSans sm:text-4xl text-[40px] leading-[52px] font-medium mt-10 sm:mb-6 mb-8 whitespace-nowrap">
             <span className={spanStyle}>샤</span>
             <span className={spanStyle}>뜨</span>와
             <span className={spanStyle}>함</span>
             <span className={spanStyle}>께</span>
             하세요
           </h2>
-          <p className="text-sm sm:text-lg">
+          <p className="sm:text-sm text-lg">
             모던마스터스는 세계 1위의 고급 페인트 공급사로서 메탈릭 페인트,
             부식효과 페인트, 건축 외부용 페인트, 테마 페인트, 블랙라이트 페인트,
             글레이즈, 바니쉬, 크랙클 페인트, 건축용 기능성 페인트, DIY, 건축용
@@ -138,7 +138,7 @@ const GreetingClient = () => {
           title="주요이력"
           desc="국내외 최고의 기관에서 교육 과정을 수료하였습니다."
         />
-        <ul className="text-xs sm:text-lg 2xl:h-[440px] flex flex-wrap gap-2">
+        <ul className="sm:text-xs text-lg 2xl:h-[440px] flex flex-wrap gap-2">
           {resumeText.map((text, index) => (
             <motion.li key={index} variants={li} className={liStyle}>
               {text}
@@ -157,7 +157,7 @@ const GreetingClient = () => {
           title="수상내역"
           desc="국내외 최고의 기관에서 교육 과정을 수료하였습니다."
         />
-        <div className="flex flex-wrap gap-x-5 gap-y-2 sm:gap-5 w-full">
+        <div className="flex flex-wrap sm:gap-x-5 sm:gap-y-2 gap-5 w-full">
           {awards.map((award, index) => (
             <motion.div
               key={index}
@@ -167,7 +167,7 @@ const GreetingClient = () => {
                 zIndex: 1,
                 transition: { duration: 0.3, ease: "easeInOut" },
               }}
-              className="w-1/4 h-auto sm:w-60 sm:h-40 rounded-md flex items-center justify-center border border-borderGray"
+              className="sm:w-1/4 sm:h-auto w-60 h-40 rounded-md flex items-center justify-center border border-borderGray"
             >
               <Image
                 src={award}
@@ -190,10 +190,10 @@ const GreetingClient = () => {
           title="미디어"
           desc="국내 다양한 TV, 라디오, 유튜브에 프로그램에 출연하였습니다."
         />
-        <div className="flex flex-wrap gap-x-5 gap-y-2 sm:gap-5 w-full">
+        <div className="flex flex-wrap sm:gap-x-5 sm:gap-y-2 gap-5 w-full">
           {medias.map((media, index) => (
             <motion.div
-              className="relative w-1/4 h-auto sm:w-60 sm:h-40 rounded-md"
+              className="relative sm:w-1/4 sm:h-auto w-60 h-40 rounded-md"
               key={index}
               variants={li}
               whileHover={{
@@ -222,11 +222,11 @@ export default GreetingClient;
 
 const SemiTitle = ({ title, desc }: { title: string; desc: string }) => {
   return (
-    <div className="flex justify-start items-center mb-7 gap-6 sm:gap-7">
-      <div className="bg-primaryBlue w-3 sm:w-2 h-20 lg:h-14" />
+    <div className="flex justify-start items-center mb-7 sm:gap-6 gap-7">
+      <div className="bg-primaryBlue sm:w-3 w-2 h-20 lg:h-14" />
       <div className="inline-flex flex-col justify-center">
         <h2 className="text-3xl font-bold">{title}</h2>
-        <p className="text-sm sm:text-lg">{desc}</p>
+        <p className="sm:text-sm text-lg">{desc}</p>
       </div>
     </div>
   );

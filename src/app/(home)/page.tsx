@@ -58,7 +58,7 @@ export default async function Home() {
       <main className="font-kor overflow-x-hidden">
         {/* 메인 배너 */}
         <Motion initial="hidden" whileInView="visible" variants={fadeIn}>
-          <div className="w-full h-[300px] sm:h-[970px] relative">
+          <div className="w-full sm:h-[300px] h-[970px] relative">
             <Slider id="main-banner" datas={datas} fill={true} arrowSize={54} />
           </div>
         </Motion>
@@ -72,13 +72,13 @@ export default async function Home() {
         <Motion initial="hidden" whileInView="visible" variants={container}>
           <SectionTitle type="syatt">
             <IntroduceSlider introDatas={introDatas}>
-              <p className="font-garamond font-normal text-xl pl-2 mb-5 tracking-[2px]">
+              <p className="font-garamond font-normal text-xl pl-2 mb-5 sm:mb-0 tracking-[2px]">
                 SYATT
               </p>
               <h2 className="text-[50px] font-bold mb-11 whitespace-break-spaces">
                 샤뜨
               </h2>
-              <p className="text-lg  sm:mb-16 text-center sm:text-left whitespace-break-spaces">
+              <p className="text-lg mb-16 sm:mb-0 sm:text-center text-left whitespace-break-spaces">
                 주식회사 샤뜨는 외단열 시스템의 현장 적용과 시공 감리를
                 체계적으로 진행하여 에너지 손실을 최소화하고 외단열 현장의
                 다양한 고객 요구를 충족시키기 위해 도전을 계속하고 있습니다.
@@ -101,11 +101,11 @@ export default async function Home() {
         {/* 교육소개 */}
         <Motion initial="hidden" whileInView="visible" variants={container}>
           <SectionTitle type="education">
-            <div className="w-[95%] sm:w-[85%] h-full sm:h-[630px] flex flex-col sm:flex-row">
-              <div className="h-[232px] sm:h-full w-full sm:w-[62%] relative">
+            <div className="sm:w-[95%] w-[85%] sm:h-full h-[630px] flex sm:flex-col flex-row">
+              <div className="sm:h-[232px] h-full sm:w-full w-[62%] relative">
                 <Image src={eduImg} alt="eduImg" fill={true} />
               </div>
-              <div className="w-full sm:w-[38%] h-full pt-12 px-6 pb-8 sm:pr-14 sm:pl-24 sm:py-28 flex flex-col justify-center items-center sm:block text-white bg-black">
+              <div className="sm:w-full w-[38%] h-full pt-12 sm:px-6 sm:pb-8 pr-14 pl-24 py-28 sm:flex flex-col justify-center items-center block text-white bg-black">
                 <p className="font-garamond font-normal text-lg pl-1 mb-4 tracking-[2px]">
                   RESERVATION
                 </p>
@@ -120,7 +120,7 @@ export default async function Home() {
                   지금 예약하고 샤뜨의 예술적 여정에 참여하세요.
                 </p>
                 <Button
-                  style="w-full sm:w-[166px] h-[50px] border-white border text-white"
+                  style="sm:w-full w-[166px] h-[50px] border-white border text-white"
                   styleType="blank"
                 >
                   <Link href={URLS.EDUCATION}>예약하기</Link>
@@ -130,7 +130,7 @@ export default async function Home() {
           </SectionTitle>
         </Motion>
         {/* 하단 배너 */}
-        <div className="w-full h-[250px] sm:h-[430px] relative bg-black flex justify-center items-center sm:mt-40">
+        <div className="w-full sm:h-[250px] h-[430px] relative bg-black flex justify-center items-center mt-40 sm:mt-0">
           <Image
             src={bottomBanner}
             fill={true}
