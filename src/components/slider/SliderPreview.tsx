@@ -2,6 +2,7 @@
 import { useDispatch } from "react-redux";
 import { setCurrentSlide } from "@/redux/slice/sliderSlice";
 import Image, { StaticImageData } from "next/image";
+import { Mobile } from "@/hooks/useMediaQuery";
 
 interface SliderPreviewProps {
   id: string;
@@ -11,11 +12,12 @@ interface SliderPreviewProps {
 
 const SliderPreview = ({ id, imgUrl, index }: SliderPreviewProps) => {
   const dispatch = useDispatch();
+  const isMobile = Mobile();
   return (
     <Image
       src={imgUrl}
-      width={97}
-      height={68}
+      width={isMobile ? 62 : 97}
+      height={isMobile ? 43 : 68}
       alt="introSub"
       onClick={() => dispatch(setCurrentSlide({ id, index }))}
       className="cursor-pointer"

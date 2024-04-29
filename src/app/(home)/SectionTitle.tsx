@@ -1,3 +1,5 @@
+import ResponsiveDesc from "./ResponsiveDesc";
+
 interface SectionTitleProps {
   type: "syatt" | "brand" | "introduce" | "education";
   children: React.ReactNode;
@@ -54,7 +56,7 @@ const SectionTitle = ({ type, children }: SectionTitleProps) => {
   return (
     <div
       className={
-        "w-full h-auto flex flex-col items-center my-36" +
+        "w-full h-auto flex flex-col items-center my-20 sm:my-36 justify-center sm:justify-normal" +
         " " +
         (isCenter && "justify-center") +
         " " +
@@ -64,13 +66,13 @@ const SectionTitle = ({ type, children }: SectionTitleProps) => {
       <div
         className={
           isCenter
-            ? "flex flex-col justify-center items-center h-[230px] font-eng mb-14"
-            : "w-[85%]"
+            ? "flex flex-col justify-center items-center w-[90%] h-[250px] font-eng mb-14"
+            : "flex flex-col justify-center items-center font-eng mb-14 sm:w-[85%] sm:block sm:mb-0"
         }
       >
         <p
           className={
-            "font-garamond font-normal text-2xl mb-4 mt-8" +
+            "font-garamond font-normal text-base sm:text-2xl mb-4 mt-8" +
             " " +
             (isCenter ? "tracking-[4.8px]" : "tracking-[2.4px]")
           }
@@ -79,7 +81,7 @@ const SectionTitle = ({ type, children }: SectionTitleProps) => {
         </p>
         <h2
           className={
-            "text-6xl font-bold whitespace-nowrap relative" +
+            "text-3xl sm:text-6xl font-bold whitespace-nowrap relative" +
             " " +
             (isCenter && "tracking-tighter")
           }
@@ -92,17 +94,11 @@ const SectionTitle = ({ type, children }: SectionTitleProps) => {
         <p
           className={
             isCenter
-              ? "text-center text-lg font-medium mt-9 leading-8 break-keep"
-              : "text-lg pt-9 mb-20 w-1/2 break-keep"
+              ? "text-left px-6 font-medium mt-9 leading-8 sm:break-keep sm:text-center text-sm sm:text-lg sm:px-0"
+              : "text-sm text-center sm:text-left sm:text-lg sm:px-0 px-6 pt-3 sm:pt-9 sm:mb-20 sm:w-1/2 break-keep"
           }
         >
-          {description.split(".").map((sentence, index) => (
-            <span key={index}>
-              {sentence.trim()}
-              {index < description.split(".").length - 1 && "."}
-              <br />
-            </span>
-          ))}
+          <ResponsiveDesc desc={description} />
         </p>
         {!isCenter && children}
       </div>
