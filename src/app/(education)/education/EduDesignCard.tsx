@@ -45,13 +45,13 @@ const EduDesignCard = ({ type }: EduDesignCardProps) => {
   const { image, title, description, indexNumber } = src;
   return (
     <div className="flex flex-col">
-      <div className="hidden sm:flex h-44 items-end justify-end">
+      <div className="sm:hidden flex h-44 items-end justify-end">
         <span className="text-[120px] text-primaryBlue opacity-20 h-40">
           {indexNumber}
         </span>
       </div>
-      <div className="flex flex-col w-[150px] sm:w-[296px] h-[250px] sm:h-[453px] sm:shadow-2xl rounded-3xl bg-bgGray items-center justify-center p-3 sm:p-5 border border-tableBorderGray">
-        <div className="relative w-[130px] h-auto sm:w-[257px] sm:h-[279px]">
+      <div className="flex flex-col w-[296px] sm:w-[150px] sm:h-[250px] h-[453px] shadow-2xl sm:shadow-none rounded-3xl bg-bgGray items-center justify-center sm:p-3 p-5 border border-tableBorderGray">
+        <div className="relative w-[257px] sm:w-[130px] h-[279px] sm:h-auto">
           <Image
             src={image}
             sizes="100vw"
@@ -63,14 +63,14 @@ const EduDesignCard = ({ type }: EduDesignCardProps) => {
         <div className={"flex flex-col items-center rounded-b-3xl z-10"}>
           <span
             className={
-              "mt-4 sm:mt-8 text-base sm:text-[32px] font-bold text-black font-GmarketSans"
+              "sm:mt-4 mt-8 sm:text-base text-[32px] font-bold text-black font-GmarketSans"
             }
           >
             {title}
           </span>
           <span
             className={
-              "text-center text-xs sm:text-sm font-medium text-black sm:w-[228px]"
+              "text-center sm:text-xs text-sm font-medium text-black w-[228px] sm:w-auto"
             }
           >
             {description}

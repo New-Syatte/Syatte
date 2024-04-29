@@ -12,29 +12,29 @@ export default function EducationCard() {
   return (
     <div
       className={
-        "w-[320px] sm:w-[1163px] sm:h-[533px] border-2 shadow-xl rounded-2xl p-6 sm:p-12 mb-[82px] bg-white"
+        "w-[1163px] sm:w-[320px] h-[533px] sm:h-auto border-2 shadow-xl rounded-2xl sm:p-6 p-12 mb-[82px] bg-white"
       }
     >
       <div
         className={
-          "flex flex-col sm:flex-row items-center justify-center sm:items-end sm:justify-between pt-4"
+          "flex sm:flex-col sm:items-center sm:justify-center items-end justify-between pt-4"
         }
       >
         <div
           className={
-            "flex flex-col items-center justify-center sm:items-start sm:justify-center"
+            "flex flex-col sm:items-center sm:justify-center items-start justify-center"
           }
         >
           <span
             className={
-              "text-black text-xl sm:text-[40px] font-bold sm:leading-[68px]"
+              "text-black sm:text-xl text-[40px] font-bold sm:leading-normal leading-[68px]"
             }
           >
             Aplicatior 교육패키지
           </span>
           <span
             className={
-              "sm:w-[676px] text-black text-xs sm:text-lg font-normal mt-1 leading-normal"
+              "w-[676px] sm:w-auto text-black sm:text-xs text-lg font-normal mt-1 leading-normal"
             }
           >
             실무 중심의 강력한 역량 강화를 위한 프로그램으로, 업계 수요를 반영한
@@ -45,7 +45,7 @@ export default function EducationCard() {
         <button
           onClick={handleClick}
           className={
-            "my-4 sm:my-0 py-2 px-4 sm:py-4 sm:px-8 bg-primaryBlue border-white border-2 text-center text-white text-sm sm:text-xl font-bold rounded-md whitespace-nowrap"
+            "sm:my-4 my-0 sm:py-2 sm:px-4 py-4 px-8 bg-primaryBlue border-white border-2 text-center text-white sm:text-sm text-xl font-bold rounded-md whitespace-nowrap"
           }
         >
           풀코스 신청하기
@@ -53,7 +53,7 @@ export default function EducationCard() {
       </div>
       <div
         className={
-          "flex flex-wrap sm:flex-nowrap justify-center items-center mt-4 sm:mt-7 gap-3 sm:space-x-10 sm:mb-[97px]"
+          "flex sm:flex-wrap flex-nowrap justify-center items-center sm:mt-4 mt-7 gap-3 sm:space-x-0 space-x-10 sm:mb-0 mb-[97px]"
         }
       >
         {ApplicatiorCards.map(index => (

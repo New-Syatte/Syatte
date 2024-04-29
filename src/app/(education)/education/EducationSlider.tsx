@@ -37,7 +37,7 @@ const EducationSlider = () => {
 
   return (
     <div className="w-full h-full flex justify-center items-center overflow-hidden">
-      <div className="w-[320px] sm:w-[1163px] h-full edu-slick">
+      <div className="sm:w-[320px] w-[1163px] h-full edu-slick">
         <Slider {...settings}>
           {slideData.map(slide => (
             <EducationCard key={slide.id} />

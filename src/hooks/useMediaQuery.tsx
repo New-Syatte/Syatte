@@ -3,7 +3,7 @@ import { useMediaQuery } from "react-responsive";
 
 export const Mobile = () => {
   const [mobile, setMobile] = useState<boolean>(false);
-  const isMobile = useMediaQuery({ maxWidth: 640 });
+  const isMobile = useMediaQuery({ minWidth: 360, maxWidth: 819 });
 
   const checkResize = () => {
     if (isMobile) {
