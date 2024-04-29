@@ -1,5 +1,5 @@
 import Image from "next/image";
-import styles from "./Footer.module.scss";
+// import styles from "./Footer.module.scss";
 
 export default function Footer() {
   const personalData = [
@@ -31,18 +31,18 @@ export default function Footer() {
   ];
 
   return (
-    <footer className="w-full flex items-center justify-center text-white h-footerHeight bg-black">
-      <div className="w-full flex px-10 justify-between">
+    <footer className="w-full flex items-center justify-center text-white h-footerHeight bg-black sm:h-full">
+      <div className="w-full flex px-10 justify-between sm:flex-col sm:px-0 sm:m-[35px]">
         {/* 왼쪽 메뉴 */}
-        <div className="flex flex-col w-[30%]">
-          <div className="flex items-center mb-6">
+        <div className="flex flex-col w-[30%] sm:w-full sm:mb-[50px]">
+          <div className="flex items-center mb-6 sm:flex-col sm:items-start">
             <div className="flex flex-col mr-3">
               <div className="text-[30px]">문의전화</div>
               <div className="text-[9px] tracking-[0.9px]">
                 AM 09:00 ~ PM 05:00
               </div>
             </div>
-            <div className="flex text-[56px] my-auto leading-10">1566-1000</div>
+            <div className="flex text-[56px] my-auto leading-10 sm:mt-[10px] sm:text-[40px]">1566-1000</div>
           </div>
           <div className="text-[18px] font-bold mb-3">SYATT</div>
           <div className="text-[12px] mb-6">
@@ -52,7 +52,7 @@ export default function Footer() {
             <br />
             주소 기입 고객센터 : 고객센터 기입
           </div>
-          <div className="flex gap-6 font-bold">
+          <div className="flex gap-6 font-bold sm:flex-col sm:gap-2 sm:mt-[30px]">
             {personalData.map(data => (
               <>
                 <div className="cursor-pointer">{data}</div>
@@ -62,20 +62,20 @@ export default function Footer() {
         </div>
 
         {/* 중앙 메뉴 */}
-        <div className="flex w-[35%] px-6 justify-between">
+        <div className="flex w-[35%] px-6 justify-between sm:w-full sm:flex-col sm:px-0 sm:mb-[50px]">
           {pagesData.map(data => (
             <>
               <ul className="flex flex-col">
                 <li className="text-[18px] font-bold mb-[12px]">
                   {data.title}
                 </li>
-                <li className="cursor-pointer">
+                <li className="cursor-pointer sm:text-[12px]">
                   {data.manu1 === null ? "" : "• " + data.manu1}
                 </li>
-                <li className="cursor-pointer">
+                <li className="cursor-pointer sm:text-[12px]">
                   {data.manu2 === null ? "" : "• " + data.manu2}
                 </li>
-                <li className="cursor-pointer">
+                <li className="cursor-pointer sm:text-[12px] sm:mb-[20px]">
                   {data.manu3 === null ? "" : "• " + data.manu3}
                 </li>
               </ul>
@@ -84,7 +84,7 @@ export default function Footer() {
         </div>
 
         {/* 오른쪽 메뉴 */}
-        <div className="flex flex-col w-[25%] items-end justify-end">
+        <div className="flex flex-col w-[25%] items-end justify-end sm:w-full sm:justify-start sm:items-start sm:mb-[20px]">
           <div>
             <Image
               src="/syatt_footer_logo.svg"
