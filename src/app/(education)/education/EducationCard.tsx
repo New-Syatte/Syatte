@@ -12,17 +12,29 @@ export default function EducationCard() {
   return (
     <div
       className={
-        "w-[1163px] h-[533px] border-2 shadow-xl rounded-2xl p-12 mb-[82px] bg-white"
+        "w-[320px] sm:w-[1163px] sm:h-[533px] border-2 shadow-xl rounded-2xl p-6 sm:p-12 mb-[82px] bg-white"
       }
     >
-      <div className={"flex items-end justify-between pb-6"}>
-        <div className={"flex flex-col items-start justify-center"}>
-          <span className={"text-black text-[40px] font-bold leading-[68px]"}>
+      <div
+        className={
+          "flex flex-col sm:flex-row items-center justify-center sm:items-end sm:justify-between pt-4"
+        }
+      >
+        <div
+          className={
+            "flex flex-col items-center justify-center sm:items-start sm:justify-center"
+          }
+        >
+          <span
+            className={
+              "text-black text-xl sm:text-[40px] font-bold sm:leading-[68px]"
+            }
+          >
             Aplicatior 교육패키지
           </span>
           <span
             className={
-              "w-[676px] text-black text-lg font-normal mt-1 leading-normal"
+              "sm:w-[676px] text-black text-xs sm:text-lg font-normal mt-1 leading-normal"
             }
           >
             실무 중심의 강력한 역량 강화를 위한 프로그램으로, 업계 수요를 반영한
@@ -33,14 +45,16 @@ export default function EducationCard() {
         <button
           onClick={handleClick}
           className={
-            "py-4 px-8 bg-primaryBlue border-white border-2 text-center text-white text-xl font-bold rounded-md whitespace-nowrap"
+            "my-4 sm:my-0 py-2 px-4 sm:py-4 sm:px-8 bg-primaryBlue border-white border-2 text-center text-white text-sm sm:text-xl font-bold rounded-md whitespace-nowrap"
           }
         >
           풀코스 신청하기
         </button>
       </div>
       <div
-        className={"flex justify-center items-center mt-7 space-x-10 mb-[97px]"}
+        className={
+          "flex flex-wrap sm:flex-nowrap justify-center items-center mt-4 sm:mt-7 gap-3 sm:space-x-10 sm:mb-[97px]"
+        }
       >
         {ApplicatiorCards.map(index => (
           <ApplicatorCard key={index} />
