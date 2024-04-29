@@ -1,4 +1,6 @@
 import Image from "next/image";
+import Link from "next/link";
+import URLS from "@/constants/urls";
 
 export default function Footer() {
   const personalData = [
@@ -14,18 +16,27 @@ export default function Footer() {
       manu1: "협회 소개",
       manu2: "교육 소개",
       manu3: "마이페이지",
+      link1: URLS.GREETINGS,
+      link2: URLS.EDUCATION,
+      link3: URLS.ORDER_HISTORY,
     },
     {
       title: "모던마스터즈",
       manu1: "브랜드 소개",
       manu2: "브랜드 상품 스토어",
       manu3: null,
+      link1: URLS.MODERN_MASTERS,
+      link2: URLS.PRODUCT_STORE,
+      link3: null,
     },
     {
       title: "마이다스메탈",
       manu1: "브랜드 소개",
       manu2: "브랜드 상품 스토어",
       manu3: null,
+      link1: URLS.MIDAS_METAL,
+      link2: URLS.PRODUCT_STORE,
+      link3: null,
     },
   ];
 
@@ -70,14 +81,20 @@ export default function Footer() {
                 <li className="text-[18px] font-bold sm:mb-[12px]">
                   {data.title}
                 </li>
-                <li className="cursor-pointer sm:text-[12px]">
-                  {data.manu1 === null ? "" : "• " + data.manu1}
+                <li className="cursor-pointer text-xs sm:text-base">
+                  <Link href={data.link1 === null ? "/" : data.link1}>
+                    {data.manu1 === null ? "" : "• " + data.manu1}
+                  </Link>
                 </li>
-                <li className="cursor-pointer sm:text-[12px]">
-                  {data.manu2 === null ? "" : "• " + data.manu2}
+                <li className="cursor-pointer text-xs sm:text-base">
+                  <Link href={data.link2 === null ? "/" : data.link2}>
+                    {data.manu2 === null ? "" : "• " + data.manu2}
+                  </Link>
                 </li>
-                <li className="cursor-pointer sm:text-[12px] sm:mb-[20px]">
-                  {data.manu3 === null ? "" : "• " + data.manu3}
+                <li className="cursor-pointer text-xs sm:text-base">
+                  <Link href={data.link3 === null ? "/" : data.link3}>
+                    {data.manu3 === null ? "" : "• " + data.manu3}
+                  </Link>
                 </li>
               </ul>
             </>
