@@ -36,6 +36,11 @@ module.exports = {
           "sans-serif",
         ],
       },
+      screens: {
+        sm: { min: '360px', max: '819px' },
+        md: { min: '820px', max: '1023px' },
+        lg: { min: '1080px' },
+      },
     },
   },
   variants: {
