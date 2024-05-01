@@ -15,6 +15,8 @@ const SliderPreview = ({ id, imgUrl, index }: SliderPreviewProps) => {
     <Image
       src={imgUrl}
       alt="introSub"
+      width={0}
+      height={0}
       sizes="100vw"
       style={{ width: "100%", height: "auto" }}
       onClick={() => dispatch(setCurrentSlide({ id, index }))}

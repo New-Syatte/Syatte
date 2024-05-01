@@ -7,8 +7,8 @@ import { useDispatch } from "react-redux";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Slider from "@/components/slider/Slider";
-import Image from "next/image";
 import URLS from "@/constants/urls";
+import SliderPreview from "@/components/slider/SliderPreview";
 
 type ProductSummaryProps = Omit<
   ProductForDetail,
@@ -38,6 +38,8 @@ const ProductSummary = ({
     dispatch(CALCULATE_TOTAL_QUANTITY());
   };
 
+  console.log("images", images);
+
   return (
     <>
       <div className="flex flex-col justify-center items-center sm:w-[90%] w-[415px]">
@@ -53,15 +55,16 @@ const ProductSummary = ({
           />
         </div>
         {/* Carousel 자리 */}
-        <div className="sm:w-full w-[415px] mb-12 mt-5">
-          <Slider
-            id="productDetailSlider"
-            datas={images}
-            width={89}
-            height={54}
-            slidePerView={4}
-            arrowSize={30}
-          />
+        <div className="sm:w-full flex justify-center items-center gap-2 w-[415px] mb-12 mt-5 overflow-x-auto">
+          {images.map((image, index) => (
+            <div key={index} className="flex items-center justify-center w-1/5">
+              <SliderPreview
+                id="productDetailSlider"
+                imgUrl={image.imageUrl as any}
+                index={index}
+              />
+            </div>
+          ))}
         </div>
         <div className="w-full">
           <h2 className="text-neutral-800 text-3xl font-bold mb-5">
