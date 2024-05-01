@@ -40,9 +40,9 @@ const ProductSummary = ({
 
   return (
     <>
-      <div className="flex flex-col justify-center items-center w-[415px]">
+      <div className="flex flex-col justify-center items-center sm:w-[90%] w-[415px]">
         {/* Image */}
-        <div className="flex justify-center items-center w-[415px] h-[302px] bg-zinc-100 rounded border border-zinc-400">
+        <div className="flex justify-center items-center sm:w-[90%] w-[415px] h-[302px] bg-zinc-100 rounded border border-zinc-400">
           <Slider
             id="productDetailSlider"
             datas={images}
@@ -53,7 +53,7 @@ const ProductSummary = ({
           />
         </div>
         {/* Carousel 자리 */}
-        <div className="w-[415px] mb-12 mt-5">
+        <div className="sm:w-full w-[415px] mb-12 mt-5">
           <Slider
             id="productDetailSlider"
             datas={images}
@@ -67,7 +67,7 @@ const ProductSummary = ({
           <h2 className="text-neutral-800 text-3xl font-bold mb-5">
             {productName}
           </h2>
-          <p className="text-neutral-800 text-sm font-normal leading-[25.20px]">
+          <p className="text-neutral-800 text-sm font-normal sm:leading-normal leading-[25.20px]">
             {description}
           </p>
           {/* <ul className="border-whitegray border-y-2 py-10 list-disc">
@@ -91,8 +91,8 @@ const ProductSummary = ({
             </p>
           </article>
           {/* 수량 버튼 */}
-          <div className="flex justify-between items-center border-b-2 gap-8 w-[415px] h-[61px] bg-zinc-100 rounded mt-7 p-3">
-            <div className="w-[103px] h-9">
+          <div className="flex justify-between items-center border-b-2 gap-8 sm:w-full w-[415px] h-[61px] bg-zinc-100 rounded mt-7 p-3">
+            <div className="sm:w-1/2 w-[103px] h-9">
               <div className="flex justify-between items-center h-9 bg-white border border-zinc-300 rounded">
                 <Button
                   onClick={() => setCount(prev => prev - 1)}
@@ -122,7 +122,7 @@ const ProductSummary = ({
           </div>
           {/* 주문 금액 */}
           <div>
-            <div className="flex justify-between items-center gap-8 w-[415px] h-[61px] mt-7 p-3">
+            <div className="flex justify-between items-center gap-8 sm:w-full w-[415px] h-[61px] mt-7 p-3">
               <p className="text-neutral-800 text-[22px] font-bold">주문금액</p>
               <p className="text-neutral-800 text-[28px] font-bold ">
                 {(price - (price * discount) / 100).toLocaleString()}원
