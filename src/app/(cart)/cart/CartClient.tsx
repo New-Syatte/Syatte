@@ -1,37 +1,40 @@
 "use client";
-
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { useDispatch, useSelector } from "react-redux";
 import {
   ADD_TO_CART,
-  CALCULATE_SUBTOTAL,
-  CALCULATE_TOTAL_QUANTITY,
-  CLEAR_CART,
   DECREASE_CART,
   REMOVE_FROM_CART,
+  REMOVE_CHECKED_ITEMS_FROM_CART,
+  CALCULATE_CHECKED_ITEMS_QUANTITY,
+  CALCULATE_CHECKED_ITEMS_SUBTOTAL,
+  SELECT_ALL_ITEMS,
+  UNCHECK_ALL_ITEMS,
+  ALTERNATE_CHECKED_ITEMS,
+  selectAllChecked,
   SAVE_URL,
   selectCartItems,
-  selectCartTotalAmount,
-  selectCartTotalQuantity,
 } from "@/redux/slice/cartSlice";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import Heading from "@/components/heading/Heading";
-import Link from "next/link";
 import priceFormat from "@/utils/priceFormat";
 import Button from "@/components/button/Button";
 import { CartItem } from "@/type/cart";
-import { AiFillCaretDown, AiFillCaretUp } from "react-icons/ai";
-import deliveryFee from "@/constants/deliveryFee";
 import URLS from "@/constants/urls";
+import { RxCross2 } from "react-icons/rx";
+import { HiMinus, HiPlus } from "react-icons/hi2";
+import CartInfoArticle from "./CartInfoArticle";
+import CartIcon from "@/assets/cart/cartIcon.svg";
 
 const ICON_CLASS =
-  "flex text-[24px] transition-all cursor-pointer hover:text-brand hover:scale-200 mx-1 ";
+  "flex w-4 h-4 text-xs text-white bg-primaryBlue rounded-sm transition-all cursor-pointer hover:text-brand hover:scale-200 mx-1 ";
 
 export default function CartClient() {
   const cartItems = useSelector(selectCartItems);
-  const cartTotalAmount = useSelector(selectCartTotalAmount);
-  const cartTotalQuantity = useSelector(selectCartTotalQuantity);
+  const [isClient, setIsClient] = useState(false);
+  const isAllChecked = useSelector(selectAllChecked);
+  const [isDisabled, setIsDisabled] = useState(false);
 
   const dispatch = useDispatch();
   const router = useRouter();
@@ -46,105 +49,165 @@ export default function CartClient() {
   const removeCart = (cart: CartItem) => {
     dispatch(REMOVE_FROM_CART(cart));
   };
-
-  const clearCart = () => {
-    dispatch(CLEAR_CART());
-  };
-
-  const url = typeof window !== "undefined" ? window.location.href : "";
   const checkout = () => {
     router.push(URLS.CHECKOUT_ADDRESS);
   };
-  // url, checkout은 사용되지 않고 잇다
+  const altCheck = (id: string) => {
+    dispatch(ALTERNATE_CHECKED_ITEMS({ id }));
+  };
+
+  const altCheckAll = () => {
+    if (isAllChecked) {
+      dispatch(UNCHECK_ALL_ITEMS());
+    }
+    if (!isAllChecked) {
+      dispatch(SELECT_ALL_ITEMS());
+    }
+  };
 
   useEffect(() => {
-    dispatch(CALCULATE_SUBTOTAL());
-    dispatch(CALCULATE_TOTAL_QUANTITY());
+    dispatch(CALCULATE_CHECKED_ITEMS_SUBTOTAL());
+    dispatch(CALCULATE_CHECKED_ITEMS_QUANTITY());
     dispatch(SAVE_URL(""));
+
+    if (
+      cartItems.length === 0 ||
+      cartItems.every(item => item.isChecked === false)
+    ) {
+      setIsDisabled(true);
+    } else {
+      setIsDisabled(false);
+    }
   }, [dispatch, cartItems]);
 
-  return (
-    <section className="w-[1280px] mx-auto my-12 min-h-[44.6vh]">
-      <Heading title={"장바구니"} />
-      {cartItems.length === 0 ? (
-        <>
-          <p className={"text-center font-bold text-[30px]"}>
-            장바구니가 비었습니다.
-          </p>
-          <div
-            className={"text-center font-bold text-[30px] border-[2px] mt-4"}
-          >
-            <Link href={URLS.PRODUCT_STORE}>계속 쇼핑하기</Link>
-          </div>
-        </>
-      ) : (
-        <>
-          <div className={"border-[1px] mt-4"} />
-          {cartItems.map(cart => {
-            const { id, name, imageURL, price, cartQuantity } = cart;
-            return (
-              <div key={cart.id}>
-                <div
-                  className={"flex justify-between items-center px-3"}
-                  key={id}
-                >
-                  <div>
-                    <Image src={imageURL} alt={name} width={200} height={200} />
-                  </div>
-                  <div>
-                    <p className={"text-[20px] text-nomal"}>{name}</p>
-                  </div>
-                  <div className={"flex justify-between items-center gap-4"}>
-                    <AiFillCaretDown
-                      className={ICON_CLASS}
-                      onClick={() => decreaseCart(cart)}
-                    />
-                    <p className={"text-[20px]"}>{cartQuantity} 개</p>
-                    <AiFillCaretUp
-                      className={ICON_CLASS}
-                      onClick={() => increaseCart(cart)}
-                    />
-                  </div>
-                  <div>
-                    <span className={"text-[20px] text-darkgray"}>
-                      {deliveryFee === 0 ? "무료배송" : deliveryFee}
-                    </span>
-                  </div>
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
 
-                  <p className={"text-[24px]"}>
-                    {priceFormat(price * cartQuantity)} 원
+  if (isClient)
+    return (
+      <section className="w-[80%] mx-auto my-24 min-h-[80vh] flex flex-col items-start justify-start">
+        <Heading title={"장바구니"} fontSize="6xl" />
+        <div className="flex w-full mt-10 gap-20">
+          <div className="w-2/3">
+            <div className="w-full border-y border-lightGray py-10">
+              {cartItems.length !== 0 &&
+                cartItems.map(cart => {
+                  const { id, name, imageURL, price, cartQuantity } = cart;
+                  return (
+                    <div
+                      className={"flex justify-between items-center px-3 py-3"}
+                      key={id}
+                    >
+                      <input
+                        type="checkbox"
+                        checked={cart.isChecked}
+                        onClick={() => altCheck(id)}
+                        className="appearance-none w-5 h-5 border border-lightGray checked:bg-[url('/checkmark_io.svg')] bg-no-repeat bg-center checked:bg-primaryBlue"
+                      />
+                      <div className="w-[100px] h-[100px] flex justify-center items-center border border-lightGray">
+                        <Image
+                          src={imageURL}
+                          alt={name}
+                          width={0}
+                          height={0}
+                          sizes="100vw"
+                          style={{ width: "80%", height: "auto" }}
+                        />
+                      </div>
+                      <div className="w-1/3">
+                        <p className={"text-lg text-nomal w-full"}>{name}</p>
+                      </div>
+                      <div
+                        className={"flex justify-between items-center gap-4"}
+                      >
+                        <HiMinus
+                          className={ICON_CLASS}
+                          onClick={() => decreaseCart(cart)}
+                        />
+                        <p className={"text-lg"}>{cartQuantity}</p>
+                        <HiPlus
+                          className={ICON_CLASS}
+                          onClick={() => increaseCart(cart)}
+                        />
+                      </div>
+                      <p className={"text-[22px] font-bold w-1/5 text-right"}>
+                        {priceFormat(price * cartQuantity)} 원
+                      </p>
+                      <div>
+                        <button onClick={() => removeCart(cart)}>
+                          <RxCross2 className="w-5 h-5 text-lightGray" />
+                        </button>
+                      </div>
+                    </div>
+                  );
+                })}
+              {cartItems.length === 0 && (
+                <div className="w-full h-96 flex flex-col justify-center items-center gap-10">
+                  <div className="w-1/3 flex justify-center items-center">
+                    <Image
+                      src={CartIcon}
+                      alt="cart icon"
+                      width={0}
+                      height={0}
+                      sizes="100vw"
+                      style={{ width: "50%", height: "auto" }}
+                    />
+                  </div>
+                  <p className="text-3xl text-[#dddddd] font-bold">
+                    장바구니가 비어 있습니다
                   </p>
-                  <div>
-                    <Button onClick={() => removeCart(cart)}>삭 제</Button>
-                  </div>
                 </div>
-                <div className={"border-[1px] mt-4"} />
-              </div>
-            );
-          })}
-        </>
-      )}
-      <div className="mt-8 flex justify-between items-start">
-        <Button type="button" style="py-3 px-12" onClick={clearCart}>
-          카트 비우기
-        </Button>
-
-        <div>
-          <div className={"flex justify-between items-center"}>
-            <p className={"text-[20px]"}>전체 상품 개수</p>
-            <p className={"text-[24px]"}>{cartTotalQuantity} 개</p>
+              )}
+            </div>
+            <div className="flex justify-start items-center gap-2 text-lg font-bold mt-5">
+              <input
+                type="checkbox"
+                id="checkAll"
+                checked={isAllChecked}
+                onChange={altCheckAll}
+                className={
+                  cartItems.length === 0
+                    ? "cursor-default"
+                    : "cursor-pointer" +
+                      " appearance-none w-5 h-5 border border-lightGray checked:bg-[url('/checkmark_io.svg')] bg-no-repeat bg-center checked:bg-primaryBlue"
+                }
+                disabled={cartItems.length === 0}
+              />
+              <label
+                htmlFor="checkAll"
+                className={
+                  cartItems.length === 0 ? "cursor-default" : "cursor-pointer"
+                }
+              >
+                전체 선택
+              </label>
+              <p className="cursor-default">{"|"}</p>
+              <button
+                onClick={() => dispatch(REMOVE_CHECKED_ITEMS_FROM_CART())}
+                disabled={
+                  cartItems.length === 0 ||
+                  cartItems.every(item => !item.isChecked)
+                }
+              >
+                선택 삭제
+              </button>
+            </div>
           </div>
-          <div className={"flex gap-4"}>
-            <h4 className={"font-semibold mb-4 text-xl"}>합계</h4>
-            <p className={"font-semibold text-2xl"}>
-              {priceFormat(cartTotalAmount)}원
-            </p>
+          <div className="flex flex-col justify-start items-start w-1/4 gap-5">
+            <CartInfoArticle />
+            <div className="w-full h-14">
+              <Button
+                onClick={checkout}
+                style="text-xl font-bold"
+                disabled={isDisabled}
+              >
+                주문하기
+              </Button>
+            </div>
           </div>
-          <Button onClick={checkout} style="w-full h-10">
-            주 소 입 력
-          </Button>
         </div>
-      </div>
-    </section>
-  );
+      </section>
+    );
+  else return <></>;
 }

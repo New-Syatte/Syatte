@@ -10,9 +10,5 @@ export default async function CartPage() {
     redirect(URLS.SIGNIN);
   }
 
-  return (
-    <>
-      <CartClient />
-    </>
-  );
+  return <CartClient />;
 }
