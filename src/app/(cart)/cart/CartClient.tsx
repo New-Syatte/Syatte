@@ -32,7 +32,7 @@ const ICON_CLASS =
 
 export default function CartClient() {
   const cartItems = useSelector(selectCartItems);
-  const [isClient, setIsClient] = useState(false);
+  const [isScriptLoaded, setIsScriptLoaded] = useState(false);
   const isAllChecked = useSelector(selectAllChecked);
   const [isDisabled, setIsDisabled] = useState(false);
 
@@ -81,10 +81,10 @@ export default function CartClient() {
   }, [dispatch, cartItems]);
 
   useEffect(() => {
-    setIsClient(true);
+    setIsScriptLoaded(true);
   }, []);
 
-  if (isClient)
+  if (isScriptLoaded)
     return (
       <section className="w-[80%] mx-auto my-24 min-h-[80vh] flex flex-col items-start justify-start">
         <Heading title={"장바구니"} fontSize="6xl" />

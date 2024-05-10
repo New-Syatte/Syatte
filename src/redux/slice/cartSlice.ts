@@ -219,6 +219,8 @@ export const {
 } = cartSlice.actions;
 
 export const selectCartItems = (state: RootState) => state.cart.cartItems;
+export const selectCheckedCartItems = (state: RootState) =>
+  state.cart.cartItems.filter(item => item.isChecked);
 export const selectCartTotalQuantity = (state: RootState) =>
   state.cart.cartTotalQuantity;
 export const selectCartTotalAmount = (state: RootState) =>

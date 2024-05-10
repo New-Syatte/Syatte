@@ -1,14 +1,14 @@
 "use client";
 import Heading from "@/components/heading/Heading";
 import Button from "@/components/button/Button";
-import { FormEvent } from "react";
+import { FormEvent, useEffect } from "react";
 import CheckoutForm from "@/components/checkoutForm/CheckoutForm";
 import { loadTossPayments } from "@tosspayments/payment-sdk";
 import {
   REMOVE_CHECKED_ITEMS_FROM_CART,
-  selectCartItems,
-  selectCartTotalAmount,
-  selectCartTotalQuantity,
+  selectCheckedCartItems,
+  selectCheckedTotalAmount,
+  selectCheckedTotalQuantity,
 } from "@/redux/slice/cartSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
@@ -22,18 +22,21 @@ import dayjs from "dayjs";
 import { saveCart } from "@/services/sanity/cart";
 import { Order } from "@/type/order";
 import URLS from "@/constants/urls";
+import CartInfoArticle from "@/app/(cart)/cart/CartInfoArticle";
+import { useState } from "react";
 
 export default function CheckoutClient() {
   const { data: session } = useSession();
   const userEmail = session?.user?.email;
+  const [isScriptLoaded, setIsScriptLoaded] = useState<boolean>(false);
 
   const dispatch = useDispatch();
   const router = useRouter();
-  const cartItems = useSelector(selectCartItems);
+  const cartItems = useSelector(selectCheckedCartItems);
   const shippingAddress = useSelector(selectShippingAddress);
   const billingAddress = useSelector(selectBillingAddress);
-  const cartTotalAmount = useSelector(selectCartTotalAmount);
-  const cartTotalQuantity = useSelector(selectCartTotalQuantity);
+  const cartTotalAmount = useSelector(selectCheckedTotalAmount);
+  const cartTotalQuantity = useSelector(selectCheckedTotalQuantity);
 
   const clientkey = process.env.NEXT_PUBLIC_TOSS_CLIENT_KEY;
   const secretkey = process.env.NEXT_PUBLIC_TOSS_SECRET_KEY;
@@ -112,21 +115,41 @@ export default function CheckoutClient() {
     }
   };
 
-  return (
-    <section>
-      <div className="w-[80%] mx-auto my-12">
-        <Heading title={"주문하기"} fontSize="6xl" />
-        <form onSubmit={handleSubmit}>
-          <div>
+  useEffect(() => {
+    setIsScriptLoaded(true);
+  }, []);
+
+  if (isScriptLoaded)
+    return (
+      <section className="w-[80%] mx-auto my-24 min-h-[80vh] flex flex-col items-start justify-start">
+        <Heading title={"상품결제"} fontSize="6xl" />
+        <form onSubmit={handleSubmit} className="flex w-full mt-10 gap-20">
+          <div className="w-2/3">
             <CheckoutForm />
           </div>
-          <div className={"flex justify-center items-center"}>
-            <Button type={"submit"} style="py-3 px-12">
-              결재하기
-            </Button>
+          <div className="flex flex-col justify-start items-start w-1/4 gap-5">
+            <CartInfoArticle />
+            <div className="flex w-full gap-2">
+              <div className="w-1/2 h-14">
+                <Button
+                  onClick={() => {
+                    history.back();
+                  }}
+                  style="text-xl font-bold"
+                  styleType="secondary"
+                >
+                  이전으로
+                </Button>
+              </div>
+              <div className="w-1/2 h-14">
+                <Button type="submit" style="text-xl font-bold">
+                  결제하기
+                </Button>
+              </div>
+            </div>
           </div>
         </form>
-      </div>
-    </section>
-  );
+      </section>
+    );
+  else return <></>;
 }
