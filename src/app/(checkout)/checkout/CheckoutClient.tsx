@@ -5,7 +5,7 @@ import { FormEvent } from "react";
 import CheckoutForm from "@/components/checkoutForm/CheckoutForm";
 import { loadTossPayments } from "@tosspayments/payment-sdk";
 import {
-  CLEAR_CART,
+  REMOVE_CHECKED_ITEMS_FROM_CART,
   selectCartItems,
   selectCartTotalAmount,
   selectCartTotalQuantity,
@@ -98,7 +98,7 @@ export default function CheckoutClient() {
           };
           await saveCart(orderData as Order);
           // db에 저장
-          dispatch(CLEAR_CART());
+          dispatch(REMOVE_CHECKED_ITEMS_FROM_CART());
           router.push(`${URLS.CHECKOUT_SUCCESS}?orderId=${orderId}`);
         })
         .catch(error => {
@@ -114,8 +114,8 @@ export default function CheckoutClient() {
 
   return (
     <section>
-      <div className="w-[1020px] mx-auto my-12">
-        <Heading title={"주문하기"} />
+      <div className="w-[80%] mx-auto my-12">
+        <Heading title={"주문하기"} fontSize="6xl" />
         <form onSubmit={handleSubmit}>
           <div>
             <CheckoutForm />

@@ -11,6 +11,7 @@ import Heading from "@/components/heading/Heading";
 import Button from "@/components/button/Button";
 import { useSession } from "next-auth/react";
 import URLS from "@/constants/urls";
+import CartInfoArticle from "@/app/(cart)/cart/CartInfoArticle";
 
 const initialState = {
   name: "",
@@ -18,13 +19,13 @@ const initialState = {
   city: "",
   postalCode: "",
   phone: "",
+  memo: "",
 };
 
 const initialState2 = {
   name: "",
   phone: "",
   userEmail: "",
-  memo: "",
 };
 
 const id = "daum-postcode"; // script가 이미 rendering 되어 있는지 확인하기 위한 ID
@@ -44,6 +45,8 @@ export default function CheckoutAddressClient() {
   const [billingAddress, setBillingAddress] = useState({
     ...initialState2,
   });
+
+  const [isSame, setIsSame] = useState<boolean>(true);
 
   const dispatch = useDispatch();
   const router = useRouter();
@@ -76,7 +79,9 @@ export default function CheckoutAddressClient() {
     }
   };
 
-  const handleShipping = async (e: ChangeEvent<HTMLInputElement>) => {
+  const handleShipping = async (
+    e: ChangeEvent<HTMLInputElement> | ChangeEvent<HTMLTextAreaElement>,
+  ) => {
     const { name, value } = e.target;
     setShippingAddress({ ...shippingAddress, [name]: value });
   };
@@ -88,6 +93,7 @@ export default function CheckoutAddressClient() {
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    console.log(shippingAddress, billingAddress);
     dispatch(
       SAVE_SHIPPING_ADDRESS({
         ...shippingAddress,
@@ -101,117 +107,162 @@ export default function CheckoutAddressClient() {
     router.push(URLS.CHECKOUT);
   };
 
-  const LABELSTYLE =
-    "block font-medium mt-[50px] mb-[22px] text-[20px] text-darkgray";
+  const LABELSTYLE = "block font-bold mt-[50px] mb-3 text-[20px] text-darkgray";
   const INPUTSTYLE =
-    "block w-full text-2xl font-light p-4 mx-auto my-0 border border-black rounded-md outline-none";
+    "block w-full h-10 text-xl font-light p-4 mx-auto my-0 border border-lightGray rounded-md outline-none";
 
   return (
-    <section className="w-[1020px] mx-auto my-12">
-      <Heading title={"상세주문"} fontSize={"3xl"} />
-      <form className="w-full flex" onSubmit={handleSubmit}>
-        <div className="w-full p-4">
-          <h3 className="font-bold text-[1.4rem] mx-0 my-4">배송지 주소</h3>
-          <label className={LABELSTYLE}>받는 사람 이름</label>
-          <input
-            required
-            name={"name"}
-            className={INPUTSTYLE}
-            value={shippingAddress.name}
-            onChange={e => handleShipping(e)}
-            placeholder="받는 사람 이름"
-            type="text"
-          />
-          <div className="flex justify-between items-center mr-3">
-            <label className={LABELSTYLE}>우편번호</label>
-            <Button
-              onClick={ZipCodeSearch}
-              styleType="blank"
-              style={
-                "mt-[46px] mb-[18px] bg-colorBlack text-white text-medium p-2"
-              }
-            >
-              우편번호 검색
-            </Button>
+    <section className="w-[80%] mx-auto my-24 min-h-[80vh] flex flex-col items-start justify-start">
+      <Heading title={"배송지 입력"} fontSize={"6xl"} />
+      <form className="flex w-full mt-10 gap-20" onSubmit={handleSubmit}>
+        <div className="w-2/3">
+          <div className="w-full flex flex-col">
+            <div className="w-full p-4 border-t border-lightGray">
+              <div className="w-full flex gap-8">
+                <div className="w-1/3">
+                  <label className={LABELSTYLE}>이름(주문자)</label>
+                  <input
+                    required
+                    className={INPUTSTYLE}
+                    name={"name"}
+                    value={billingAddress.name}
+                    onChange={e => handleBilling(e)}
+                    type="text"
+                    disabled={isSame}
+                  />
+                </div>
+                <div className="w-1/3">
+                  <label className={LABELSTYLE}>연락처</label>
+                  <input
+                    required
+                    className={INPUTSTYLE}
+                    name={"phone"}
+                    value={billingAddress.phone}
+                    onChange={e => handleBilling(e)}
+                    type="text"
+                    disabled={isSame}
+                  />
+                </div>
+              </div>
+              <div className="flex justify-start items-center mt-10">
+                <input
+                  id="same"
+                  type="checkbox"
+                  className="appearance-none w-5 h-5 border border-lightGray checked:bg-[url('/checkmark_io.svg')] bg-no-repeat bg-center checked:bg-primaryBlue"
+                  onChange={() => setIsSame(!isSame)}
+                  checked={isSame}
+                />
+                <label htmlFor="same" className="text-lg font-bold ml-2">
+                  수령자와 동일합니다.
+                </label>
+              </div>
+            </div>
+            <div className="w-full p-4">
+              <div className="w-full flex gap-8">
+                <div className="w-1/3">
+                  <label className={LABELSTYLE}>이름(수령자)</label>
+                  <input
+                    required
+                    name={"name"}
+                    className={INPUTSTYLE}
+                    value={shippingAddress.name}
+                    onChange={e => {
+                      handleShipping(e);
+                      if (isSame) {
+                        handleBilling(e);
+                      }
+                    }}
+                    type="text"
+                  />
+                </div>
+                <div className="w-1/3">
+                  <label className={LABELSTYLE}>연락처</label>
+                  <input
+                    required
+                    className={INPUTSTYLE}
+                    name={"phone"}
+                    value={shippingAddress.phone}
+                    onChange={e => {
+                      handleShipping(e);
+                      if (isSame) {
+                        handleBilling(e);
+                      }
+                    }}
+                    type="text"
+                  />
+                </div>
+              </div>
+              <div className="flex w-full">
+                <div className="w-1/4 mr-3">
+                  <label className={LABELSTYLE}>우편번호</label>
+                  <input
+                    required
+                    readOnly
+                    className={INPUTSTYLE}
+                    name={"postalCode"}
+                    value={zipCode}
+                    type="text"
+                  />
+                </div>
+                <div className="w-3/4">
+                  <label className={LABELSTYLE}>주소</label>
+                  <div className="flex gap-2">
+                    <input
+                      required
+                      readOnly
+                      className={INPUTSTYLE}
+                      name={"city"}
+                      value={roadAddress}
+                      type="text"
+                    />
+                    <div className="w-1/5">
+                      <Button onClick={ZipCodeSearch} styleType="primary">
+                        우편번호 검색
+                      </Button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <label className={LABELSTYLE}>상세 주소 입력</label>
+              <input
+                required
+                className={INPUTSTYLE}
+                name={"line"}
+                value={shippingAddress.line}
+                onChange={e => handleShipping(e)}
+                type="text"
+              />
+              <label className={LABELSTYLE}>배송 요청 사항</label>
+              <textarea
+                required
+                className={INPUTSTYLE + "mb-6 h-20 focus:outline-none"}
+                name={"memo"}
+                value={shippingAddress.memo}
+                onChange={e => handleShipping(e)}
+              />
+            </div>
           </div>
-          <input
-            required
-            readOnly
-            className={INPUTSTYLE}
-            name={"postalCode"}
-            value={zipCode}
-            placeholder="우편번호 입력"
-            type="text"
-          />
-
-          <label className={LABELSTYLE}>주소</label>
-          <input
-            required
-            readOnly
-            className={INPUTSTYLE}
-            name={"city"}
-            value={roadAddress}
-            placeholder="도시"
-            type="text"
-          />
-
-          <label className={LABELSTYLE}>상세 주소 입력</label>
-          <input
-            required
-            className={INPUTSTYLE}
-            name={"line"}
-            value={shippingAddress.line}
-            onChange={e => handleShipping(e)}
-            placeholder="상세 주소 입력"
-            type="text"
-          />
-          <label className={LABELSTYLE}>연락처</label>
-          <input
-            required
-            className={INPUTSTYLE}
-            name={"phone"}
-            value={shippingAddress.phone}
-            onChange={e => handleShipping(e)}
-            placeholder="연락처를 입력하세요"
-            type="text"
-          />
         </div>
-
-        <div className="w-full p-4">
-          <h3 className="font-bold text-[1.4rem] mx-0 my-4">주문하신 분</h3>
-          <label className={LABELSTYLE}>보내는 사람 이름</label>
-          <input
-            required
-            className={INPUTSTYLE}
-            name={"name"}
-            value={billingAddress.name}
-            onChange={e => handleBilling(e)}
-            placeholder="주문자 성명"
-            type="text"
-          />
-
-          <label className={LABELSTYLE}>연락처</label>
-          <input
-            required
-            className={INPUTSTYLE}
-            name={"phone"}
-            value={billingAddress.phone}
-            onChange={e => handleBilling(e)}
-            placeholder="연락처를 입력하세요"
-            type="text"
-          />
-          <label className={LABELSTYLE}>배송 요청 사항</label>
-          <input
-            required
-            className={INPUTSTYLE + " mb-6"}
-            name={"memo"}
-            value={billingAddress.memo}
-            onChange={e => handleBilling(e)}
-            placeholder="배송 요청 사항 입력"
-            type="text"
-          />
-
-          <Button type={"submit"}>주문하기</Button>
+        <div className="flex flex-col justify-start items-start w-1/4 gap-5">
+          <CartInfoArticle />
+          <div className="flex w-full gap-2">
+            <div className="w-1/2 h-14">
+              <Button
+                onClick={() => {
+                  history.back();
+                }}
+                style="text-xl font-bold"
+                styleType="secondary"
+              >
+                이전으로
+              </Button>
+            </div>
+            <div className="w-1/2 h-14">
+              <Button type="submit" style="text-xl font-bold">
+                다음
+              </Button>
+            </div>
+          </div>
         </div>
       </form>
     </section>

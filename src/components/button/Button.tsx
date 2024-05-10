@@ -22,9 +22,10 @@ const Button = ({
       } ${style}`;
       break;
     case "secondary":
-      btnType = `w-full h-full bg-white text-primaryBlue border-2 border-primaryBlue ${
+      btnType = `w-full h-full bg-white text-primaryBlue border border-primaryBlue rounded-md ${
         disabled ? "bg-gray-200 text-gray-400 border-none" : ""
       } ${style}`;
+      break;
     case "blank":
       btnType = style;
       break;
