@@ -107,6 +107,12 @@ export default function CheckoutAddressClient() {
     router.push(URLS.CHECKOUT);
   };
 
+  const hypenTel = (target: any) => {
+    target.value = target.value
+      .replace(/[^0-9]/g, "")
+      .replace(/^(\d{2,3})(\d{3,4})(\d{4})$/, `$1-$2-$3`);
+  };
+
   const LABELSTYLE = "block font-bold mt-[50px] mb-3 text-[20px] text-darkgray";
   const INPUTSTYLE =
     "block w-full h-10 text-xl font-light p-4 mx-auto my-0 border border-lightGray rounded-md outline-none";
@@ -139,8 +145,10 @@ export default function CheckoutAddressClient() {
                     name={"phone"}
                     value={billingAddress.phone}
                     onChange={e => handleBilling(e)}
-                    type="text"
+                    type="tel"
+                    pattern="[0-9]{3}-[0-9]{4}-[0-9]{4}"
                     disabled={isSame}
+                    onInput={e => hypenTel(e.target)}
                   />
                 </div>
               </div>
@@ -188,7 +196,9 @@ export default function CheckoutAddressClient() {
                         handleBilling(e);
                       }
                     }}
-                    type="text"
+                    type="tel"
+                    pattern="[0-9]{3}-[0-9]{4}-[0-9]{4}"
+                    onInput={e => hypenTel(e.target)}
                   />
                 </div>
               </div>
