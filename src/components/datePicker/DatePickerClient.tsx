@@ -59,7 +59,7 @@ const CustomInput = forwardRef(
     ref: React.Ref<HTMLButtonElement>,
   ) => (
     <button
-      className="w-[107px] h-[33px] text-darkgray border-[1px] border-whitegray flex justify-center items-center text-sm"
+      className="w-[150px] h-[40px] text-darkgray border-[1px] border-whitegray flex justify-center items-center text-lg rounded-sm"
       onClick={onClick}
       ref={ref}
     >

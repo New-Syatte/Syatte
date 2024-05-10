@@ -2,7 +2,7 @@
 
 interface IButtonProps {
   type?: "submit" | "reset" | "button" | undefined;
-  styleType?: "primary" | "blank";
+  styleType?: "primary" | "secondary" | "blank";
   style?: string;
   [x: string]: any;
 }
@@ -17,9 +17,14 @@ const Button = ({
   let btnType = "";
   switch (styleType) {
     case "primary":
-      btnType = `w-[166px] h-[50px] bg-colorBlack text-white ${
-        disabled ? "bg-gray-600 text-gray-300" : ""
-      }`;
+      btnType = `w-full h-full text-white rounded-md ${
+        disabled ? "bg-lightGray text-white" : "bg-primaryBlue"
+      } ${style}`;
+      break;
+    case "secondary":
+      btnType = `w-full h-full bg-white text-primaryBlue border border-primaryBlue rounded-md ${
+        disabled ? "bg-gray-200 text-gray-400 border-none" : ""
+      } ${style}`;
       break;
     case "blank":
       btnType = style;
@@ -29,8 +34,8 @@ const Button = ({
   }
   return (
     <button
-      className={`cursor-pointer box-border inline-flex justify-center items-center ${
-        disabled ? "cursor-not-allowed" : ""
+      className={`box-border inline-flex justify-center items-center ${
+        disabled ? "cursor-default" : "cursor-pointer"
       } ${btnType}`}
       type={type}
       disabled={disabled}

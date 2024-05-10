@@ -18,7 +18,6 @@ export type BillingAddress = {
   name: string;
   phone: string;
   userEmail: string;
-  memo: string;
 };
 
 export type ShippingAddress = {
@@ -27,6 +26,7 @@ export type ShippingAddress = {
   city: string;
   line: string;
   phone: string;
+  memo: string;
 };
 
 type OrderStatus =

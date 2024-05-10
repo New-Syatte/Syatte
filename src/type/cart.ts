@@ -4,4 +4,5 @@ export interface CartItem {
   name: string;
   price: number;
   cartQuantity: number;
+  isChecked: boolean;
 }
