@@ -46,10 +46,10 @@ const Pagination = ({
   }
 
   const listStyle =
-    "text-lg border border-gray-300 min-w-12 h-12 p-1 flex justify-center items-center cursor-pointer mx-1";
+    "text-lg min-w-12 h-12 p-1 flex justify-center items-center cursor-pointer mx-1";
 
   return (
-    <ul className="list-none mt-4 pt-4 border-t-2 border-gray-300 flex justify-center items-center">
+    <ul className="list-none mt-4 pt-4  flex justify-center items-center">
       <li
         onClick={paginatePrevPage}
         className={currentPage === pageNumbers[0] ? "hidden" : ""}
@@ -64,9 +64,7 @@ const Pagination = ({
               key={number}
               onClick={() => paginate(number)}
               className={`${listStyle} ${
-                currentPage === number
-                  ? `border border-colorBlack text-colorBlack`
-                  : ""
+                currentPage === number ? ` text-colorBlack` : ""
               }`}
             >
               {number}

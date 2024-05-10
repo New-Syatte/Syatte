@@ -27,7 +27,6 @@ export default async function CheckoutSuccess({ searchParams }: Props) {
   }).then(res => {
     return res.json();
   });
-  console.log(payment);
 
   const listStyle = "flex justify-between text-lg mb-4";
   const subTitle = "text-[22px] font-bold";

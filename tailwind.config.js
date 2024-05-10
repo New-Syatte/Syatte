@@ -5,6 +5,7 @@ module.exports = {
     extend: {
       colors: {
         bgGray: "#f9f9f9",
+        bgWhiteSmoke: "#f4f4f4",
         primaryBlue: "#9bb5b5",
         lightGray: "#d9d9d9",
         darkGray: "#888",
@@ -37,9 +38,9 @@ module.exports = {
         ],
       },
       screens: {
-        sm: { min: '360px', max: '819px' },
-        md: { min: '820px', max: '1023px' },
-        lg: { min: '1080px' },
+        sm: { min: "360px", max: "819px" },
+        md: { min: "820px", max: "1023px" },
+        lg: { min: "1080px" },
       },
     },
   },

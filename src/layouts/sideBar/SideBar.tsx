@@ -9,21 +9,20 @@ type Props = {
 
 const SideBar = ({ linkArray, activeParams, listStr, ...restProps }: Props) => {
   return (
-    <ul className="flex flex-col w-[257px]">
-      <h2 className="mb-9 text-[32px] font-bold">MENU</h2>
-      {linkArray.map((link, index) => (
-        <li
-          key={index}
-          className={`mb-8 ${
-            activeParams === link ? "font-bold" : ""
-          } hover:underline`}
-        >
-          <Link href={link} className="whitespace-nowrap">
-            {listStr[index].toUpperCase()}
-          </Link>
-        </li>
-      ))}
-    </ul>
+    <div className="w-1/6">
+      <ul className="flex flex-col justify-center items-start gap-2 w-full h-auto border border-lightGray bg-bgWhiteSmoke p-5 rounded-md">
+        {linkArray.map((link, index) => (
+          <li
+            key={index}
+            className={`w-full cursor-pointer before:content-["•"] before:mr-4 last:border-t last:border-lightGray last:pt-2 font-bold text-lg`}
+          >
+            <Link href={link} className="whitespace-nowrap">
+              {listStr[index].toUpperCase()}
+            </Link>
+          </li>
+        ))}
+      </ul>
+    </div>
   );
 };
 

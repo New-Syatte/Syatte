@@ -10,6 +10,7 @@ import { STORE_ORDER, selectOrders } from "@/redux/slice/orderSlice";
 import { Order } from "@/type/order";
 import { TrackingResponseEvent } from "@/type/order";
 import Loader from "@/components/loader/Loader";
+import Heading from "@/components/heading/Heading";
 
 interface OrderHistoryClientProps {
   userEmail: string;
@@ -60,16 +61,20 @@ const OrderHistoryClient = ({ userEmail }: OrderHistoryClientProps) => {
   if (!orders) return <Loader />;
 
   return (
-    <div className="w-full flex flex-col gap-y-40">
-      <StatusProgress />
+    <section className="w-full flex flex-col gap-y-40">
+      <div className="flex flex-col justify-start items-start">
+        <Heading title="배송상황" fontSize="3xl" />
+        <div className="border-b border-lightGray mb-7 w-full" />
+        <StatusProgress />
+      </div>
       <div>
-        <div className="flex justify-between mb-[30px]">
-          <h2 className="text-xl font-semibold">주문 내용</h2>
+        <div className="flex justify-between mb-[30px] border-b border-lightGray">
+          <Heading title="주문내역" fontSize="3xl" />
           <PeriodSelector />
         </div>
         <OrderList />
       </div>
-    </div>
+    </section>
   );
 };
 

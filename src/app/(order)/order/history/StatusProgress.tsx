@@ -20,19 +20,25 @@ const StatusProgress = () => {
   }, {});
 
   return (
-    <div className="w-full h-[120px] bg-[#f1f1f5] flex justify-around items-center">
+    <div className="w-full flex justify-around items-center">
       {/* statusArray에서 각 요소들과, 그에 맞는 statusCount를 배치 */}
       {statusArray.map((status, index) => (
-        <div
-          key={index}
-          className="flex flex-col justify-center items-center relative font-medium text-lg"
-        >
-          <p className="mb-2.5">{statusTitleArr[index]}</p>
-          <p>{statusCount[status] ? statusCount[status] : 0}</p>
-          {status !== "done" && (
-            <BsChevronRight className="absolute -right-[68px] text-darkgray" />
+        <>
+          <div
+            key={index}
+            className="flex flex-col justify-center items-center relative font-medium text-lg bg-bgWhiteSmoke w-[200px] h-[120px] rounded-md border border-lightGray p-3"
+          >
+            <p className="mb-2.5 text-[22px] font-bold">
+              {statusTitleArr[index]}
+            </p>
+            <p className="text-3xl font-bold">
+              {statusCount[status] ? statusCount[status] : 0}
+            </p>
+          </div>
+          {index < statusArray.length - 1 && (
+            <BsChevronRight className="text-3xl text-black" />
           )}
-        </div>
+        </>
       ))}
     </div>
   );

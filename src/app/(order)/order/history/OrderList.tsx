@@ -6,6 +6,8 @@ import { RootState } from "@/redux/store";
 import Pagination from "@/components/pagination/Pagination";
 import OrderProduct from "./OrderProduct";
 import { selectOrders } from "@/redux/slice/orderSlice";
+import DocsIcon from "@/assets/order/docs.svg";
+import Image from "next/image";
 
 const OrderList = () => {
   //기간 별 filtering
@@ -34,21 +36,36 @@ const OrderList = () => {
     indexOfFirstOrder,
     indexOfLastOrder,
   );
-
-  return (
-    <>
-      <div>
-        {currentOrders?.map((order, index) => (
-          <OrderProduct order={order} index={index} key={index} />
-        ))}
-        <Pagination
-          currentPage={currentPage}
-          productsPerPage={ordersPerPage}
-          setCurrentPage={setCurrentPage}
-          totalProducts={orders.length}
-        />
+  if (currentOrders.length === 0 || !currentOrders)
+    return (
+      <div className="w-full min-h-[50vh] flex flex-col justify-center items-center gap-6">
+        <div className="w-1/8">
+          <Image
+            src={DocsIcon}
+            alt="docs-icon"
+            width={0}
+            height={0}
+            sizes="100vw"
+            style={{ width: "100%", height: "auto" }}
+          />
+        </div>
+        <p className="text-[22px] text-lightGray font-bold">
+          주문 내역이 없습니다.
+        </p>
       </div>
-    </>
+    );
+  return (
+    <div>
+      {currentOrders?.map((order, index) => (
+        <OrderProduct order={order} index={index} key={index} />
+      ))}
+      <Pagination
+        currentPage={currentPage}
+        productsPerPage={ordersPerPage}
+        setCurrentPage={setCurrentPage}
+        totalProducts={orders.length}
+      />
+    </div>
   );
 };
 
