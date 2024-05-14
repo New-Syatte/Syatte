@@ -118,7 +118,7 @@ export default function CheckoutAddressClient() {
 
   const LABELSTYLE = "block font-bold mt-[50px] mb-3 text-[20px] text-darkgray";
   const INPUTSTYLE =
-    "block w-full h-10 text-xl font-light p-4 mx-auto my-0 border border-lightGray rounded-md outline-none";
+    "block w-full h-10 text-xl sm:text-sm font-light p-4 mx-auto my-0 border border-lightGray rounded-md outline-none";
 
   return (
     <section className="w-[80%] sm:w-full h-auto mx-auto sm:my-0 my-24 min-h-[80vh] font-kor">
