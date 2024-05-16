@@ -24,19 +24,16 @@ const StatusProgress = () => {
       {/* statusArray에서 각 요소들과, 그에 맞는 statusCount를 배치 */}
       {statusArray.map((status, index) => (
         <>
-          <div
-            key={index}
-            className="flex flex-col justify-center items-center relative font-medium text-lg bg-bgWhiteSmoke w-[200px] h-[120px] rounded-md border border-lightGray p-3"
-          >
-            <p className="mb-2.5 text-[22px] font-bold">
+          <div className="flex flex-col justify-center items-center relative font-medium text-lg bg-bgWhiteSmoke w-[200px] sm:w-16 sm:h-[50px] h-[120px] rounded-md border border-lightGray p-3 sm:p-1">
+            <p className="mb-2.5 sm:mb-0 text-[22px] sm:text-[10px] font-bold leading-4">
               {statusTitleArr[index]}
             </p>
-            <p className="text-3xl font-bold">
+            <p className="text-3xl sm:text-[14px] font-bold sm:pb-1 leading-none">
               {statusCount[status] ? statusCount[status] : 0}
             </p>
           </div>
           {index < statusArray.length - 1 && (
-            <BsChevronRight className="text-3xl text-black" />
+            <BsChevronRight className="text-3xl sm:text-sm text-black" />
           )}
         </>
       ))}

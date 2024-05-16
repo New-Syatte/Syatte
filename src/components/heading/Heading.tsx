@@ -12,7 +12,7 @@ const Heading = ({
   fontSize = "3xl",
 }: IHeadingProps) => {
   return (
-    <div className="px-4">
+    <div className="px-4 sm:px-0 sm:w-full">
       <div className={center ? "text-center" : ""}>
         <div className={`text-${fontSize} font-bold`}>{title}</div>
         <div className="mt-4 text-sm">{subtitle}</div>

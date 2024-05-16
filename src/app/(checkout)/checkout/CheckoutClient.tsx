@@ -24,6 +24,7 @@ import { Order } from "@/type/order";
 import URLS from "@/constants/urls";
 import CartInfoArticle from "@/app/(cart)/cart/CartInfoArticle";
 import { useState } from "react";
+import { Mobile } from "@/hooks/useMediaQuery";
 
 export default function CheckoutClient() {
   const { data: session } = useSession();
@@ -40,6 +41,7 @@ export default function CheckoutClient() {
 
   const clientkey = process.env.NEXT_PUBLIC_TOSS_CLIENT_KEY;
   const secretkey = process.env.NEXT_PUBLIC_TOSS_SECRET_KEY;
+  const isMobile = Mobile();
 
   const orderNameCount =
     cartItems && cartItems.length
@@ -121,34 +123,43 @@ export default function CheckoutClient() {
 
   if (isScriptLoaded)
     return (
-      <section className="w-[80%] mx-auto my-24 min-h-[80vh] flex flex-col items-start justify-start">
-        <Heading title={"상품결제"} fontSize="6xl" />
-        <form onSubmit={handleSubmit} className="flex w-full mt-10 gap-20">
-          <div className="w-2/3">
-            <CheckoutForm />
-          </div>
-          <div className="flex flex-col justify-start items-start w-1/4 gap-5">
-            <CartInfoArticle />
-            <div className="flex w-full gap-2">
-              <div className="w-1/2 h-14">
-                <Button
-                  onClick={() => {
-                    history.back();
-                  }}
-                  style="text-xl font-bold"
-                  styleType="secondary"
-                >
-                  이전으로
-                </Button>
-              </div>
-              <div className="w-1/2 h-14">
-                <Button type="submit" style="text-xl font-bold">
-                  결제하기
-                </Button>
+      <section className="w-[80%] sm:w-full h-auto mx-auto sm:my-0 my-24 min-h-[80vh] font-kor">
+        <div className="w-full flex flex-col items-start justify-start py-16 pt-24">
+          <Heading
+            title={"상품결제"}
+            center={isMobile}
+            fontSize="6xl sm:text-3xl"
+          />
+          <form
+            onSubmit={handleSubmit}
+            className="flex w-full mt-10 gap-20 sm:flex-col sm:justify-center sm:items-center"
+          >
+            <div className="w-2/3 sm:w-[90%]">
+              <CheckoutForm />
+            </div>
+            <div className="flex flex-col justify-start items-start w-1/4 gap-5 sm:w-[90%]">
+              <CartInfoArticle />
+              <div className="flex w-full gap-2">
+                <div className="w-1/2 h-14">
+                  <Button
+                    onClick={() => {
+                      history.back();
+                    }}
+                    style="text-xl font-bold"
+                    styleType="secondary"
+                  >
+                    이전으로
+                  </Button>
+                </div>
+                <div className="w-1/2 h-14">
+                  <Button type="submit" style="text-xl font-bold">
+                    결제하기
+                  </Button>
+                </div>
               </div>
             </div>
-          </div>
-        </form>
+          </form>
+        </div>
       </section>
     );
   else return <></>;
