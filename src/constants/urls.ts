@@ -13,6 +13,7 @@ const URLS = {
   CART: "/cart",
   CHECKOUT: "/checkout",
   CHECKOUT_SUCCESS: "/checkout-success",
+  CHECKOUT_FAIL: "/checkout-fail",
   CHECKOUT_ADDRESS: "/checkout-address",
   EDUCATION: "/education",
   EDUCATION_DETAILS: "/education/details",

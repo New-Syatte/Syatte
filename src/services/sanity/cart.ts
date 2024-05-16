@@ -28,3 +28,7 @@ export async function saveCart({
   };
   return client.create(cart);
 }
+
+export async function removeCart(orderId: string) {
+  return client.delete(orderId);
+}
