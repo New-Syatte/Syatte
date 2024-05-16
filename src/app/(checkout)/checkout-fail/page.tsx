@@ -1,5 +1,5 @@
 const page = () => {
-  return <div>page</div>;
+  return <div>오류발생!!</div>;
 };
 
 export default page;

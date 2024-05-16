@@ -5,12 +5,11 @@ import { FormEvent, useEffect } from "react";
 import CheckoutForm from "@/components/checkoutForm/CheckoutForm";
 import { loadTossPayments } from "@tosspayments/payment-sdk";
 import {
-  REMOVE_CHECKED_ITEMS_FROM_CART,
   selectCheckedCartItems,
   selectCheckedTotalAmount,
   selectCheckedTotalQuantity,
 } from "@/redux/slice/cartSlice";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import { useSession } from "next-auth/react";
 import {
@@ -30,9 +29,6 @@ export default function CheckoutClient() {
   const { data: session } = useSession();
   const userEmail = session?.user?.email;
   const [isScriptLoaded, setIsScriptLoaded] = useState<boolean>(false);
-
-  const dispatch = useDispatch();
-  const router = useRouter();
   const cartItems = useSelector(selectCheckedCartItems);
   const shippingAddress = useSelector(selectShippingAddress);
   const billingAddress = useSelector(selectBillingAddress);
