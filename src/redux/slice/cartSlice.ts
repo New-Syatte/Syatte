@@ -1,6 +1,5 @@
 import { CartItem } from "@/type/cart";
 import { createSlice } from "@reduxjs/toolkit";
-import { toast } from "react-toastify";
 import { RootState } from "../store";
 
 interface ICartState {
@@ -43,7 +42,6 @@ const cartSlice = createSlice({
 
       if (productIndex >= 0) {
         state.cartItems[productIndex].cartQuantity += increaseCount;
-        toast.success(`${action.payload.name} 상품이 1개가 추가 되었습니다.`);
       } else {
         const tempProduct = {
           // ...action.payload,
@@ -57,7 +55,6 @@ const cartSlice = createSlice({
         };
 
         state.cartItems.push(tempProduct);
-        toast.success(`${action.payload.name} 상품이 추가되었습니다.`);
       }
       localStorage.setItem("cartItems", JSON.stringify(state.cartItems));
     },
@@ -105,13 +102,11 @@ const cartSlice = createSlice({
 
       if (state.cartItems[productIndex].cartQuantity > 1) {
         state.cartItems[productIndex].cartQuantity -= 1;
-        toast.success(`${action.payload.name} 1개가 삭제 되었습니다.`);
       } else if (state.cartItems[productIndex].cartQuantity === 1) {
         const newCartItem = state.cartItems.filter(
           item => item.id !== action.payload.id,
         );
         state.cartItems = newCartItem;
-        toast.success(`${action.payload.name}이 장바구니에서 삭제되었습니다.`);
       }
       localStorage.setItem("cartItems", JSON.stringify(state.cartItems));
     },
@@ -122,21 +117,18 @@ const cartSlice = createSlice({
       );
 
       state.cartItems = newCartItem;
-      toast.success(`${action.payload.name}이 장바구니에서 삭제되었습니다.`);
 
       localStorage.setItem("cartItems", JSON.stringify(state.cartItems));
     },
     REMOVE_CHECKED_ITEMS_FROM_CART: state => {
       const newCartItem = state.cartItems.filter(item => !item.isChecked);
       state.cartItems = newCartItem;
-      toast.success("선택한 상품이 장바구니에서 삭제되었습니다.");
       localStorage.setItem("cartItems", JSON.stringify(state.cartItems));
     },
     SELECT_ALL_ITEMS: state => {
       state.cartItems.map(item => {
         item.isChecked = true;
       });
-      toast.success("모든 상품이 선택/해제 되었습니다."); // 추후 삭제
       localStorage.setItem("cartItems", JSON.stringify(state.cartItems));
 
       // isAllchecked 확인
