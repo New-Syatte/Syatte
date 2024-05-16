@@ -9,7 +9,7 @@ type Props = {
 
 const SideBar = ({ linkArray, activeParams, listStr, ...restProps }: Props) => {
   return (
-    <div className="w-1/6">
+    <div className="w-1/6 sm:w-[90%]">
       <ul className="flex flex-col justify-center items-start gap-2 w-full h-auto border border-lightGray bg-bgWhiteSmoke p-5 rounded-md">
         {linkArray.map((link, index) => (
           <li

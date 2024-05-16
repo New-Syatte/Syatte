@@ -28,8 +28,8 @@ const PeriodSelector = () => {
   };
 
   return (
-    <div className="w-1/2 flex justify-end items-center gap-6">
-      <div className="flex items-center justify-between gap-1">
+    <div className="w-1/2 sm:w-full flex justify-end sm:justify-center items-center gap-6 sm:gap-2">
+      <div className="flex w-3/5 sm:w-3/4 items-center justify-between gap-1">
         <div className="relative">
           <DatePickerClient
             inputEndDate={inputEndDate}
@@ -37,7 +37,7 @@ const PeriodSelector = () => {
             setInputDate={setInputStartDate}
           />
         </div>
-        <p className="text-xl font-bold">~</p>
+        <p className="text-xl sm:text-xs font-bold">~</p>
         <div className="relative">
           <DatePickerClient
             inputEndDate={inputEndDate}
@@ -47,7 +47,7 @@ const PeriodSelector = () => {
           />
         </div>
       </div>
-      <div className="w-1/5 h-10 flex justify-center items-center">
+      <div className="w-1/5 sm:w-1/4 sm:h-[30px] sm:text-sm h-10 flex justify-center items-center">
         <Button
           styleType="primary"
           onClick={handleSubmitPeriod}
