@@ -1,11 +1,13 @@
 "use client";
 
 import { ChangeEvent, FormEvent, useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useRouter } from "next/navigation";
 import {
   SAVE_BILLING_ADDRESS,
   SAVE_SHIPPING_ADDRESS,
+  selectBillingAddress,
+  selectShippingAddress,
 } from "@/redux/slice/checkoutSlice";
 import Heading from "@/components/heading/Heading";
 import Button from "@/components/button/Button";
@@ -40,12 +42,12 @@ export default function CheckoutAddressClient() {
   const [roadAddress, setRoadAddress] = useState<string>("");
   const [zipCode, setZipCode] = useState("");
 
-  const [shippingAddress, setShippingAddress] = useState({
-    ...initialState,
-  });
-  const [billingAddress, setBillingAddress] = useState({
-    ...initialState2,
-  });
+  const [shippingAddress, setShippingAddress] = useState(
+    useSelector(selectShippingAddress),
+  );
+  const [billingAddress, setBillingAddress] = useState(
+    useSelector(selectBillingAddress),
+  );
 
   const isMobile = Mobile();
 

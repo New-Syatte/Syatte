@@ -110,7 +110,7 @@ export default function CartClient() {
                             <input
                               type="checkbox"
                               checked={cart.isChecked}
-                              onClick={() => altCheck(id)}
+                              onChange={() => altCheck(id)}
                               className="appearance-none w-4 h-4 border border-lightGray checked:bg-[url('/checkmark_io.svg')] bg-no-repeat bg-center checked:bg-primaryBlue"
                             />
                             <div className="w-[77px] h-[77px] flex justify-center items-center border border-lightGray">
@@ -167,7 +167,7 @@ export default function CartClient() {
                           <input
                             type="checkbox"
                             checked={cart.isChecked}
-                            onClick={() => altCheck(id)}
+                            onChange={() => altCheck(id)}
                             className="appearance-none w-5 h-5 border border-lightGray checked:bg-[url('/checkmark_io.svg')] bg-no-repeat bg-center checked:bg-primaryBlue"
                           />
                           <div className="w-[100px] h-[100px] flex justify-center items-center border border-lightGray">
