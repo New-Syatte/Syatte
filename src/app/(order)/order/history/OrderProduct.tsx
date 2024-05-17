@@ -72,6 +72,9 @@ const OrderProduct = ({ order, index = 0 }: OrderProductProps) => {
       </Link>
       {order.cartItems &&
         order.cartItems.map((product, index) => {
+          console.log(product.price);
+          const discountedPrice =
+            product.price - product.price * (product.discount / 100);
           if (isMobile)
             return (
               <div
@@ -102,7 +105,7 @@ const OrderProduct = ({ order, index = 0 }: OrderProductProps) => {
                     <p>{product.cartQuantity}개</p>
                     <p>
                       {Number(
-                        product.price * product.cartQuantity,
+                        discountedPrice * product.cartQuantity,
                       ).toLocaleString()}
                       원
                     </p>
@@ -144,7 +147,7 @@ const OrderProduct = ({ order, index = 0 }: OrderProductProps) => {
                     </p>
                     <p className="font-normal whitespace-nowrap">
                       {Number(
-                        product.price * product.cartQuantity,
+                        discountedPrice * product.cartQuantity,
                       ).toLocaleString()}
                       원
                     </p>

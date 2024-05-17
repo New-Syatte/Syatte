@@ -102,7 +102,15 @@ export default function CartClient() {
               <div className="w-full border-y border-lightGray py-10">
                 {cartItems.length !== 0 &&
                   cartItems.map(cart => {
-                    const { id, name, imageURL, price, cartQuantity } = cart;
+                    const {
+                      id,
+                      name,
+                      imageURL,
+                      price,
+                      discount,
+                      cartQuantity,
+                    } = cart;
+                    const discountedPrice = price - price * (discount / 100);
                     if (isMobile)
                       return (
                         <div key={id} className="my-7">
@@ -110,7 +118,7 @@ export default function CartClient() {
                             <input
                               type="checkbox"
                               checked={cart.isChecked}
-                              onClick={() => altCheck(id)}
+                              onChange={() => altCheck(id)}
                               className="appearance-none w-4 h-4 border border-lightGray checked:bg-[url('/checkmark_io.svg')] bg-no-repeat bg-center checked:bg-primaryBlue"
                             />
                             <div className="w-[77px] h-[77px] flex justify-center items-center border border-lightGray">
@@ -146,7 +154,7 @@ export default function CartClient() {
                               />
                             </div>
                             <p className={"text-lg font-bold text-right"}>
-                              {priceFormat(price * cartQuantity)} 원
+                              {priceFormat(discountedPrice * cartQuantity)} 원
                             </p>
                             <div>
                               <button onClick={() => removeCart(cart)}>
@@ -167,7 +175,7 @@ export default function CartClient() {
                           <input
                             type="checkbox"
                             checked={cart.isChecked}
-                            onClick={() => altCheck(id)}
+                            onChange={() => altCheck(id)}
                             className="appearance-none w-5 h-5 border border-lightGray checked:bg-[url('/checkmark_io.svg')] bg-no-repeat bg-center checked:bg-primaryBlue"
                           />
                           <div className="w-[100px] h-[100px] flex justify-center items-center border border-lightGray">
@@ -203,7 +211,7 @@ export default function CartClient() {
                           <p
                             className={"text-[22px] font-bold w-1/5 text-right"}
                           >
-                            {priceFormat(price * cartQuantity)} 원
+                            {priceFormat(discountedPrice * cartQuantity)} 원
                           </p>
                           <div>
                             <button onClick={() => removeCart(cart)}>

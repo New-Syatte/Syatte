@@ -27,7 +27,8 @@ export default function CheckoutForm() {
       <div>
         <div className="py-20 px-5 sm:py-10 sm:px-3 border-y border-lightGray flex flex-col gap-8">
           {cartItems.map((item, index) => {
-            const { id, name, price, cartQuantity, imageURL } = item;
+            const { id, name, price, discount, cartQuantity, imageURL } = item;
+            const discountedPrice = price - price * (discount / 100);
             if (isMobile)
               return (
                 <div key={id}>
@@ -48,7 +49,7 @@ export default function CheckoutForm() {
                       <div className="flex h-5 justify-between items-center">
                         <p className="text-lg font-bold">{cartQuantity}개</p>
                         <p className={"text-lg font-bold text-right"}>
-                          {priceFormat(price * cartQuantity)} 원
+                          {priceFormat(discountedPrice * cartQuantity)} 원
                         </p>
                       </div>
                     </div>
@@ -79,7 +80,7 @@ export default function CheckoutForm() {
                   </div>
                   <p className="text-lg">{cartQuantity}</p>
                   <p className="font-bold text-[22px]">
-                    {priceFormat(price * cartQuantity)} 원
+                    {priceFormat(discountedPrice * cartQuantity)} 원
                   </p>
                 </div>
               );

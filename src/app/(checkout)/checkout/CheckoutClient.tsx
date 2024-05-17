@@ -5,34 +5,29 @@ import { FormEvent, useEffect } from "react";
 import CheckoutForm from "@/components/checkoutForm/CheckoutForm";
 import { loadTossPayments } from "@tosspayments/payment-sdk";
 import {
-  REMOVE_CHECKED_ITEMS_FROM_CART,
   selectCheckedCartItems,
   selectCheckedTotalAmount,
   selectCheckedTotalQuantity,
 } from "@/redux/slice/cartSlice";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import { useSession } from "next-auth/react";
 import {
   selectBillingAddress,
   selectShippingAddress,
 } from "@/redux/slice/checkoutSlice";
-import { useRouter } from "next/navigation";
-import dayjs from "dayjs";
-import { saveCart } from "@/services/sanity/cart";
-import { Order } from "@/type/order";
 import URLS from "@/constants/urls";
 import CartInfoArticle from "@/app/(cart)/cart/CartInfoArticle";
 import { useState } from "react";
 import { Mobile } from "@/hooks/useMediaQuery";
+import { saveCart } from "@/services/sanity/cart";
+import dayjs from "dayjs";
+import { Order } from "@/type/order";
 
 export default function CheckoutClient() {
   const { data: session } = useSession();
   const userEmail = session?.user?.email;
   const [isScriptLoaded, setIsScriptLoaded] = useState<boolean>(false);
-
-  const dispatch = useDispatch();
-  const router = useRouter();
   const cartItems = useSelector(selectCheckedCartItems);
   const shippingAddress = useSelector(selectShippingAddress);
   const billingAddress = useSelector(selectBillingAddress);
@@ -40,7 +35,6 @@ export default function CheckoutClient() {
   const cartTotalQuantity = useSelector(selectCheckedTotalQuantity);
 
   const clientkey = process.env.NEXT_PUBLIC_TOSS_CLIENT_KEY;
-  const secretkey = process.env.NEXT_PUBLIC_TOSS_SECRET_KEY;
   const isMobile = Mobile();
 
   const orderNameCount =
@@ -53,68 +47,55 @@ export default function CheckoutClient() {
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const tosspayment = clientkey ? await loadTossPayments(clientkey) : null;
+    const orderId = Math.random().toString(36).slice(2);
+
+    // Promise 방식에서 리다이렉트 URL로 처리하는 방식으로 변경
+    // success 페이지에서 결제 승인 처리
 
     if (tosspayment) {
       tosspayment
         .requestPayment("카드", {
           amount: cartTotalAmount,
-          orderId: Math.random().toString(36).slice(2),
+          orderId: orderId,
           orderName: orderNameCount,
+          successUrl: `${URLS.rootURL}${URLS.CHECKOUT_SUCCESS}`,
+          failUrl: `${URLS.rootURL}${URLS.CHECKOUT_FAIL}`,
         })
-        .then(async function (data) {
-          const { orderId, paymentKey, amount } = data;
-          const url = "https://api.tosspayments.com/v1/payments/confirm";
-          const basicToken = Buffer.from(`${secretkey}:`, "utf-8").toString(
-            "base64",
-          );
-          await fetch(url, {
-            method: "post",
-            body: JSON.stringify({
-              orderId,
-              paymentKey,
-              amount,
-            }),
-            headers: {
-              Authorization: `Basic ${basicToken}`,
-              "Content-Type": "application/json",
-            },
-          });
-
-          const today = new Date();
-          const date = today.toDateString();
-          const time = today.toLocaleTimeString();
-
-          const orderData = {
-            _id: orderId,
-            userEmail,
-            orderDate: date,
-            orderTime: time,
-            orderAmount: amount,
-            orderStatus: "payed",
-            orderCount: cartTotalQuantity,
-            cartItems: cartItems,
-            shippingAddress: shippingAddress,
-            billingAddress: billingAddress,
-            createdAt: dayjs().format("YYYY-MM-DD HH:mm:ss"),
-            shippingInfo: {
-              trackingNumber: "",
-              carrierId: "",
-            },
-          };
-          await saveCart(orderData as Order);
-          // db에 저장
-          dispatch(REMOVE_CHECKED_ITEMS_FROM_CART());
-          router.push(`${URLS.CHECKOUT_SUCCESS}?orderId=${orderId}`);
-        })
-        .catch(error => {
-          if (error.code === "USER_CANCEL") {
-            toast.error("결재창이 닫아졌습니다.");
-          } else {
-            toast.error("결재에 실패했습니다. 잠시 후 다시 시도해주세요.");
-            console.error("error", error);
+        .catch((error: any) => {
+          if (error.code === "INVALID_ORDER_NAME") {
+            toast.error("주문명이 유효하지 않습니다. 다시 시도해주세요.");
+          } else if (error.code === "INVALID_ORDER_ID") {
+            toast.error("주문번호가 유효하지 않습니다. 다시 시도해주세요.");
           }
         });
     }
+    const today = new Date();
+    const date = today.toDateString();
+    const time = today.toLocaleTimeString();
+    const orderData = {
+      _id: orderId,
+      userEmail,
+      orderDate: date,
+      orderTime: time,
+      orderAmount: cartTotalAmount,
+      orderStatus: "payed",
+      orderCount: cartTotalQuantity,
+      cartItems: cartItems,
+      shippingAddress: shippingAddress,
+      billingAddress: billingAddress,
+      createdAt: dayjs().format("YYYY-MM-DD HH:mm:ss"),
+      shippingInfo: {
+        trackingNumber: "",
+        carrierId: "",
+      },
+    };
+    await saveCart(orderData as Order)
+      .then(res => {
+        console.log(res);
+      })
+      .catch(err => {
+        console.error(err);
+      });
   };
 
   useEffect(() => {
