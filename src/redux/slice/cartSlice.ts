@@ -50,6 +50,7 @@ const cartSlice = createSlice({
           name: action.payload.name,
           price: action.payload.price,
           cartQuantity: increaseCount,
+          discount: action.payload.discount,
           isChecked: true,
           _key: action.payload.id,
         };
@@ -79,9 +80,10 @@ const cartSlice = createSlice({
       const array: number[] = [];
 
       state.cartItems.map(item => {
-        const { price, cartQuantity } = item;
+        const { price, cartQuantity, discount } = item;
 
-        const cartItemAmount = price * cartQuantity;
+        const discountedPrice = price - price * (discount / 100);
+        const cartItemAmount = discountedPrice * cartQuantity;
         return array.push(cartItemAmount);
       });
 
@@ -149,9 +151,10 @@ const cartSlice = createSlice({
       state.cartItems
         .filter(item => item.isChecked)
         .map(item => {
-          const { price, cartQuantity } = item;
+          const { price, cartQuantity, discount } = item;
 
-          const cartItemAmount = price * cartQuantity;
+          const discountedPrice = price - price * (discount / 100);
+          const cartItemAmount = discountedPrice * cartQuantity;
           return array.push(cartItemAmount);
         });
 

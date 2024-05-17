@@ -16,7 +16,6 @@ import {
   selectBillingAddress,
   selectShippingAddress,
 } from "@/redux/slice/checkoutSlice";
-import { useRouter } from "next/navigation";
 import URLS from "@/constants/urls";
 import CartInfoArticle from "@/app/(cart)/cart/CartInfoArticle";
 import { useState } from "react";

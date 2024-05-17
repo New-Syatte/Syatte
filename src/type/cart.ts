@@ -5,4 +5,5 @@ export interface CartItem {
   price: number;
   cartQuantity: number;
   isChecked: boolean;
+  discount: number;
 }

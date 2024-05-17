@@ -32,6 +32,7 @@ const ProductSummary = ({
       id: _id,
       name: productName,
       price,
+      discount,
       imageURL: images[0].imageUrl,
     };
     dispatch(ADD_TO_CART({ ...product, quantity: count }));
