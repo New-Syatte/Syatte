@@ -9,7 +9,6 @@ import SubTitleBox from "@/components/subTitleBox/SubTitleBox";
 import BrandSlider from "@/components/brandSlider/BrandSlider";
 import StoreSlider from "@/components/storeSlider/StoreSlider";
 import { getProducts } from "@/services/sanity/products";
-import { useState } from "react";
 
 const TITLE_BANNER_TEXT = `Modern Masters는 고급 특수 페인트를 제조하는 세계 최고의 회사입니다. 제품은 미국을 비롯한 다양한 국가의 4,000개 이상의 소매점에서 판매며, 회사의 제품 라인에는 건축가, 디자이너, 계약자, 그리고 장식 화가를 위해 특별히 제작된 다양한 제품이 포함되어 있습니다. Metallic Paint Collection, Metal Effects, 건축 텍스처, 테마 페인트, 블랙라이트 페인트, 유약, 광택제, 그리고 Crackles 등이 그 중에 속합니다. Modern Masters의 제품은 전 세계적으로 유명한 장소에서 사용되고 있습니다.`;
 const MODERN_MASTERS_INFO_TEXT_1 = `Modern Masters는 1960년대 초에 캘리포니아의 San Fernando Valley에서 시작된 회사로, 처음에는 Custom Paint & Chemical로 알려져 있었습니다. 주로 가구, 장식용 액세서리, 주거용 조명, 그리고 벽 장식용 코팅 제품을 생산했습니다. 회사는 최고 품질의 코팅을 제공하고 "지불한 만큼 얻는다"는 모토를 따르며 성장했습니다.`;
@@ -19,9 +18,7 @@ const MODERN_MASTERS_SERIES_TEXT = `모던마스터즈는 Colorfast, Decorative 
 const MODERN_MASTERS_ARTWORK_TEXT = `모던마스터즈 페인트로 창조된 다채로운 작품들을 확인하세요. 고유한 텍스처와 색상으로 표현된 예술적인 아트워크를 확인할 수 있습니다.`;
 
 const Modernmasters = async () => {
-  const [activeBrandIndex, setActiveBrandIndex] = useState(0);
   const paintList = [];
-
   const products = await getProducts();
 
   const categorys = [
@@ -39,15 +36,6 @@ const Modernmasters = async () => {
     paintList.push({
       id: `paint${i}`,
       img: `brand/modernmasters-img/modernmasters-paint_${i}.png`,
-    });
-  }
-
-  const brandList = [];
-
-  for (let i = 1; i <= 5; ++i) {
-    brandList.push({
-      id: `brand${i}`,
-      img: `brand/modernmasters-img/modernmasters-brand_${i}.png`,
     });
   }
 
@@ -149,22 +137,8 @@ const Modernmasters = async () => {
         <div className="flex w-[860px] mt-[47px] mb-[64px] text-center mx-auto sm:w-full sm:text-[14px] sm:px-[35px]">
           {MODERN_MASTERS_SERIES_TEXT}
         </div>
-        <div className="flex justify-center gap-3 sm:gap-1 sm:px-[35px]">
-          {brandList.map((data, index) => (
-            <>
-              <div
-                className="flex w-[190px] border-[#000000] border-[1px]"
-                onClick={() => {
-                  setActiveBrandIndex(index);
-                }}
-              >
-                <img src={data.img} alt={`브랜드${index + 1}`} />
-              </div>
-            </>
-          ))}
-        </div>
-        <div className="flex justify-center mt-10 sm:mx-[35px]">
-          <BrandSlider activeBrandIndex={activeBrandIndex} />
+        <div className="flex justify-center sm:mx-[35px]">
+          <BrandSlider />
         </div>
       </div>
       {/* 아티스트 작품 */}
