@@ -78,6 +78,7 @@
   padding: 0;
   margin: 0;
   scroll-behavior: smooth;
+  transition: all 0.2s linear;
 }
 
 html {

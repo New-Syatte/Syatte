@@ -1,4 +1,6 @@
+import Motion from "@/components/motion/Motion";
 import ResponsiveDesc from "./ResponsiveDesc";
+import { delay } from "@reduxjs/toolkit/dist/utils";
 
 interface SectionTitleProps {
   type: "syatt" | "brand" | "introduce" | "education";
@@ -53,6 +55,51 @@ const SectionTitle = ({ type, children }: SectionTitleProps) => {
   }
 
   const { title: mainTitle, subTitle, description } = content;
+
+  const motionTop = {
+    hidden: { opacity: 0, y: 50 },
+    visible: {
+      y: 0,
+      opacity: 1,
+      transition: {
+        delay: 0.3,
+      },
+    },
+  };
+
+  const motionCenter = {
+    hidden: { opacity: 0, y: 50 },
+    visible: {
+      y: 0,
+      opacity: 1,
+      transition: {
+        delay: 0.5,
+      },
+    },
+  };
+
+  const motionBottom = {
+    hidden: { opacity: 0, y: 50 },
+    visible: {
+      y: 0,
+      opacity: 1,
+      transition: {
+        delay: 0.7,
+      },
+    },
+  };
+
+  const motionLine = {
+    hidden: { opacity: 0, x: 600 },
+    visible: {
+      x: 0,
+      opacity: 1,
+      transition: {
+        delay: 0.9,
+      },
+    },
+  };
+
   return (
     <div
       className={
@@ -70,36 +117,50 @@ const SectionTitle = ({ type, children }: SectionTitleProps) => {
             : "sm:flex flex-col justify-center items-center font-eng sm:mb-14 sm:w-auto w-[85%] block mb-0"
         }
       >
-        <p
-          className={
-            "font-garamond font-normal sm:text-base text-2xl mb-4 mt-8" +
-            " " +
-            (isCenter ? "tracking-[4.8px]" : "tracking-[2.4px]")
-          }
-        >
-          {mainTitle}
-        </p>
-        <h2
-          className={
-            "sm:text-3xl text-6xl font-bold whitespace-nowrap relative" +
-            " " +
-            (isCenter && "tracking-tighter")
-          }
-        >
-          {subTitle}
-          {!isCenter && (
-            <div className="bg-black w-screen h-[5px] absolute bottom-[12px] left-[410px]"></div>
-          )}
-        </h2>
-        <p
-          className={
-            isCenter
-              ? " font-medium mt-9 leading-8 break-keep sm:break-words sm:text-left text-center sm:text-sm text-lg sm:px-6"
-              : "sm:text-center text-left sm:text-sm text-lg px-0 sm:px-6 sm:pt-3 pt-9 mb-20 w-1/2 sm:w-auto sm:break-keep"
-          }
-        >
-          <ResponsiveDesc desc={description} />
-        </p>
+        <Motion initial="hidden" whileInView="visible" variants={motionTop}>
+          <p
+            className={
+              "font-garamond font-normal sm:text-base text-2xl mb-4 mt-8 pl-auto pr-auto" +
+              " " +
+              (isCenter ? "tracking-[4.8px]" : "tracking-[2.4px]")
+            }
+          >
+            {mainTitle}
+          </p>
+        </Motion>
+        <Motion initial="hidden" whileInView="visible" variants={motionCenter}>
+          <h2
+            className={
+              "sm:text-3xl text-6xl font-bold text whitespace-nowrap relative" +
+              " " +
+              (isCenter && "tracking-tighter")
+            }
+          >
+            {subTitle}
+            {!isCenter && (
+              <Motion
+                initial="hidden"
+                whileInView="visible"
+                variants={motionLine}
+              >
+                <div className="bg-black w-screen h-[5px] absolute bottom-[12px] left-[410px]"></div>
+              </Motion>
+            )}
+          </h2>
+        </Motion>
+
+        <Motion initial="hidden" whileInView="visible" variants={motionBottom}>
+          <p
+            className={
+              isCenter
+                ? " font-medium mt-9 leading-8 break-keep sm:break-words sm:text-left text-center sm:text-sm text-lg sm:px-6"
+                : "sm:text-center text-left sm:text-sm text-lg px-0 sm:px-6 sm:pt-3 pt-9 mb-20 w-1/2 sm:w-auto sm:break-keep"
+            }
+          >
+            <ResponsiveDesc desc={description} />
+          </p>
+        </Motion>
+
         {!isCenter && children}
       </div>
       {isCenter && children}

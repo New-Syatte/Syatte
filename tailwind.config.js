@@ -15,6 +15,15 @@ module.exports = {
         colorBlack: "#222",
         colorRed: "#ff0000",
       },
+      keyframes: {
+        slide: {
+          '100%': { transform: 'translateX(100%)' },
+          '0%': { transform: 'translateX(-100%)' },
+        },
+      },
+      animation: {
+        slide: 'slide 3s linear infinite',
+      },
       height: {
         headerHeight: "80px",
         footerHeight: "400px",

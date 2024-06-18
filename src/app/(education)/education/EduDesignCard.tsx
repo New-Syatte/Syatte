@@ -1,6 +1,7 @@
 import aplicatior from "@/assets/education/aplicator.png";
 import master from "@/assets/education/master.png";
 import oneday from "@/assets/education/oneday.png";
+import Motion from "@/components/motion/Motion";
 
 import Image, { StaticImageData } from "next/image";
 
@@ -42,41 +43,53 @@ const EduDesignCard = ({ type }: EduDesignCardProps) => {
       break;
   }
 
+  const rightNumber = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        delay: 0.3,
+      },
+    },
+  };
+
   const { image, title, description, indexNumber } = src;
   return (
     <div className="flex flex-col">
-      <div className="sm:hidden flex h-44 items-end justify-end">
-        <span className="text-[120px] text-primaryBlue opacity-20 h-40">
-          {indexNumber}
-        </span>
-      </div>
-      <div className="flex flex-col w-[296px] sm:w-[150px] sm:h-[250px] h-[453px] shadow-2xl sm:shadow-none rounded-3xl bg-bgGray items-center justify-center sm:p-3 p-5 border border-tableBorderGray">
-        <div className="relative w-[257px] sm:w-[130px] h-[279px] sm:h-auto">
-          <Image
-            src={image}
-            sizes="100vw"
-            style={{ width: "100%", height: "auto" }}
-            alt={type}
-            className={"rounded-3xl"}
-          />
-        </div>
-        <div className={"flex flex-col items-center rounded-b-3xl z-10"}>
-          <span
-            className={
-              "sm:mt-4 mt-8 sm:text-base text-[32px] font-bold text-black font-GmarketSans"
-            }
-          >
-            {title}
-          </span>
-          <span
-            className={
-              "text-center sm:text-xs text-sm font-medium text-black w-[228px] sm:w-auto"
-            }
-          >
-            {description}
+      <Motion initial="hidden" whileInView="visible" variants={rightNumber}>
+        <div className="sm:hidden flex h-44 items-end justify-end">
+          <span className="text-[120px] text-primaryBlue opacity-20 h-40">
+            {indexNumber}
           </span>
         </div>
-      </div>
+      </Motion>
+        <div className="flex flex-col w-[296px] sm:w-[150px] sm:h-[250px] h-[453px] shadow-2xl sm:shadow-none rounded-3xl bg-bgGray items-center justify-center sm:p-3 p-5 border border-tableBorderGray">
+          <div className="relative w-[257px] sm:w-[130px] h-[279px] sm:h-auto">
+            <Image
+              src={image}
+              sizes="100vw"
+              style={{ width: "100%", height: "auto" }}
+              alt={type}
+              className={"rounded-3xl sm:rounded-2xl"}
+            />
+          </div>
+          <div className={"flex flex-col items-center rounded-b-3xl z-10"}>
+            <span
+              className={
+                "sm:mt-4 mt-8 sm:text-base text-[32px] font-bold text-black font-GmarketSans"
+              }
+            >
+              {title}
+            </span>
+            <span
+              className={
+                "text-center sm:text-xs text-sm font-medium text-black w-[228px] sm:w-auto"
+              }
+            >
+              {description}
+            </span>
+          </div>
+        </div>
     </div>
   );
 };

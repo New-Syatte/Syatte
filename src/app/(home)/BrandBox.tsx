@@ -37,7 +37,7 @@ const BrandBox = ({ brand }: BrandBoxProps) => {
   return (
     <div
       className={
-        "sm:w-[95%] w-full sm:h-full h-[304px] flex sm:flex-col flex-row border border-[#ececec] bg-bgGray" +
+        "sm:w-[95%] w-full mx-auto sm:h-full h-[304px] flex sm:flex-col flex-row border border-[#ececec] bg-bgGray" +
         " " +
         (isModernMasters ? "sm:mb-[20px] mb-[10px]" : "")
       }
