@@ -30,8 +30,6 @@ const Modernmasters = async () => {
 
   const categoryValues = categorys.map(category => category.value);
 
-  console.log("확인", categoryValues);
-
   for (let i = 1; i <= 6; ++i) {
     paintList.push({
       id: `paint${i}`,
