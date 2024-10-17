@@ -98,7 +98,6 @@ export default function CheckoutAddressClient() {
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log(shippingAddress, billingAddress);
     dispatch(
       SAVE_SHIPPING_ADDRESS({
         ...shippingAddress,

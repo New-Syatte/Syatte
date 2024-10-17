@@ -65,7 +65,6 @@ const Slider = ({
     "absolute top-1/2 transform -translate-y-1/2 z-10 bg-white bg-opacity-50 text-white cursor-pointer hover:bg-white";
   const leftStyle = "right-0 text-colorBlack";
   const rightStyle = "left-0 text-colorBlack";
-  console.log(datas.length);
 
   return (
     <div className="w-full h-full relative flex justify-center items-center overflow-hidden">

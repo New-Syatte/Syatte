@@ -39,8 +39,6 @@ const ProductSummary = ({
     dispatch(CALCULATE_TOTAL_QUANTITY());
   };
 
-  console.log("images", images);
-
   return (
     <>
       <div className="flex flex-col justify-center items-center sm:w-[90%] w-[415px]">

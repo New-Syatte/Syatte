@@ -72,7 +72,6 @@ const OrderProduct = ({ order, index = 0 }: OrderProductProps) => {
       </Link>
       {order.cartItems &&
         order.cartItems.map((product, index) => {
-          console.log(product.price);
           const discountedPrice =
             product.price - product.price * (product.discount / 100);
           if (isMobile)

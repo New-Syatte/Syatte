@@ -89,13 +89,9 @@ export default function CheckoutClient() {
         carrierId: "",
       },
     };
-    await saveCart(orderData as Order)
-      .then(res => {
-        console.log(res);
-      })
-      .catch(err => {
-        console.error(err);
-      });
+    await saveCart(orderData as Order).catch(err => {
+      console.error(err);
+    });
   };
 
   useEffect(() => {
