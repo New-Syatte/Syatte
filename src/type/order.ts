@@ -78,3 +78,15 @@ export type TrackingResponseError = {
     code: string;
   };
 };
+
+export enum DeliveryErrorType {
+  AUTHENTICATION_ERROR = "AUTHENTICATION_ERROR",
+  INVALID_TRACKING_NUMBER = "INVALID_TRACKING_NUMBER",
+  SERVICE_UNAVAILABLE = "SERVICE_UNAVAILABLE",
+  UNKNOWN_ERROR = "UNKNOWN_ERROR",
+}
+
+export interface DeliveryError {
+  type: DeliveryErrorType;
+  message: string;
+}

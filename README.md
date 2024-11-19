@@ -42,13 +42,12 @@
 <img src="https://img.shields.io/badge/github Actions-gray?style=for-the-badge&logo=github&logoColor=white">
 
 ## 🔨 아키텍처
+
 ![arc](https://github.com/New-Syatte/Syatte/assets/84277185/9a9b93e6-e5cf-401e-a666-54ecce68be4a)
 
-
-
 ## 🎊배포 주소
-<a href="https://syatt-deploy.vercel.app" target="_blank">![SYATT](https://github.com/New-Syatte/Syatte/assets/84277185/c3fce81b-e391-4bb3-a73b-73b8a2f3eb76)</a>
 
+<a href="https://syatt-deploy.vercel.app" target="_blank">![SYATT](https://github.com/New-Syatte/Syatte/assets/84277185/c3fce81b-e391-4bb3-a73b-73b8a2f3eb76)</a>
 
 <br/>
 <br/>
