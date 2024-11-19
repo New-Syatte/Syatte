@@ -1,6 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { trackDelivery } from "@/services/deliveryTracker";
-import getDeliveryToken from "@/app/actions";
+import { serverTrackDelivery } from "@/app/actions";
 import {
   Order,
   TrackingResponseError,
@@ -16,34 +15,13 @@ const initialState: IOrderState = [];
 export const trackDeliveryThunk = createAsyncThunk(
   "orders/trackDelivery",
   async (order: Order, thunkAPI) => {
-    const { carrierId, trackingNumber } = order.shippingInfo;
-    const accessToken = await getDeliveryToken(false);
-    const deliveryData: DeliveryTrackingResponse = await trackDelivery(
-      carrierId,
-      trackingNumber,
-      accessToken,
-    );
-
-    // accessToken 만료 시 재발급 후 배송 추적.
-    if (deliveryData.errors) {
-      if (
-        deliveryData.errors?.find(
-          (error: TrackingResponseError) =>
-            error.extensions.code === "UNAUTHENTICATED",
-        )
-      ) {
-        const newAccessToken = await getDeliveryToken(true);
-        const newDeliveryData = await trackDelivery(
-          carrierId,
-          trackingNumber,
-          newAccessToken,
-        );
-        return { data: newDeliveryData, trackingNumber };
-      } else {
-        throw new Error(deliveryData.errors[0].message);
-      }
-    } else {
+    try {
+      const { carrierId, trackingNumber } = order.shippingInfo;
+      const deliveryData = await serverTrackDelivery(carrierId, trackingNumber);
       return { data: deliveryData, trackingNumber };
+    } catch (error: any) {
+      // 서버에서 전달된 에러 메시지를 리덕스에서 처리
+      return thunkAPI.rejectWithValue(error.message);
     }
   },
 );
@@ -78,29 +56,35 @@ const orderSlice = createSlice({
     },
   },
   extraReducers: builder => {
-    builder.addCase(trackDeliveryThunk.fulfilled, (state, action) => {
-      const { data, trackingNumber } = action.payload as {
-        data: DeliveryTrackingResponse;
-        trackingNumber: string;
-      };
+    builder
+      .addCase(trackDeliveryThunk.fulfilled, (state, action) => {
+        const { data, trackingNumber } = action.payload as {
+          data: DeliveryTrackingResponse;
+          trackingNumber: string;
+        };
 
-      if (data.data) {
-        const deliveryStatus = data.data.track.lastEvent.status.code;
-        const deliveryTime = data.data.track.lastEvent.time;
-        const deliveryEvents = data.data.track.events.edges;
+        if (data.data) {
+          const deliveryStatus = data.data.track.lastEvent.status.code;
+          const deliveryTime = data.data.track.lastEvent.time;
+          const deliveryEvents = data.data.track.events.edges;
 
-        if (state.length > 0) {
-          state.forEach((order, index) => {
-            if (!order.shippingInfo) return;
-            if (order.shippingInfo.trackingNumber === trackingNumber) {
-              state[index].orderStatus = changeOrderStatus(deliveryStatus);
-              state[index].shippingInfo.lastEventTime = deliveryTime;
-              state[index].shippingInfo.events = deliveryEvents;
-            }
-          });
+          if (state.length > 0) {
+            state.forEach((order, index) => {
+              if (!order.shippingInfo) return;
+              if (order.shippingInfo.trackingNumber === trackingNumber) {
+                state[index].orderStatus = changeOrderStatus(deliveryStatus);
+                state[index].shippingInfo.lastEventTime = deliveryTime;
+                state[index].shippingInfo.events = deliveryEvents;
+              }
+            });
+          }
         }
-      }
-    });
+      })
+      .addCase(trackDeliveryThunk.rejected, (state, action) => {
+        // 에러 처리
+        console.error("배송 조회 실패:", action.payload);
+        // 필요한 경우 state 업데이트
+      });
   },
 });
 

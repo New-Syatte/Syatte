@@ -42,11 +42,12 @@ const OrderProduct = ({ order, index = 0 }: OrderProductProps) => {
   return (
     <div className={`w-full pb-10`} key={index}>
       <Link
-        href={
-          !isDetail
-            ? `${URLS.ORDER_DETAILS}/${order._id}`
-            : "javascript:void(0)"
-        }
+        href={!isDetail ? `${URLS.ORDER_DETAILS}/${order._id}` : "/"}
+        onClick={e => {
+          if (isDetail) {
+            e.preventDefault();
+          }
+        }}
         className={`flex sm:flex-col sm:gap-2 w-full h-[60px] sm:h-auto justify-between sm:justify-start sm:items-start pb-3 bg-bgWhiteSmoke border border-lightGray rounded-md p-3 ${
           !isDetail ? "cursor-pointer" : "cursor-default"
         } px-4 transition-all transition-duration-600 ease-in-out`}
