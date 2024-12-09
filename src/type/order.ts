@@ -1,7 +1,9 @@
 import { CartItem } from "./cart";
 
 export type Order = {
+  userId: string;
   userEmail: string;
+  displayName: string;
   orderDate: string;
   createdAt: string;
   orderAmount: number;

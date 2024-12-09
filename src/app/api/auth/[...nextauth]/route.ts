@@ -34,13 +34,16 @@ export const authOptions: AuthOptions = {
       if (!id) {
         return false;
       }
-      await addUser({
+
+      const userData = {
         id,
-        name: name || "",
-        email: email || "",
+        name: name || "Guest User",
+        email: email || `${id}@placeholder.com`,
         image,
-        username: email?.split("@")[0] || "",
-      });
+        username: email ? email.split("@")[0] : id,
+      };
+
+      await addUser(userData);
       return true;
     },
     async jwt({ token, user }) {

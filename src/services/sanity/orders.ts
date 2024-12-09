@@ -1,31 +1,11 @@
 import { client } from "@/services/sanity/sanity";
+import { Order } from "@/type/order";
 
-export async function getOrders(email: string) {
-  if (!email) {
-    throw new Error("userId is required");
-  }
-
-  try {
-    const orders = await client.fetch(
-      `*[ _type == "order" && userEmail == $email]{
-        username,
-        userEmail,
-        orderDate,
-        orderAmount,
-        orderStatus,
-        cartItems,
-        billingAddress,
-        shippingAddress,
-        createdAt,
-        shippingInfo,
-        _id
-      }`,
-      { email },
-    );
-    return orders;
-  } catch (error: any) {
-    console.error(`주문 불러오기 실패: ${error.message}`);
-  }
+export async function getOrders(userId: string) {
+  return client.fetch(
+    `*[_type == "order" && userId == $userId] | order(orderDate desc)`,
+    { userId },
+  );
 }
 
 export async function getOrder(orderId: string) {
@@ -72,4 +52,12 @@ export async function updateOrderStatus(
   } catch (error: any) {
     console.error(`주문 상태 변경 실패: ${error.message}`);
   }
+}
+
+export async function createOrder(orderData: Order) {
+  const order = {
+    _type: "order",
+    ...orderData,
+  };
+  return client.create(order);
 }

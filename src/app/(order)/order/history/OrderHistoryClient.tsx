@@ -12,16 +12,16 @@ import { TrackingResponseEvent } from "@/type/order";
 import Loader from "@/components/loader/Loader";
 import Heading from "@/components/heading/Heading";
 
-interface OrderHistoryClientProps {
-  userEmail: string;
+interface Props {
+  userId: string;
 }
 
-const OrderHistoryClient = ({ userEmail }: OrderHistoryClientProps) => {
+export default function OrderHistoryClient({ userId }: Props) {
   const {
     data: orders,
     error,
     mutate,
-  } = useSWR(["orders", userEmail], () => getOrders(userEmail));
+  } = useSWR(["orders", userId], () => getOrders(userId));
 
   const dispatch = useDispatch();
   const reduxOrders = useSelector(selectOrders);
@@ -76,6 +76,4 @@ const OrderHistoryClient = ({ userEmail }: OrderHistoryClientProps) => {
       </div>
     </section>
   );
-};
-
-export default OrderHistoryClient;
+}
