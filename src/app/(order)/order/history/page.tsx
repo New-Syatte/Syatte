@@ -12,5 +12,5 @@ export default async function OrderHistory() {
   }
   const user = session?.user as UserWithId;
 
-  return <OrderHistoryClient userEmail={user.email} />;
+  return <OrderHistoryClient userId={user.id} />;
 }
