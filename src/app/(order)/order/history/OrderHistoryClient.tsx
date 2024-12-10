@@ -2,63 +2,36 @@
 import StatusProgress from "./StatusProgress";
 import PeriodSelector from "@/layouts/periodSelector/PeriodSelector";
 import OrderList from "./OrderList";
-import { getOrders, updateOrderStatus } from "@/services/sanity/orders";
-import useSWR from "swr";
-import { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { STORE_ORDER, selectOrders } from "@/redux/slice/orderSlice";
-import { Order } from "@/type/order";
-import { TrackingResponseEvent } from "@/type/order";
 import Loader from "@/components/loader/Loader";
 import Heading from "@/components/heading/Heading";
-import { useSession } from "next-auth/react";
+import { useOrders } from "@/hooks/useOrders";
+import { toast } from "react-toastify";
 
 export default function OrderHistoryClient() {
-  const { data: session } = useSession();
-  const userId = session?.user?.id;
+  const { orders, error, isLoading } = useOrders();
 
-  const {
-    data: orders,
-    error,
-    mutate,
-  } = useSWR(userId ? ["orders", userId] : null, () => getOrders(userId!));
+  const refreshWebhooks = async () => {
+    if (process.env.NODE_ENV === "development") {
+      try {
+        const response = await fetch("/api/dev/refresh-webhook");
+        const data = await response.json();
 
-  const dispatch = useDispatch();
-  const reduxOrders = useSelector(selectOrders);
-  useEffect(() => {
-    if (reduxOrders && orders) {
-      reduxOrders.forEach(reduxOrder => {
-        const matchedOrder = orders.find(
-          (order: Order) => order._id === reduxOrder._id,
-        );
-        if (matchedOrder) {
-          if (
-            matchedOrder.status !== reduxOrder.orderStatus &&
-            reduxOrder.shippingInfo?.events
-          ) {
-            (async () => {
-              await updateOrderStatus(
-                matchedOrder._id,
-                reduxOrder.orderStatus,
-                reduxOrder.shippingInfo.events as TrackingResponseEvent[],
-              );
-              // update된 orders를 mutate로 캐시에 저장.
-              mutate();
-            })();
-          }
+        if (data.success) {
+          toast.success(
+            `Webhooks refreshed: ${data.summary.succeeded} succeeded, ${data.summary.failed} failed`,
+          );
+        } else {
+          toast.error("Failed to refresh webhooks");
         }
-      });
+      } catch (error) {
+        console.error("Error refreshing webhooks:", error);
+        toast.error("Error refreshing webhooks");
+      }
     }
-  }, [reduxOrders]);
+  };
 
-  useEffect(() => {
-    if (orders) {
-      dispatch(STORE_ORDER(orders));
-    }
-  }, [orders]);
-
-  if (error) return <div>Failed to load orders</div>;
-  if (!orders) return <Loader />;
+  if (error) return <div>주문 내역을 불러오는데 실패했습니다.</div>;
+  if (isLoading) return <Loader />;
 
   return (
     <section className="w-full flex flex-col gap-y-40 sm:gap-y-10 font-kor">
@@ -66,6 +39,14 @@ export default function OrderHistoryClient() {
         <Heading title="배송상황" fontSize="3xl" />
         <div className="border-b border-lightGray mb-7 w-full" />
         <StatusProgress />
+        {process.env.NODE_ENV === "development" && (
+          <button
+            onClick={refreshWebhooks}
+            className="mt-4 px-4 py-2 bg-gray-200 rounded hover:bg-gray-300"
+          >
+            Refresh Webhooks (Dev Only)
+          </button>
+        )}
       </div>
       <div>
         <div className="flex justify-between sm:flex-col mb-[30px] sm:mb-10 sm:pb-4 border-b border-lightGray">

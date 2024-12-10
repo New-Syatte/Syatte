@@ -1,101 +1,121 @@
-import axios from "axios";
+import { DeliveryTrackingResponse } from "@/type/order";
 
-// accessToken를 발급받는 함수
-export const getAccessToken = async () => {
-  const url = "https://auth.tracker.delivery/oauth2/token";
-  const clientId = process.env.DELIVERY_CLIENT_ID as string;
-  const clientSecret = process.env.DELIVERY_CLIENT_SECRET as string;
+const TRACKER_API_URL = "https://apis.tracker.delivery/graphql";
+const WEBHOOK_URL = `${process.env.NEXT_PUBLIC_APP_URL}/api/webhook/delivery`;
+const CLIENT_ID = process.env.DELIVERY_CLIENT_ID;
+const CLIENT_SECRET = process.env.DELIVERY_CLIENT_SECRET;
 
-  const params = new URLSearchParams();
-  params.append("grant_type", "client_credentials");
-  params.append("client_id", clientId);
-  params.append("client_secret", clientSecret);
-
-  const response = await axios.post(url, params, {
-    headers: {
-      "Content-Type": "application/x-www-form-urlencoded",
-    },
-  });
-
-  const accessToken = response.data.access_token;
-
-  return accessToken;
+const getAuthHeader = () => {
+  if (!CLIENT_ID || !CLIENT_SECRET) {
+    throw new Error("Delivery tracker credentials are not configured");
+  }
+  return `TRACKQL-API-KEY ${CLIENT_ID}:${CLIENT_SECRET}`;
 };
 
-// 배송 조회 함수
+export async function registerWebhook(
+  carrierId: string,
+  trackingNumber: string,
+  expirationHours: number = 48, // 기본값 48시간
+) {
+  try {
+    const expirationTime = new Date();
+    expirationTime.setHours(expirationTime.getHours() + expirationHours);
+
+    const response = await fetch(TRACKER_API_URL, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: getAuthHeader(),
+      },
+      body: JSON.stringify({
+        query: `mutation RegisterTrackWebhook($input: RegisterTrackWebhookInput!) {
+          registerTrackWebhook(input: $input)
+        }`,
+        variables: {
+          input: {
+            carrierId,
+            trackingNumber,
+            callbackUrl: WEBHOOK_URL,
+            expirationTime: expirationTime.toISOString(),
+          },
+        },
+      }),
+    });
+
+    const data = await response.json();
+
+    if (data.errors) {
+      throw new Error(data.errors[0]?.message || "Webhook registration failed");
+    }
+
+    return data;
+  } catch (error) {
+    console.error("Error registering webhook:", error);
+    throw error;
+  }
+}
+
+// Webhook 등록 해제 함수
+export async function unregisterWebhook(
+  carrierId: string,
+  trackingNumber: string,
+) {
+  // expirationTime을 현재 시간으로 설정하여 즉시 만료
+  return registerWebhook(carrierId, trackingNumber, 0);
+}
+
 export async function trackDelivery(
   carrierId: string,
   trackingNumber: string,
-  accessToken: string,
-) {
+): Promise<DeliveryTrackingResponse> {
   try {
-    const response = await axios.post(
-      "https://apis.tracker.delivery/graphql",
-      {
-        query: `
-        query Track(
-          $carrierId: ID!,
-          $trackingNumber: String!
-        ) {
-          track(
-            carrierId: $carrierId,
-            trackingNumber: $trackingNumber
-          ) {
+    const response = await fetch(TRACKER_API_URL, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: getAuthHeader(),
+      },
+      body: JSON.stringify({
+        query: `query Track($carrierId: ID!, $trackingNumber: String!) {
+          track(carrierId: $carrierId, trackingNumber: $trackingNumber) {
             lastEvent {
-              time
               status {
                 code
-                name
               }
-              description
+              time
             }
-            events(last: 10) {
+            events {
               edges {
                 node {
-                  time
                   status {
                     code
-                    name
                   }
+                  time
                   description
                 }
               }
             }
           }
-        }
-      `,
+        }`,
         variables: {
           carrierId,
           trackingNumber,
         },
-      },
-      {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${accessToken}`,
-        },
-      },
-    );
+      }),
+    });
 
-    return response.data;
-  } catch (error: any) {
-    // API 응답에서 에러를 확인
-    if (error.response && error.response.data.errors) {
-      const errors = error.response.data.errors;
+    const result = await response.json();
 
-      // UNAUTHENTICATED 에러가 있는지 확인
-      const unauthenticatedError = errors.find(
-        (err: any) =>
-          err.extensions && err.extensions.code === "UNAUTHENTICATED",
-      );
-
-      if (unauthenticatedError) {
-        // UNAUTHENTICATED 에러가 있으면 특정 에러를 던짐
-        throw new Error("UNAUTHENTICATED");
-      }
+    if (result.errors) {
+      throw new Error(result.errors[0]?.message || "Tracking query failed");
     }
 
-    // 다른 에러를 그대로 던짐
+    // 배송 추적 성공 시 webhook 등록
+    await registerWebhook(carrierId, trackingNumber);
+
+    return result;
+  } catch (error) {
+    console.error("배송 조회 중 오류가 발생했습니다:", error);
     throw error;
   }
 }

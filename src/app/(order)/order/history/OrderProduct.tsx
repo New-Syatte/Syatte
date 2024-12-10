@@ -2,45 +2,87 @@
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { ORDER_STATUS } from "@/constants/status";
 import { Order } from "@/type/order";
-import { useDispatch } from "react-redux";
-import { trackDeliveryThunk } from "@/redux/slice/orderSlice";
 import { useEffect, useState } from "react";
 import URLS from "@/constants/urls";
-import { Mobile } from "@/hooks/useMediaQuery";
+import OrderStatus from "@/components/order/OrderStatus";
+import { useOrders } from "@/hooks/useOrders";
 
 interface OrderProductProps {
   order: Order;
   index?: number;
 }
 
-const OrderProduct = ({ order, index = 0 }: OrderProductProps) => {
+export default function OrderProduct({ order, index = 0 }: OrderProductProps) {
   const pathname = usePathname();
   const orderTime = new Date(order.createdAt).toISOString();
-  const orderStatus = order.orderStatus;
   const [isDetail, setIsDetail] = useState(false);
-
-  const statusTitleArr = ORDER_STATUS.map(status => status.title);
-  const statusArray = ORDER_STATUS.map(status => status.value);
-  const dispatch = useDispatch();
-
-  const isMobile = Mobile();
+  const { trackDelivery } = useOrders();
 
   useEffect(() => {
-    dispatch<any>(trackDeliveryThunk(order));
-  }, [dispatch, orderStatus]);
-
-  useEffect(() => {
-    if (pathname === "/order/history") {
-      setIsDetail(false);
-    } else {
-      setIsDetail(true);
+    if (pathname.includes(URLS.ORDER_DETAILS)) {
+      trackDelivery(order);
     }
-  }, []);
+  }, [order, trackDelivery, pathname]);
+
+  useEffect(() => {
+    setIsDetail(pathname !== "/order/history");
+  }, [pathname]);
+
+  const renderProductItem = (product: any, itemIndex: number) => {
+    const discountedPrice =
+      product.price - product.price * (product.discount / 100);
+
+    return (
+      <div
+        key={itemIndex}
+        className="flex items-center justify-between px-8 sm:px-4 py-[10px] h-[170px] sm:h-auto"
+      >
+        <div className="flex justify-start items-center gap-16 sm:gap-4 w-1/3 sm:w-auto">
+          <p className="text-base sm:text-sm">{itemIndex + 1}</p>
+          <div className="w-20 h-20 sm:w-[77px] sm:h-[77px] flex justify-center items-center border border-lightGray">
+            <Image
+              src={product.imageURL || ""}
+              alt={product.name}
+              width={0}
+              height={0}
+              sizes="100vw"
+              className="w-[70%] sm:w-[80%] h-auto"
+            />
+          </div>
+          <div className="flex flex-col justify-start items-start sm:w-3/5">
+            <p className="font-normal text-black mb-2 whitespace-nowrap text-lg sm:text-sm">
+              {product.name}
+            </p>
+            <OrderStatus order={order} className="sm:text-xs" />
+            <div className="hidden sm:flex sm:w-full sm:justify-between sm:items-center sm:font-bold sm:mt-2">
+              <p>{product.cartQuantity}개</p>
+              <p>
+                {Number(
+                  discountedPrice * product.cartQuantity,
+                ).toLocaleString()}
+                원
+              </p>
+            </div>
+          </div>
+        </div>
+        <div className="w-1/3 flex justify-end items-center text-lg sm:hidden">
+          <div className="flex justify-end items-center w-1/2 gap-20">
+            <p className="font-normal whitespace-nowrap">
+              {product.cartQuantity}개
+            </p>
+            <p className="font-normal whitespace-nowrap">
+              {Number(discountedPrice * product.cartQuantity).toLocaleString()}
+              원
+            </p>
+          </div>
+        </div>
+      </div>
+    );
+  };
 
   return (
-    <div className={`w-full pb-10`} key={index}>
+    <div className="w-full pb-10">
       <Link
         href={!isDetail ? `${URLS.ORDER_DETAILS}/${order._id}` : "/"}
         onClick={e => {
@@ -48,9 +90,13 @@ const OrderProduct = ({ order, index = 0 }: OrderProductProps) => {
             e.preventDefault();
           }
         }}
-        className={`flex sm:flex-col sm:gap-2 w-full h-[60px] sm:h-auto justify-between sm:justify-start sm:items-start pb-3 bg-bgWhiteSmoke border border-lightGray rounded-md p-3 ${
-          !isDetail ? "cursor-pointer" : "cursor-default"
-        } px-4 transition-all transition-duration-600 ease-in-out`}
+        className={`
+          flex sm:flex-col sm:gap-2 w-full h-[60px] sm:h-auto 
+          justify-between sm:justify-start sm:items-start pb-3 
+          bg-bgWhiteSmoke border border-lightGray rounded-md p-3 px-4
+          ${!isDetail ? "cursor-pointer" : "cursor-default"}
+          transition-all duration-600 ease-in-out
+        `}
       >
         <div className="flex sm:flex-col sm:items-start justify-start items-center gap-10 sm:gap-1 text-sm font-bold">
           <h3>
@@ -71,93 +117,7 @@ const OrderProduct = ({ order, index = 0 }: OrderProductProps) => {
           </h3>
         </div>
       </Link>
-      {order.cartItems &&
-        order.cartItems.map((product, index) => {
-          const discountedPrice =
-            product.price - product.price * (product.discount / 100);
-          if (isMobile)
-            return (
-              <div
-                key={index}
-                className="w-full py-[10px] flex items-center justify-between text-sm"
-              >
-                <p>{index + 1}</p>
-                <div className="w-[77px] h-[77px] flex justify-center items-center border border-lightGray">
-                  <Image
-                    src={product.imageURL || ""}
-                    alt={"제품사진"}
-                    width={0}
-                    height={0}
-                    sizes="100vw"
-                    style={{ width: "80%", height: "auto" }}
-                  />
-                </div>
-                <div className="flex flex-col w-3/5">
-                  <div className="flex flex-col justify-start items-start mb-1">
-                    <p className="font-normal text-black whitespace-nowrap">
-                      {product.name}
-                    </p>
-                    <p className="text-xs text-darkGray whitespace-nowrap">
-                      {statusTitleArr[statusArray.indexOf(order.orderStatus)]}
-                    </p>
-                  </div>
-                  <div className="flex justify-between items-center font-bold whitespace-nowrap">
-                    <p>{product.cartQuantity}개</p>
-                    <p>
-                      {Number(
-                        discountedPrice * product.cartQuantity,
-                      ).toLocaleString()}
-                      원
-                    </p>
-                  </div>
-                </div>
-              </div>
-            );
-          if (!isMobile)
-            return (
-              <div
-                key={index}
-                className="h-[170px] py-[10px] flex items-center justify-between px-8"
-              >
-                <div className="flex justify-start items-center gap-16 w-1/3">
-                  <p>{index + 1}</p>
-                  <div className="w-20 h-20 flex justify-center items-center border border-lightGray">
-                    <Image
-                      src={product.imageURL || ""}
-                      alt={"제품사진"}
-                      width={0}
-                      height={0}
-                      sizes="100vw"
-                      style={{ width: "70%", height: "auto" }}
-                    />
-                  </div>
-                  <div className="flex flex-col justify-start items-start">
-                    <p className="font-normal text-black mb-2 whitespace-nowrap text-lg">
-                      {product.name}
-                    </p>
-                    <p className="font-normal text-darkGray whitespace-nowrap">
-                      {statusTitleArr[statusArray.indexOf(order.orderStatus)]}
-                    </p>
-                  </div>
-                </div>
-                <div className="w-1/3 flex justify-end items-center text-lg">
-                  <div className="flex justify-end items-center w-1/2 gap-20">
-                    <p className="font-normal whitespace-nowrap">
-                      {product.cartQuantity}개
-                    </p>
-                    <p className="font-normal whitespace-nowrap">
-                      {Number(
-                        discountedPrice * product.cartQuantity,
-                      ).toLocaleString()}
-                      원
-                    </p>
-                  </div>
-                </div>
-              </div>
-            );
-        })}
+      {order.cartItems?.map((product, idx) => renderProductItem(product, idx))}
     </div>
   );
-};
-
-export default OrderProduct;
+}
