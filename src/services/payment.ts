@@ -41,7 +41,7 @@ export const confirmPayment = async (
   orderId: string,
   amount: string,
 ) => {
-  const secretkey = process.env.NEXT_PUBLIC_TOSS_SECRET_KEY;
+  const secretkey = process.env.TOSS_SECRET_KEY;
   const basicToken = Buffer.from(`${secretkey}:`, "utf-8").toString("base64");
   const confirmUrl = "https://api.tosspayments.com/v1/payments/confirm";
 
