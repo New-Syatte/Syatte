@@ -1,26 +1,14 @@
 "use client";
 
-import { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import {
-  CALCULATE_CHECKED_ITEMS_QUANTITY,
-  CALCULATE_CHECKED_ITEMS_SUBTOTAL,
-  selectCheckedCartItems,
-} from "@/redux/slice/cartSlice";
+import { useSelector } from "react-redux";
+import { selectCheckedCartItems } from "@/redux/slice/cartSlice";
 import priceFormat from "@/utils/priceFormat";
 import Image from "next/image";
 import { Mobile } from "@/hooks/useMediaQuery";
 
 export default function CheckoutForm() {
   const cartItems = useSelector(selectCheckedCartItems);
-  const dispatch = useDispatch();
-
   const isMobile = Mobile();
-
-  useEffect(() => {
-    dispatch(CALCULATE_CHECKED_ITEMS_SUBTOTAL());
-    dispatch(CALCULATE_CHECKED_ITEMS_QUANTITY());
-  }, [dispatch, cartItems]);
 
   return (
     <div>

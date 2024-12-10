@@ -1,7 +1,18 @@
 "use server";
+
 import { getAccessToken } from "@/services/deliveryTracker";
 import { cookies } from "next/headers";
 import { trackDelivery } from "@/services/deliveryTracker";
+import { redirect } from "next/navigation";
+import URLS from "@/constants/urls";
+
+export async function handleCheckoutError(message: string, orderId: string) {
+  redirect(
+    `${URLS.CHECKOUT_FAIL}?message=${encodeURIComponent(
+      message,
+    )}&orderId=${orderId}`,
+  );
+}
 
 // isUnauthenticated가 true인 경우 새로운 토큰을 가져오고,
 // false인 경우 쿠키에 저장된 토큰을 반환하는 함수
@@ -89,6 +100,38 @@ export async function serverTrackDelivery(
 
     // 클라이언트에 표시할 적절한 에러 메시지 반환
     throw new Error("배송 조회 중 오류가 발생했습니다.");
+  }
+}
+
+export async function setCheckoutData(data: string) {
+  try {
+    const cookieStore = cookies();
+    cookieStore.set("checkoutData", data, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "lax",
+      path: "/",
+      maxAge: 60 * 60, // 1시간
+    });
+  } catch (error) {
+    console.error("Error setting checkout data:", error);
+    throw error;
+  }
+}
+
+export async function deleteCheckoutData() {
+  try {
+    const cookieStore = cookies();
+    cookieStore.set("checkoutData", "", {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "lax",
+      path: "/",
+      maxAge: 0, // 즉시 만료
+    });
+  } catch (error) {
+    console.error("Error deleting checkout data:", error);
+    throw error;
   }
 }
 

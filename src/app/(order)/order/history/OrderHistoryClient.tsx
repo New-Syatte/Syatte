@@ -11,17 +11,17 @@ import { Order } from "@/type/order";
 import { TrackingResponseEvent } from "@/type/order";
 import Loader from "@/components/loader/Loader";
 import Heading from "@/components/heading/Heading";
+import { useSession } from "next-auth/react";
 
-interface Props {
-  userId: string;
-}
+export default function OrderHistoryClient() {
+  const { data: session } = useSession();
+  const userId = session?.user?.id;
 
-export default function OrderHistoryClient({ userId }: Props) {
   const {
     data: orders,
     error,
     mutate,
-  } = useSWR(["orders", userId], () => getOrders(userId));
+  } = useSWR(userId ? ["orders", userId] : null, () => getOrders(userId!));
 
   const dispatch = useDispatch();
   const reduxOrders = useSelector(selectOrders);

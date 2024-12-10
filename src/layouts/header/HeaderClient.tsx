@@ -6,19 +6,16 @@ import Link from "next/link";
 import STLogo from "@/assets/SYATT.svg";
 import MMLogo from "@/assets/modern-masters-logo.png";
 import MDLogo from "@/assets/midas-metal-logo.svg";
-import { User } from "@/type/user";
 import { usePathname } from "next/navigation";
 import { useState, useEffect } from "react";
 import URLS from "@/constants/urls";
 import { Mobile } from "@/hooks/useMediaQuery";
 import Portal from "@/utils/Portal";
 import MobileNavModal from "./MobileNavModal";
+import { useSession } from "next-auth/react";
 
-interface HeaderProps {
-  user: User | undefined;
-}
-
-const HeaderClient = ({ user }: HeaderProps) => {
+const HeaderClient = () => {
+  const { data: session } = useSession();
   const pathname = usePathname();
   const [textColor, setTextColor] = useState("text-white");
   const [bgColor, setBgColor] = useState("bg-black");
@@ -61,8 +58,8 @@ const HeaderClient = ({ user }: HeaderProps) => {
             CART
           </Link>
           <div>
-            {user ? (
-              <UserBox data={user} />
+            {session?.user ? (
+              <UserBox data={session.user} />
             ) : (
               <Link
                 href={URLS.SIGNIN}
@@ -108,7 +105,10 @@ const HeaderClient = ({ user }: HeaderProps) => {
           <Portal selector="#portal">
             <div className="fixed top-0 left-0 w-screen h-screen bg-black bg-opacity-50 z-50">
               <div className="flex flex-col items-center justify-start w-4/5 h-full bg-white">
-                <MobileNavModal user={user} setIsModalOpen={setIsModalOpen} />
+                <MobileNavModal
+                  user={session?.user}
+                  setIsModalOpen={setIsModalOpen}
+                />
               </div>
               <div
                 className="absolute w-1/5 top-0 right-0 h-screen"

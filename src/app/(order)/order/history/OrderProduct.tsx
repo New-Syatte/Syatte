@@ -67,7 +67,7 @@ const OrderProduct = ({ order, index = 0 }: OrderProductProps) => {
         <div className="flex sm:w-full sm:justify-between justify-end items-center gap-10 font-bold text-lg">
           <h3 className="text-lg">총 결제금액</h3>
           <h3 className="text-[22px]">
-            {order.orderAmount.toLocaleString()}원
+            {order.orderAmount ? order.orderAmount.toLocaleString() : "0"}원
           </h3>
         </div>
       </Link>

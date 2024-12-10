@@ -34,7 +34,6 @@ export const authOptions: AuthOptions = {
       if (!id) {
         return false;
       }
-
       const userData = {
         id,
         name: name || "Guest User",
