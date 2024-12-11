@@ -3,6 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Order } from "@/type/order";
+import { CartItem } from "@/type/cart";
 import { useEffect, useState } from "react";
 import URLS from "@/constants/urls";
 import OrderStatus from "@/components/order/OrderStatus";
@@ -10,10 +11,9 @@ import { useOrders } from "@/hooks/useOrders";
 
 interface OrderProductProps {
   order: Order;
-  index?: number;
 }
 
-export default function OrderProduct({ order, index = 0 }: OrderProductProps) {
+export default function OrderProduct({ order }: OrderProductProps) {
   const pathname = usePathname();
   const orderTime = new Date(order.createdAt).toISOString();
   const [isDetail, setIsDetail] = useState(false);
@@ -29,7 +29,7 @@ export default function OrderProduct({ order, index = 0 }: OrderProductProps) {
     setIsDetail(pathname !== "/order/history");
   }, [pathname]);
 
-  const renderProductItem = (product: any, itemIndex: number) => {
+  const renderProductItem = (product: CartItem, itemIndex: number) => {
     const discountedPrice =
       product.price - product.price * (product.discount / 100);
 

@@ -27,6 +27,8 @@ export async function POST(req: NextRequest) {
       billingAddress,
     } = await req.json();
 
+    console.log(cartItems);
+
     if (!paymentKey || !orderId || !amount) {
       return NextResponse.json(
         { error: "필수 결제 파라미터가 누락되었습니다." },

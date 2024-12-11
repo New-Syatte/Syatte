@@ -1,5 +1,4 @@
-import { client } from "@/services/sanity/sanity";
-import { Order } from "@/type/order";
+import { client, writeClient } from "@/services/sanity/sanity";
 import { CartItem } from "@/type/cart";
 import { PaymentResponse } from "@/type/tossPayments";
 import { formatTime } from "@/utils/formatTime";
@@ -27,20 +26,21 @@ interface OrderInput {
 
 export async function createOrderFromPayment(input: OrderInput) {
   try {
-    // 1. 기존 주문 확인
+    // 1. 기존 주문 확인 (읽기 작업은 client 사용)
     const existingOrder = await client.fetch(
       `*[_type == "order" && _id == $orderId][0]`,
       { orderId: input.orderId },
     );
 
+    // 이미 주문이 존재하면 해당 주문 반환
     if (existingOrder) {
       return existingOrder;
     }
 
     const now = new Date();
 
-    // 2. 새 주문 생성
-    const order = await client.create({
+    // 2. 새 주문 생성 (쓰기 작업은 writeClient 사용)
+    const order = await writeClient.create({
       _type: "order",
       _id: input.orderId,
       userId: input.userId,
@@ -77,7 +77,19 @@ export async function createOrderFromPayment(input: OrderInput) {
     });
 
     return order;
-  } catch (error) {
+  } catch (error: any) {
+    // Sanity 에러 처리
+    if (error.statusCode === 409) {
+      // 동시성 문제로 인한 중복 생성 시도
+      const existingOrder = await client.fetch(
+        `*[_type == "order" && _id == $orderId][0]`,
+        { orderId: input.orderId },
+      );
+      if (existingOrder) {
+        return existingOrder;
+      }
+    }
+
     console.error("Order creation error:", error);
     throw new Error(
       error instanceof Error

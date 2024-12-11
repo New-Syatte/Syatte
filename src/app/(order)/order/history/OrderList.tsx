@@ -57,7 +57,7 @@ const OrderList = () => {
   return (
     <div>
       {currentOrders?.map((order, index) => (
-        <OrderProduct order={order} index={index} key={index} />
+        <OrderProduct order={order} key={index} />
       ))}
       <Pagination
         currentPage={currentPage}

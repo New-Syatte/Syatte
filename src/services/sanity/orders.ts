@@ -1,4 +1,4 @@
-import { client } from "@/services/sanity/sanity";
+import { client, writeClient } from "@/services/sanity/sanity";
 import { Order } from "@/type/order";
 
 export async function getOrders(userId: string) {
@@ -46,9 +46,12 @@ export async function updateOrderStatus(
   }
 
   try {
-    await client.patch(orderId).set({ orderStatus: status }).commit();
+    await writeClient.patch(orderId).set({ orderStatus: status }).commit();
 
-    await client.patch(orderId).set({ "shippingInfo.events": events }).commit();
+    await writeClient
+      .patch(orderId)
+      .set({ "shippingInfo.events": events })
+      .commit();
   } catch (error: any) {
     console.error(`주문 상태 변경 실패: ${error.message}`);
     throw error;
@@ -60,5 +63,5 @@ export async function createOrder(orderData: Order) {
     _type: "order",
     ...orderData,
   };
-  return client.create(order);
+  return writeClient.create(order);
 }

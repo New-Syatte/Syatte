@@ -62,5 +62,6 @@ export const config = {
     "/checkout-success/:path*",
     "/order/:path*",
     "/api/payment/:path*",
+    "/api/:path*",
   ],
 };
