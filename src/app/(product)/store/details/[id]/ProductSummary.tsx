@@ -2,13 +2,14 @@
 
 import { ProductForDetail } from "@/type/products";
 import Button from "@/components/button/Button";
-import { ADD_TO_CART, CALCULATE_TOTAL_QUANTITY } from "@/redux/slice/cartSlice";
+import { ADD_TO_CART } from "@/redux/slice/cartSlice";
 import { useDispatch } from "react-redux";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Slider from "@/components/slider/Slider";
 import URLS from "@/constants/urls";
 import SliderPreview from "@/components/slider/SliderPreview";
+import { toast } from "react-toastify";
 
 type ProductSummaryProps = Omit<
   ProductForDetail,
@@ -27,16 +28,18 @@ const ProductSummary = ({
   const router = useRouter();
   const [count, setCount] = useState(1);
 
-  const addToCart = () => {
-    const product = {
-      id: _id,
-      name: productName,
-      price,
-      discount,
-      imageURL: images[0].imageUrl,
-    };
-    dispatch(ADD_TO_CART({ ...product, quantity: count }));
-    dispatch(CALCULATE_TOTAL_QUANTITY());
+  const handleAddToCart = () => {
+    dispatch(
+      ADD_TO_CART({
+        id: _id,
+        name: productName,
+        price,
+        imageURL: images[0].imageUrl,
+        discount,
+        quantity: count,
+      }),
+    );
+    toast.success("장바구니에 추가되었습니다.");
   };
 
   return (
@@ -135,7 +138,7 @@ const ProductSummary = ({
           <div className="flex justify-center items-center gap-[18px] mt-8">
             <Button
               onClick={() => {
-                addToCart();
+                handleAddToCart();
               }}
               styleType="blank"
               style="w-[200px] h-[62px] py-[17.80px] bg-white rounded-[50px] border-2 border-primaryBlue justify-center items-center inline-flex text-primaryBlue text-lg font-bold hover:bg-primaryBlue hover:text-white"
@@ -144,7 +147,7 @@ const ProductSummary = ({
             </Button>
             <Button
               onClick={() => {
-                addToCart();
+                handleAddToCart();
                 router.push(URLS.CART);
               }}
               styleType="blank"

@@ -1,12 +1,10 @@
 import { CartItem } from "@/type/cart";
-import { createSlice } from "@reduxjs/toolkit";
+import { createSelector, createSlice } from "@reduxjs/toolkit";
 import { RootState } from "../store";
 
 interface ICartState {
   cartItems: CartItem[];
-  cartTotalQuantity: number;
   cartTotalAmount: number;
-  cartCheckedTotalQuantity: number;
   cartCheckedTotalAmount: number;
   isAllChecked: boolean;
   previousURL: string;
@@ -19,9 +17,7 @@ const initialState: ICartState = {
         ? JSON.parse(localStorage.getItem("cartItems")!)
         : []
       : [],
-  cartTotalQuantity: 0,
   cartTotalAmount: 0,
-  cartCheckedTotalQuantity: 0,
   cartCheckedTotalAmount: 0,
   isAllChecked: false,
   previousURL: "",
@@ -44,7 +40,6 @@ const cartSlice = createSlice({
         state.cartItems[productIndex].cartQuantity += increaseCount;
       } else {
         const tempProduct = {
-          // ...action.payload,
           id: action.payload.id,
           imageURL: action.payload.imageURL,
           name: action.payload.name,
@@ -60,28 +55,10 @@ const cartSlice = createSlice({
       localStorage.setItem("cartItems", JSON.stringify(state.cartItems));
     },
 
-    CALCULATE_TOTAL_QUANTITY: state => {
-      const array: number[] = [];
-      state.cartItems.map(item => {
-        const { cartQuantity } = item;
-
-        const quantity = cartQuantity;
-        return array.push(quantity);
-      });
-
-      const totalQuantity = array.reduce((a, b) => {
-        return a + b;
-      }, 0);
-
-      state.cartTotalQuantity = totalQuantity;
-    },
-
     CALCULATE_SUBTOTAL: state => {
       const array: number[] = [];
-
       state.cartItems.map(item => {
         const { price, cartQuantity, discount } = item;
-
         const discountedPrice = price - price * (discount / 100);
         const cartItemAmount = discountedPrice * cartQuantity;
         return array.push(cartItemAmount);
@@ -97,6 +74,7 @@ const cartSlice = createSlice({
     SAVE_URL: (state, action) => {
       state.previousURL = action.payload;
     },
+
     DECREASE_CART: (state, action) => {
       const productIndex = state.cartItems.findIndex(
         item => item.id === action.payload.id,
@@ -119,32 +97,31 @@ const cartSlice = createSlice({
       );
 
       state.cartItems = newCartItem;
-
       localStorage.setItem("cartItems", JSON.stringify(state.cartItems));
     },
+
     REMOVE_CHECKED_ITEMS_FROM_CART: state => {
       const newCartItem = state.cartItems.filter(item => !item.isChecked);
       state.cartItems = newCartItem;
       localStorage.setItem("cartItems", JSON.stringify(state.cartItems));
     },
+
     SELECT_ALL_ITEMS: state => {
       state.cartItems.map(item => {
         item.isChecked = true;
       });
       localStorage.setItem("cartItems", JSON.stringify(state.cartItems));
-
-      // isAllchecked 확인
       state.isAllChecked = true;
     },
+
     UNCHECK_ALL_ITEMS: state => {
       state.cartItems.map(item => {
         item.isChecked = false;
       });
       localStorage.setItem("cartItems", JSON.stringify(state.cartItems));
-
-      // isAllchecked 확인
       state.isAllChecked = false;
     },
+
     CALCULATE_CHECKED_ITEMS_SUBTOTAL: state => {
       const array: number[] = [];
 
@@ -152,7 +129,6 @@ const cartSlice = createSlice({
         .filter(item => item.isChecked)
         .map(item => {
           const { price, cartQuantity, discount } = item;
-
           const discountedPrice = price - price * (discount / 100);
           const cartItemAmount = discountedPrice * cartQuantity;
           return array.push(cartItemAmount);
@@ -164,24 +140,7 @@ const cartSlice = createSlice({
 
       state.cartCheckedTotalAmount = totalAmount;
     },
-    CALCULATE_CHECKED_ITEMS_QUANTITY: state => {
-      const array: number[] = [];
 
-      state.cartItems
-        .filter(item => item.isChecked)
-        .map(item => {
-          const { cartQuantity } = item;
-
-          const quantity = cartQuantity;
-          return array.push(quantity);
-        });
-
-      const totalQuantity = array.reduce((a, b) => {
-        return a + b;
-      }, 0);
-
-      state.cartCheckedTotalQuantity = totalQuantity;
-    },
     ALTERNATE_CHECKED_ITEMS: (state, action) => {
       const productIndex = state.cartItems.findIndex(
         item => item.id === action.payload.id,
@@ -190,17 +149,14 @@ const cartSlice = createSlice({
       state.cartItems[productIndex].isChecked =
         !state.cartItems[productIndex].isChecked;
       localStorage.setItem("cartItems", JSON.stringify(state.cartItems));
-      // isAllchecked 확인
-      state.isAllChecked = state.cartItems.every(item => item.isChecked)
-        ? true
-        : false;
+
+      state.isAllChecked = state.cartItems.every(item => item.isChecked);
     },
   },
 });
 
 export const {
   ADD_TO_CART,
-  CALCULATE_TOTAL_QUANTITY,
   CALCULATE_SUBTOTAL,
   REMOVE_CHECKED_ITEMS_FROM_CART,
   SELECT_ALL_ITEMS,
@@ -208,22 +164,30 @@ export const {
   REMOVE_FROM_CART,
   DECREASE_CART,
   CALCULATE_CHECKED_ITEMS_SUBTOTAL,
-  CALCULATE_CHECKED_ITEMS_QUANTITY,
   SAVE_URL,
   ALTERNATE_CHECKED_ITEMS,
 } = cartSlice.actions;
 
+// 기본 셀렉터
 export const selectCartItems = (state: RootState) => state.cart.cartItems;
-export const selectCheckedCartItems = (state: RootState) =>
-  state.cart.cartItems.filter(item => item.isChecked);
-export const selectCartTotalQuantity = (state: RootState) =>
-  state.cart.cartTotalQuantity;
+
+// 메모이제이션된 셀렉터
+export const selectCheckedCartItems = createSelector(
+  [selectCartItems],
+  cartItems => cartItems.filter(item => item.isChecked),
+);
+
+export const selectCheckedTotalQuantity = createSelector(
+  [selectCheckedCartItems],
+  cartItems => cartItems.reduce((sum, item) => sum + item.cartQuantity, 0),
+);
+
 export const selectCartTotalAmount = (state: RootState) =>
   state.cart.cartTotalAmount;
-export const selectCheckedTotalQuantity = (state: RootState) =>
-  state.cart.cartCheckedTotalQuantity;
+
 export const selectCheckedTotalAmount = (state: RootState) =>
   state.cart.cartCheckedTotalAmount;
+
 export const selectAllChecked = (state: RootState) => state.cart.isAllChecked;
 
 export default cartSlice.reducer;

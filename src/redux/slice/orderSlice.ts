@@ -18,9 +18,32 @@ export const trackDeliveryThunk = createAsyncThunk(
     try {
       const { carrierId, trackingNumber } = order.shippingInfo;
       const deliveryData = await serverTrackDelivery(carrierId, trackingNumber);
+
+      if (deliveryData.data?.track) {
+        const deliveryStatus = deliveryData.data.track.lastEvent.status.code;
+        const status = changeOrderStatus(deliveryStatus);
+        const events = deliveryData.data.track.events.edges;
+
+        // API를 통해 Sanity 데이터베이스 업데이트
+        const response = await fetch("/api/orders/update-status", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            orderId: order._id,
+            status,
+            events,
+          }),
+        });
+
+        if (!response.ok) {
+          throw new Error("Failed to update order status");
+        }
+      }
+
       return { data: deliveryData, trackingNumber };
     } catch (error: any) {
-      // 서버에서 전달된 에러 메시지를 리덕스에서 처리
       return thunkAPI.rejectWithValue(error.message);
     }
   },
@@ -81,9 +104,7 @@ const orderSlice = createSlice({
         }
       })
       .addCase(trackDeliveryThunk.rejected, (state, action) => {
-        // 에러 처리
         console.error("배송 조회 실패:", action.payload);
-        // 필요한 경우 state 업데이트
       });
   },
 });
