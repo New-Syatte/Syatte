@@ -4,7 +4,6 @@ import { registerWebhook } from "@/services/deliveryTracker";
 
 // Vercel Cron Job에서 24시간마다 호출
 export const dynamic = "force-dynamic";
-export const maxDuration = 300; // 5분 타임아웃
 
 export async function GET(req: NextRequest) {
   try {
