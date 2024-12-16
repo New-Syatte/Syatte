@@ -10,12 +10,13 @@ interface PageProps {
 
 export default async function ProductDetails({ params }: PageProps) {
   const resolvedParams = await params;
+  const { id } = resolvedParams;
 
-  if (!resolvedParams?.id) {
+  if (!id) {
     notFound();
   }
 
-  const product: ProductForDetail = await getDetailProduct(resolvedParams.id);
+  const product: ProductForDetail = await getDetailProduct(id);
 
   if (!product) {
     notFound();
@@ -27,7 +28,7 @@ export default async function ProductDetails({ params }: PageProps) {
   return (
     <section className="w-full mx-auto mb-[200px] flex sm:flex-col justify-center sm:items-center items-start sm:px-0 px-60 py-20 gap-28 overflow-x-hidden">
       <ProductSummary
-        _id={resolvedParams.id}
+        _id={id}
         productName={productName}
         price={price}
         description={description}

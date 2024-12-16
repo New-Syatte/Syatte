@@ -6,13 +6,12 @@ import { Order } from "@/type/order";
 import URLS from "@/constants/urls";
 import Button from "@/components/button/Button";
 interface OrderDetailsProps {
-  params: {
-    id: string;
-  };
+  params: Promise<{ id: string }>;
 }
 
 const OrderDetails = async ({ params }: OrderDetailsProps) => {
-  const { id } = params;
+  const resolvedParams = await params;
+  const { id } = resolvedParams;
   const order: Order = await getOrder(id);
   const orderTime = new Date(order.createdAt);
   const formattedOrderTime = orderTime.toLocaleString("ko-KR", {
@@ -23,7 +22,11 @@ const OrderDetails = async ({ params }: OrderDetailsProps) => {
   return (
     <>
       <div className="w-full border-b-2 border-colorBlack pb-14">
-        <OrderProduct order={order} />
+        <OrderProduct
+          order={order}
+          onTrackDelivery={() => {}}
+          disabled={true}
+        />
       </div>
       <div className="flex justify-between items-center w-full border-b-2 border-colorBlack pb-24 sm:pb-4 gap-x-28 sm:gap-x-0 p-7 sm:p-4 sm:text-sm">
         <h2 className="text-xl sm:text-base font-bold w-1/4 sm:w-1/3">

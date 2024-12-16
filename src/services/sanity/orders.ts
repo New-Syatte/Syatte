@@ -32,13 +32,18 @@ export async function getOrder(orderId: string) {
       { orderId },
     );
     console.log("Sanity order fetch result:", order);
-    return order || null;
+
+    if (!order) {
+      throw new Error("주문을 찾을 수 없습니다");
+    }
+
+    return order;
   } catch (error: any) {
     console.error("Sanity order fetch error:", {
       error: error.message,
       orderId,
     });
-    return null;
+    throw new Error(`주문 조회 실패: ${error.message}`);
   }
 }
 

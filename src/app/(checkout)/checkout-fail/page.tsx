@@ -2,14 +2,16 @@ import Image from "next/image";
 import Link from "next/link";
 import ErrorIcon from "@/assets/cart/errorIcon.svg";
 
-interface Props {
-  searchParams: {
-    message: string;
-    orderId: string;
-  };
-}
+type SearchParams = Promise<{
+  message?: string;
+  orderId?: string;
+}>;
 
-export default async function CheckoutFailPage({ searchParams }: Props) {
+export default async function CheckoutFailPage({
+  searchParams,
+}: {
+  searchParams: SearchParams;
+}) {
   const listStyle = "flex justify-between text-lg mb-4";
   const subTitle = "text-[22px] font-bold";
 

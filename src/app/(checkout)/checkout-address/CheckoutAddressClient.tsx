@@ -16,21 +16,6 @@ import URLS from "@/constants/urls";
 import CartInfoArticle from "@/app/(cart)/cart/CartInfoArticle";
 import { Mobile } from "@/hooks/useMediaQuery";
 
-const initialState = {
-  name: "",
-  line: "",
-  city: "",
-  postalCode: "",
-  phone: "",
-  memo: "",
-};
-
-const initialState2 = {
-  name: "",
-  phone: "",
-  userEmail: "",
-};
-
 const id = "daum-postcode"; // script가 이미 rendering 되어 있는지 확인하기 위한 ID
 const src = "//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js";
 

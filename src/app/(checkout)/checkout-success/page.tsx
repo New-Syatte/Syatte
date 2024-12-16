@@ -16,10 +16,16 @@ function PaymentProcessing() {
   );
 }
 
+type SearchParams = Promise<{
+  orderId: string;
+  paymentKey: string;
+  amount: string;
+}>;
+
 export default async function CheckoutSuccessPage({
   searchParams,
 }: {
-  searchParams: { orderId: string; paymentKey: string; amount: string };
+  searchParams: SearchParams;
 }) {
   const params = await Promise.resolve(searchParams);
   const orderId = params.orderId;
