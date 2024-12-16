@@ -4,43 +4,95 @@ import { ProductForDetail } from "@/type/products";
 import Button from "@/components/button/Button";
 import { ADD_TO_CART } from "@/redux/slice/cartSlice";
 import { useDispatch } from "react-redux";
-import { useState } from "react";
+import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import Slider from "@/components/slider/Slider";
 import URLS from "@/constants/urls";
 import SliderPreview from "@/components/slider/SliderPreview";
-import { toast } from "react-toastify";
+import { Slide, toast } from "react-toastify";
 
 type ProductSummaryProps = Omit<
   ProductForDetail,
   "category" | "detailCategory" | "detailImage"
 >;
 
-const ProductSummary = ({
+export default function ProductSummary({
   _id,
   productName,
   price,
   description,
   images,
   discount,
-}: ProductSummaryProps) => {
+}: ProductSummaryProps) {
   const dispatch = useDispatch();
   const router = useRouter();
   const [count, setCount] = useState(1);
+  const [isPending, startTransition] = useTransition();
 
-  const handleAddToCart = () => {
-    dispatch(
-      ADD_TO_CART({
-        id: _id,
-        name: productName,
-        price,
-        imageURL: images[0].imageUrl,
-        discount,
-        quantity: count,
-      }),
-    );
-    toast.success("장바구니에 추가되었습니다.");
+  const handleAddToCart = (redirectToCart: boolean = false) => {
+    try {
+      dispatch(
+        ADD_TO_CART({
+          id: _id,
+          name: productName,
+          price,
+          imageURL: images[0].imageUrl,
+          discount,
+          quantity: count,
+        }),
+      );
+
+      toast.success("장바구니에 추가되었습니다.", {
+        position: "top-right",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        theme: "light",
+        transition: Slide,
+      });
+
+      if (redirectToCart) {
+        startTransition(() => {
+          router.push(URLS.CART);
+        });
+      }
+    } catch (error) {
+      console.error("Failed to add to cart:", error);
+      toast.error(
+        error instanceof Error
+          ? error.message
+          : "장바구니에 추가하는 중 오류가 발생했습니다.",
+        {
+          position: "top-right",
+          autoClose: 2000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          theme: "light",
+          transition: Slide,
+        },
+      );
+    }
   };
+
+  const handleCountChange = (increment: boolean) => {
+    setCount(prev => {
+      const newCount = increment ? prev + 1 : prev - 1;
+      return Math.max(1, newCount); // 최소값 1 보장
+    });
+  };
+
+  const calculateDiscountedPrice = (
+    originalPrice: number,
+    discountPercent: number,
+  ) => {
+    return originalPrice - (originalPrice * discountPercent) / 100;
+  };
+
+  const discountedPrice = calculateDiscountedPrice(price, discount);
 
   return (
     <>
@@ -56,7 +108,7 @@ const ProductSummary = ({
             arrowSize={30}
           />
         </div>
-        {/* Carousel 자리 */}
+        {/* Carousel */}
         <div className="sm:w-full flex justify-center items-center gap-2 w-[415px] mb-12 mt-5 overflow-x-auto">
           {images.map((image, index) => (
             <div key={index} className="flex items-center justify-center w-1/5">
@@ -75,12 +127,6 @@ const ProductSummary = ({
           <p className="text-neutral-800 text-sm font-normal sm:leading-normal leading-[25.20px]">
             {description}
           </p>
-          {/* <ul className="border-whitegray border-y-2 py-10 list-disc">
-            {feature &&
-              feature.map((item, index) => {
-                return <li key={index}>{item}</li>;
-              })}
-          </ul> */}
           {/* 가격 */}
           <article className="flex flex-col font-bold py-10 justify-between items-start gap-2">
             <div className="flex gap-2 justify-start items-end">
@@ -92,7 +138,7 @@ const ProductSummary = ({
               </p>
             </div>
             <p className="text-black text-[38px] font-bold leading-[30px]">
-              {(price - (price * discount) / 100).toLocaleString()}원
+              {discountedPrice.toLocaleString()}원
             </p>
           </article>
           {/* 수량 버튼 */}
@@ -100,8 +146,8 @@ const ProductSummary = ({
             <div className="sm:w-1/2 w-[103px] h-9">
               <div className="flex justify-between items-center h-9 bg-white border border-zinc-300 rounded">
                 <Button
-                  onClick={() => setCount(prev => prev - 1)}
-                  disabled={count > 1 ? false : true}
+                  onClick={() => handleCountChange(false)}
+                  disabled={count <= 1 || isPending}
                   styleType="blank"
                   style="w-10 h-9 p-0"
                 >
@@ -111,7 +157,8 @@ const ProductSummary = ({
                   <b className="text-black text-lg">{count}</b>
                 </p>
                 <Button
-                  onClick={() => setCount(prev => prev + 1)}
+                  onClick={() => handleCountChange(true)}
+                  disabled={isPending}
                   styleType="blank"
                   style="w-10 h-9 p-0"
                 >
@@ -121,7 +168,7 @@ const ProductSummary = ({
             </div>
             <div>
               <p className="text-neutral-800 sm:text-base text-[22px] font-bold">
-                {(price - (price * discount) / 100).toLocaleString()}원
+                {(discountedPrice * count).toLocaleString()}원
               </p>
             </div>
           </div>
@@ -129,37 +176,32 @@ const ProductSummary = ({
           <div>
             <div className="flex justify-between items-center gap-8 sm:w-full w-[415px] h-[61px] mt-7 p-3">
               <p className="text-neutral-800 text-[22px] font-bold">주문금액</p>
-              <p className="text-neutral-800 text-[28px] font-bold ">
-                {(price - (price * discount) / 100).toLocaleString()}원
+              <p className="text-neutral-800 text-[28px] font-bold">
+                {(discountedPrice * count).toLocaleString()}원
               </p>
             </div>
           </div>
           {/* 구매하기 버튼 */}
           <div className="flex justify-center items-center gap-[18px] mt-8">
             <Button
-              onClick={() => {
-                handleAddToCart();
-              }}
+              onClick={() => handleAddToCart(false)}
               styleType="blank"
               style="w-[200px] h-[62px] py-[17.80px] bg-white rounded-[50px] border-2 border-primaryBlue justify-center items-center inline-flex text-primaryBlue text-lg font-bold hover:bg-primaryBlue hover:text-white"
+              disabled={isPending}
             >
-              장바구니
+              {isPending ? "처리중..." : "장바구니"}
             </Button>
             <Button
-              onClick={() => {
-                handleAddToCart();
-                router.push(URLS.CART);
-              }}
+              onClick={() => handleAddToCart(true)}
               styleType="blank"
               style="w-[200px] h-[62px] py-[17.80px] bg-primaryBlue rounded-[50px] justify-center items-center inline-flex text-white text-lg font-bold hover:bg-white hover:text-primaryBlue hover:border-primaryBlue hover:border-2"
+              disabled={isPending}
             >
-              바로구매
+              {isPending ? "처리중..." : "바로구매"}
             </Button>
           </div>
         </div>
       </div>
     </>
   );
-};
-
-export default ProductSummary;
+}

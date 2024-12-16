@@ -15,15 +15,41 @@ import {
   selectCheckedCartItems,
   selectAllChecked,
 } from "@/redux/slice/cartSlice";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useTransition, Suspense } from "react";
+import dynamic from "next/dynamic";
 import Heading from "@/components/heading/Heading";
 import Button from "@/components/button/Button";
 import URLS from "@/constants/urls";
 import { Mobile } from "@/hooks/useMediaQuery";
-import CartInfoArticle from "./CartInfoArticle";
-import CartList from "./components/CartList";
-import CartFooter from "./components/CartFooter";
 import { CartItem } from "@/type/cart";
+import { toast } from "react-toastify";
+
+// 동적 임포트로 컴포넌트 로드
+const CartInfoArticle = dynamic(() => import("./CartInfoArticle"), {
+  loading: () => (
+    <div className="animate-pulse bg-gray-200 h-[200px] w-full rounded" />
+  ),
+  ssr: false,
+});
+
+const CartList = dynamic(() => import("./components/CartList"), {
+  loading: () => (
+    <div className="animate-pulse bg-gray-200 h-[400px] w-full rounded" />
+  ),
+});
+
+const CartFooter = dynamic(() => import("./components/CartFooter"), {
+  loading: () => (
+    <div className="animate-pulse bg-gray-200 h-[50px] w-full rounded" />
+  ),
+});
+
+// 로딩 컴포넌트
+const LoadingFallback = () => (
+  <div className="w-full h-[80vh] flex justify-center items-center">
+    <div className="animate-spin rounded-full h-32 w-32 border-t-2 border-b-2 border-primaryBlue"></div>
+  </div>
+);
 
 export default function CartClient() {
   const cartItems = useSelector(selectCartItems);
@@ -31,6 +57,7 @@ export default function CartClient() {
   const isAllChecked = useSelector(selectAllChecked);
   const [isDisabled, setIsDisabled] = useState(false);
   const [mounted, setMounted] = useState(false);
+  const [isPending, startTransition] = useTransition();
   const isMobile = Mobile();
 
   const dispatch = useDispatch();
@@ -41,49 +68,76 @@ export default function CartClient() {
   }, []);
 
   useEffect(() => {
-    dispatch(CALCULATE_SUBTOTAL());
-    dispatch(CALCULATE_CHECKED_ITEMS_SUBTOTAL());
+    startTransition(() => {
+      dispatch(CALCULATE_SUBTOTAL());
+      dispatch(CALCULATE_CHECKED_ITEMS_SUBTOTAL());
+    });
   }, [dispatch, cartItems]);
 
   useEffect(() => {
-    if (cartItems.length === 0 || cartItems.every(item => !item.isChecked)) {
-      setIsDisabled(true);
-    } else {
-      setIsDisabled(false);
-    }
+    setIsDisabled(
+      cartItems.length === 0 || cartItems.every(item => !item.isChecked),
+    );
   }, [cartItems]);
 
+  const handleCartAction = (action: () => void, errorMessage: string) => {
+    startTransition(() => {
+      try {
+        action();
+      } catch (error) {
+        console.error("Cart action failed:", error);
+        toast.error(error instanceof Error ? error.message : errorMessage);
+      }
+    });
+  };
+
   const handleToggleCheck = (id: string) => {
-    dispatch(ALTERNATE_CHECKED_ITEMS({ id }));
+    handleCartAction(
+      () => dispatch(ALTERNATE_CHECKED_ITEMS({ id })),
+      "상품 선택 상태 변경에 실패했습니다.",
+    );
   };
 
   const handleToggleCheckAll = () => {
-    if (isAllChecked) {
-      dispatch(UNCHECK_ALL_ITEMS());
-    } else {
-      dispatch(SELECT_ALL_ITEMS());
-    }
+    handleCartAction(() => {
+      if (isAllChecked) {
+        dispatch(UNCHECK_ALL_ITEMS());
+      } else {
+        dispatch(SELECT_ALL_ITEMS());
+      }
+    }, "전체 선택 상태 변경에 실패했습니다.");
   };
 
   const handleIncreaseQuantity = (cart: CartItem) => {
-    dispatch(ADD_TO_CART({ ...cart, quantity: 1 }));
+    handleCartAction(
+      () => dispatch(ADD_TO_CART({ ...cart, quantity: 1 })),
+      "수량 증가에 실패했습니다.",
+    );
   };
 
   const handleDecreaseQuantity = (cart: CartItem) => {
-    dispatch(DECREASE_CART(cart));
+    handleCartAction(
+      () => dispatch(DECREASE_CART(cart)),
+      "수량 감소에 실패했습니다.",
+    );
   };
 
   const handleDeleteItem = (cart: CartItem) => {
-    dispatch(REMOVE_FROM_CART(cart));
+    handleCartAction(
+      () => dispatch(REMOVE_FROM_CART(cart)),
+      "상품 삭제에 실패했습니다.",
+    );
   };
 
   const handleDeleteCheckedItems = () => {
-    const checkedItems = cartItems.filter(item => item.isChecked);
-    checkedItems.forEach(item => handleDeleteItem(item));
+    handleCartAction(() => {
+      const checkedItems = cartItems.filter(item => item.isChecked);
+      checkedItems.forEach(item => dispatch(REMOVE_FROM_CART(item)));
+    }, "선택한 상품 삭제에 실패했습니다.");
   };
 
   if (!mounted) {
-    return null;
+    return <LoadingFallback />;
   }
 
   return (
@@ -97,31 +151,47 @@ export default function CartClient() {
         <div className="flex sm:flex-col sm:justify-center sm:items-center w-full mt-10 gap-20">
           <div className="w-2/3 sm:w-[90%]">
             <div className="w-full border-y border-lightGray py-10">
-              <CartList
-                cartItems={cartItems}
-                isMobile={isMobile}
-                onToggleCheck={handleToggleCheck}
-                onIncreaseQuantity={handleIncreaseQuantity}
-                onDecreaseQuantity={handleDecreaseQuantity}
-                onDeleteItem={handleDeleteItem}
-              />
+              <Suspense fallback={<LoadingFallback />}>
+                <CartList
+                  cartItems={cartItems}
+                  isMobile={isMobile}
+                  onToggleCheck={handleToggleCheck}
+                  onIncreaseQuantity={handleIncreaseQuantity}
+                  onDecreaseQuantity={handleDecreaseQuantity}
+                  onDeleteItem={handleDeleteItem}
+                  disabled={isPending}
+                />
+              </Suspense>
             </div>
-            <CartFooter
-              cartItems={cartItems}
-              isAllChecked={isAllChecked}
-              onToggleCheckAll={handleToggleCheckAll}
-              onDeleteCheckedItems={handleDeleteCheckedItems}
-            />
+            <Suspense
+              fallback={
+                <div className="animate-pulse bg-gray-200 h-[50px] w-full rounded" />
+              }
+            >
+              <CartFooter
+                cartItems={cartItems}
+                isAllChecked={isAllChecked}
+                onToggleCheckAll={handleToggleCheckAll}
+                onDeleteCheckedItems={handleDeleteCheckedItems}
+                disabled={isPending}
+              />
+            </Suspense>
           </div>
           <div className="flex flex-col justify-start items-start w-1/4 sm:w-[90%] gap-5">
-            <CartInfoArticle />
+            <Suspense
+              fallback={
+                <div className="animate-pulse bg-gray-200 h-[200px] w-full rounded" />
+              }
+            >
+              <CartInfoArticle />
+            </Suspense>
             <div className="w-full h-14">
               <Button
                 onClick={() => router.push(URLS.CHECKOUT_ADDRESS)}
                 style="text-xl font-bold"
-                disabled={isDisabled}
+                disabled={isDisabled || isPending}
               >
-                주문하기
+                {isPending ? "처리중..." : "주문하기"}
               </Button>
             </div>
           </div>

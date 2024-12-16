@@ -1,7 +1,7 @@
 "use client";
 import Heading from "@/components/heading/Heading";
 import Button from "@/components/button/Button";
-import { FormEvent, useEffect } from "react";
+import { FormEvent, useEffect, useTransition } from "react";
 import CheckoutForm from "@/components/checkoutForm/CheckoutForm";
 import {
   selectCheckedCartItems,
@@ -18,10 +18,11 @@ import {
 } from "@/redux/slice/checkoutSlice";
 import { setCheckoutData } from "@/app/actions";
 import { toast } from "react-toastify";
+import { CheckoutData } from "@/type/action";
 
 export default function CheckoutClient() {
   const [isScriptLoaded, setIsScriptLoaded] = useState<boolean>(false);
-  const [isLoading, setIsLoading] = useState(false);
+  const [isPending, startTransition] = useTransition();
   const cartItems = useSelector(selectCheckedCartItems);
   const cartTotalAmount = useSelector(selectCheckedTotalAmount);
   const shippingAddress = useSelector(selectShippingAddress);
@@ -36,43 +37,52 @@ export default function CheckoutClient() {
         : `${cartItems[0].name} 외 ${cartItems.length - 1}건`
       : "";
 
-  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
+  const validateCheckoutData = (): boolean => {
     if (!clientkey) {
       toast.error("결제 설정이 올바르지 않습니다.");
-      return;
+      return false;
     }
 
     if (cartItems.length === 0) {
       toast.error("장바구니가 비어있습니다.");
-      return;
+      return false;
     }
 
     if (!shippingAddress || !billingAddress) {
       toast.error("배송지 정보가 필요합니다.");
-      return;
+      return false;
     }
 
-    try {
-      setIsLoading(true);
+    return true;
+  };
 
-      // 체크아웃 데이터 저장
-      await setCheckoutData(
-        JSON.stringify({
-          cartItems,
-          shippingAddress,
-          billingAddress,
-        }),
-      );
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
 
-      // 결제 요청
-      await requestPayment(clientkey, cartTotalAmount, orderNameCount);
-    } catch (error) {
-      console.error("Payment request error:", error);
-      toast.error("결제 요청 중 오류가 발생했습니다.");
-    } finally {
-      setIsLoading(false);
-    }
+    if (!validateCheckoutData()) return;
+
+    const checkoutData: CheckoutData = {
+      cartItems,
+      shippingAddress,
+      billingAddress,
+    };
+
+    startTransition(async () => {
+      try {
+        // 체크아웃 데이터 저장
+        await setCheckoutData(JSON.stringify(checkoutData));
+
+        // 결제 요청
+        await requestPayment(clientkey!, cartTotalAmount, orderNameCount);
+      } catch (error) {
+        console.error("Checkout error:", error);
+        toast.error(
+          error instanceof Error
+            ? error.message
+            : "체크아웃 처리 중 오류가 발생했습니다.",
+        );
+      }
+    });
   };
 
   useEffect(() => {
@@ -104,7 +114,7 @@ export default function CheckoutClient() {
                   onClick={() => history.back()}
                   style="text-xl font-bold"
                   styleType="secondary"
-                  disabled={isLoading}
+                  disabled={isPending}
                 >
                   이전으로
                 </Button>
@@ -113,9 +123,9 @@ export default function CheckoutClient() {
                 <Button
                   type="submit"
                   style="text-xl font-bold"
-                  disabled={isLoading}
+                  disabled={isPending}
                 >
-                  {isLoading ? "처리중..." : "결제하기"}
+                  {isPending ? "처리중..." : "결제하기"}
                 </Button>
               </div>
             </div>

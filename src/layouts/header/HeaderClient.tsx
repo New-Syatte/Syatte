@@ -50,7 +50,14 @@ const HeaderClient = () => {
         }
       >
         <Link href="/">
-          <Image src={logo} alt="Logo" width={85} height={27} />
+          <Image
+            src={logo}
+            alt="Logo"
+            width={85}
+            height={27}
+            style={{ width: "85px", height: "27px" }}
+            priority
+          />
         </Link>
         <nav className={`flex ml-6 gap-3 mr-4 items-center ${textColor}`}>
           <NavMenu pathname={pathname} textColor={textColor} />
@@ -96,8 +103,11 @@ const HeaderClient = () => {
           <Image
             src={logo}
             alt="Logo"
+            width={85}
+            height={27}
             sizes="100vw"
-            style={{ width: "100%", height: "auto" }}
+            style={{ width: "100%", height: "27px" }}
+            priority
           />
         </Link>
         <div className="w-[20px]" />

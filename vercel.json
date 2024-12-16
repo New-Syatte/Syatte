@@ -4,10 +4,5 @@
       "path": "/api/cron/webhook-refresh",
       "schedule": "0 0 * * *"
     }
-  ],
-  "functions": {
-    "api/cron/webhook-refresh": {
-      "maxDuration": 300
-    }
-  }
+  ]
 }

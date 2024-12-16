@@ -9,6 +9,7 @@ const ApplicatorCard = () => {
           src={topbanner1}
           alt={"topbanner-01"}
           fill={true}
+          sizes="(max-width: 768px) 128px, 224px"
           className={"rounded-md"}
         />
       </div>

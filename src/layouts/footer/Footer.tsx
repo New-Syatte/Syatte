@@ -109,6 +109,7 @@ export default function Footer() {
               width={170}
               height={130}
               alt={"푸터로고"}
+              style={{ width: "170px", height: "auto" }}
             />
           </div>
           <div className="flex gap-6 mb-4">

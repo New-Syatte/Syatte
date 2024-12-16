@@ -61,7 +61,7 @@ const LoginButton = ({ title, onClick }: Props) => {
               alt={data.title}
               width={50}
               height={50}
-              style={{ width: "auto" }}
+              style={{ width: "50px", height: "auto" }}
             />
           </div>
           <div className="flex text-[16px] w-[220px] justify-center my-auto">

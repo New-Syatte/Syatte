@@ -1,107 +1,123 @@
 import { NextRequest, NextResponse } from "next/server";
-import { confirmPayment } from "@/services/payment";
-import { createOrderFromPayment } from "@/services/order";
 import { cookies } from "next/headers";
+import { createOrderFromPayment } from "@/services/order";
+import { confirmPayment } from "@/services/payment";
 
-export async function POST(req: NextRequest) {
+export async function GET(req: NextRequest) {
+  const searchParams = req.nextUrl.searchParams;
+  const orderId = searchParams.get("orderId");
+  const paymentKey = searchParams.get("paymentKey");
+  const amount = searchParams.get("amount");
+
+  // 미들웨어에서 설정한 사용자 정보 가져오기
+  const userId = req.headers.get("x-user-id");
+  const userEmail = req.headers.get("x-user-email");
+  const userName = req.headers.get("x-user-name");
+
+  // URL 인코딩된 사용자 이름 디코딩
+  const decodedUserName = userName ? decodeURIComponent(userName) : "";
+
+  if (!orderId || !paymentKey || !amount || !userId) {
+    return NextResponse.redirect(
+      new URL(
+        `/checkout-fail?message=${encodeURIComponent(
+          "결제 정보가 올바르지 않습니다.",
+        )}`,
+        req.url,
+      ),
+    );
+  }
+
   try {
-    // 1. 사용자 ID 확인
-    const userId = req.headers.get("x-user-id");
-    const userEmail = req.headers.get("x-user-email");
-    const userName = req.headers.get("x-user-name");
+    // 체크아웃 데이터 가져오기
+    const cookieStore = await cookies();
+    const checkoutDataCookie = cookieStore.get("checkoutData");
 
-    if (!userId) {
-      return NextResponse.json(
-        { error: "인증되지 않은 사용자입니다." },
-        { status: 401 },
+    if (!checkoutDataCookie?.value) {
+      return NextResponse.redirect(
+        new URL(
+          `/checkout-fail?message=${encodeURIComponent(
+            "체크아웃 데이터를 찾을 수 없습니다.",
+          )}`,
+          req.url,
+        ),
       );
     }
 
-    // 2. 요청 데이터 검증
-    const {
-      paymentKey,
-      orderId,
-      amount,
-      cartItems,
-      shippingAddress,
-      billingAddress,
-    } = await req.json();
+    const checkoutData = JSON.parse(checkoutDataCookie.value);
 
-    console.log(cartItems);
-
-    if (!paymentKey || !orderId || !amount) {
-      return NextResponse.json(
-        { error: "필수 결제 파라미터가 누락되었습니다." },
-        { status: 400 },
-      );
-    }
-
-    if (!cartItems || !shippingAddress || !billingAddress) {
-      return NextResponse.json(
-        { error: "필수 주문 정보가 누락되었습니다." },
-        { status: 400 },
-      );
-    }
-
-    // 3. 결제 검증
+    // 결제 승인 요청
+    console.log("Requesting payment confirmation...");
     const payment = await confirmPayment(paymentKey, orderId, amount);
+
     if (!payment) {
-      return NextResponse.json(
-        { error: "결제 검증에 실패했습니다." },
-        { status: 400 },
+      return NextResponse.redirect(
+        new URL(
+          `/checkout-fail?message=${encodeURIComponent(
+            "결제 승인에 실패했습니다.",
+          )}`,
+          req.url,
+        ),
       );
     }
 
-    // 4. 주문 생성
+    console.log("Payment confirmed:", payment);
+
+    // 주문 생성
     try {
+      console.log("Creating order with data:", {
+        orderId,
+        userId,
+        userEmail,
+        displayName: decodedUserName,
+        cartItemsCount: checkoutData.cartItems?.length,
+      });
+
       const order = await createOrderFromPayment({
         payment,
         orderId,
         userId,
-        userEmail: userEmail || `${userId}@placeholder.com`,
-        displayName: userName
-          ? decodeURIComponent(userName)
-          : `User-${userId.slice(-6)}`,
-        cartItems,
-        shippingAddress,
-        billingAddress,
+        userEmail: userEmail || "",
+        displayName: decodedUserName,
+        cartItems: checkoutData.cartItems || [],
+        shippingAddress: checkoutData.shippingAddress || {},
+        billingAddress: checkoutData.billingAddress || {},
       });
 
-      // 5. 체크아웃 데이터 쿠키 삭제
-      const cookieStore = cookies();
-      cookieStore.set("checkoutData", "", {
-        httpOnly: true,
-        secure: process.env.NODE_ENV === "production",
-        sameSite: "lax",
-        path: "/",
-        maxAge: 0,
-      });
-
-      return NextResponse.json({
-        success: true,
-        payment,
-        order,
-      });
-    } catch (orderError: any) {
-      // 주문이 이미 존재하는 경우 성공으로 처리
-      if (orderError.statusCode === 409) {
-        return NextResponse.json({
-          success: true,
-          payment,
-          message: "이미 처리된 주문입니다.",
-        });
+      if (!order) {
+        throw new Error("주문 생성 결과가 없습니다");
       }
-      throw orderError;
+
+      console.log("Order created:", order);
+
+      // 체크아웃 데이터 쿠키 삭제
+      cookieStore.delete("checkoutData");
+
+      // 성공 페이지로 리다이렉트
+      return NextResponse.redirect(
+        new URL(
+          `/checkout-success?orderId=${orderId}&paymentKey=${paymentKey}&amount=${amount}`,
+          req.url,
+        ),
+      );
+    } catch (error: any) {
+      console.error("Order creation error:", {
+        error: error.message,
+        stack: error.stack,
+        orderId,
+        userId,
+      });
+      throw error;
     }
   } catch (error: any) {
     console.error("Payment confirmation error:", error);
-    return NextResponse.json(
-      {
-        success: false,
-        error: error.message || "결제 처리 중 오류가 발생했습니다.",
-        details: error.details || null,
-      },
-      { status: error.statusCode || 500 },
+    return NextResponse.redirect(
+      new URL(
+        `/checkout-fail?message=${encodeURIComponent(
+          error.message || "결제 처리 중 오류가 발생했습니다.",
+        )}`,
+        req.url,
+      ),
     );
   }
 }

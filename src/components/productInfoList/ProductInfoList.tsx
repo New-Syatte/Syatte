@@ -56,16 +56,22 @@ const productInfoList = [
 const ProductInfoList = () => {
   return (
     <div className="grid grid-cols-2 gap-3 w-[1300px] mt-[60px] sm:grid-cols-1 sm:mx-[35px]">
-      {productInfoList.map((data, index) => (
-        <>
+      {productInfoList.map(data => (
+        <div key={data.title}>
           <div className="flex w-auto h-[100px] border-[#000000] border-[1px] bg-white sm:h-full">
-            <div className="flex bg-[#000000] text-[36px] text-[#ffffff] min-w-[75px] justify-center items-center sm:text-[18px] sm:min-w-[30px]">{data.id}</div>
+            <div className="flex bg-[#000000] text-[36px] text-[#ffffff] min-w-[75px] justify-center items-center sm:text-[18px] sm:min-w-[30px]">
+              {data.id}
+            </div>
             <div className="flex flex-col p-[14px]">
-              <div className="flex text-[18px] font-bold sm:text-[14px]">{data.title}</div>
-              <div className="flex text-[14px] sm:text-[12px]">{data.description}</div>
+              <div className="flex text-[18px] font-bold sm:text-[14px]">
+                {data.title}
+              </div>
+              <div className="flex text-[14px] sm:text-[12px]">
+                {data.description}
+              </div>
             </div>
           </div>
-        </>
+        </div>
       ))}
     </div>
   );

@@ -1,4 +1,5 @@
 "use client";
+
 import StatusProgress from "./StatusProgress";
 import PeriodSelector from "@/layouts/periodSelector/PeriodSelector";
 import OrderList from "./OrderList";
@@ -6,31 +7,61 @@ import Loader from "@/components/loader/Loader";
 import Heading from "@/components/heading/Heading";
 import { useOrders } from "@/hooks/useOrders";
 import { toast } from "react-toastify";
+import { useTransition } from "react";
+import { ServerActionResult } from "@/type/action";
+
+interface WebhookRefreshResponse {
+  success: boolean;
+  summary?: {
+    total: number;
+    succeeded: number;
+    failed: number;
+  };
+  error?: string;
+}
 
 export default function OrderHistoryClient() {
   const { orders, error, isLoading } = useOrders();
+  const [isPending, startTransition] = useTransition();
 
   const refreshWebhooks = async () => {
     if (process.env.NODE_ENV === "development") {
-      try {
-        const response = await fetch("/api/dev/refresh-webhook");
-        const data = await response.json();
+      startTransition(async () => {
+        try {
+          const response = await fetch("/api/dev/refresh-webhook");
+          const data: WebhookRefreshResponse = await response.json();
 
-        if (data.success) {
-          toast.success(
-            `Webhooks refreshed: ${data.summary.succeeded} succeeded, ${data.summary.failed} failed`,
+          if (data.success && data.summary) {
+            toast.success(
+              `Webhooks refreshed: ${data.summary.succeeded} succeeded, ${data.summary.failed} failed`,
+            );
+          } else {
+            toast.error(data.error || "Failed to refresh webhooks");
+          }
+        } catch (error) {
+          console.error("Error refreshing webhooks:", error);
+          toast.error(
+            error instanceof Error
+              ? error.message
+              : "Error refreshing webhooks",
           );
-        } else {
-          toast.error("Failed to refresh webhooks");
         }
-      } catch (error) {
-        console.error("Error refreshing webhooks:", error);
-        toast.error("Error refreshing webhooks");
-      }
+      });
     }
   };
 
-  if (error) return <div>주문 내역을 불러오는데 실패했습니다.</div>;
+  if (error) {
+    return (
+      <div className="w-full text-center text-red-500 py-4">
+        주문 내역을 불러오는데 실패했습니다.
+        <br />
+        <span className="text-sm text-gray-500">
+          {error instanceof Error ? error.message : String(error)}
+        </span>
+      </div>
+    );
+  }
+
   if (isLoading) return <Loader />;
 
   return (
@@ -42,9 +73,10 @@ export default function OrderHistoryClient() {
         {process.env.NODE_ENV === "development" && (
           <button
             onClick={refreshWebhooks}
-            className="mt-4 px-4 py-2 bg-gray-200 rounded hover:bg-gray-300"
+            className="mt-4 px-4 py-2 bg-gray-200 rounded hover:bg-gray-300 disabled:opacity-50"
+            disabled={isPending}
           >
-            Refresh Webhooks (Dev Only)
+            {isPending ? "Refreshing..." : "Refresh Webhooks (Dev Only)"}
           </button>
         )}
       </div>

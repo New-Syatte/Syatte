@@ -1,12 +1,12 @@
 "use client";
 import React from "react";
-import main1 from "@/assets/main/main-art1.png";
-import main2 from "@/assets/main/main-art2.png";
-import main3 from "@/assets/main/main-art3.png";
-import main4 from "@/assets/main/main-art4.png";
-import main5 from "@/assets/main/main-art5.png";
-import main6 from "@/assets/main/main-art6.png";
-import main7 from "@/assets/main/main-art7.png";
+import main1 from "@/assets/main/main-art1.webp";
+import main2 from "@/assets/main/main-art2.webp";
+import main3 from "@/assets/main/main-art3.webp";
+import main4 from "@/assets/main/main-art4.webp";
+import main5 from "@/assets/main/main-art5.webp";
+import main6 from "@/assets/main/main-art6.webp";
+import main7 from "@/assets/main/main-art7.webp";
 import Image from "next/image";
 import { Mobile } from "@/hooks/useMediaQuery";
 import Motion from "@/components/motion/Motion";
@@ -185,18 +185,42 @@ const MainImagesLayout = () => {
         <div className="flex flex-col items-end justify-center gap-[12px]">
           <div className="flex w-full gap-2">
             <div className="w-3/5 h-[170px] relative">
-              <Image src={main1} fill={true} alt="main1" />
+              <Image
+                src={main1}
+                fill={true}
+                sizes="(max-width: 768px) 60vw, 40vw"
+                alt="main1"
+                priority
+              />
             </div>
             <div className="w-2/5 h-[170px] relative">
-              <Image src={main6} fill={true} alt="main6" />
+              <Image
+                src={main6}
+                fill={true}
+                sizes="(max-width: 768px) 40vw, 30vw"
+                alt="main6"
+                priority
+              />
             </div>
           </div>
           <div className="flex w-full gap-2">
             <div className="w-1/2 h-[99px] relative">
-              <Image src={main2} fill={true} alt="main2" />
+              <Image
+                src={main2}
+                fill={true}
+                sizes="(max-width: 768px) 50vw, 35vw"
+                alt="main2"
+                priority
+              />
             </div>
             <div className="w-1/2 h-[99px] relative">
-              <Image src={main4} fill={true} alt="main4" />
+              <Image
+                src={main4}
+                fill={true}
+                sizes="(max-width: 768px) 50vw, 35vw"
+                alt="main4"
+                priority
+              />
             </div>
           </div>
         </div>

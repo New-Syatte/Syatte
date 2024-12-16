@@ -9,25 +9,41 @@ import Image from "next/image";
 import SuccessCheck from "@/assets/cart/successCheck.svg";
 import { useDispatch } from "react-redux";
 import { REMOVE_CHECKED_ITEMS_FROM_CART } from "@/redux/slice/cartSlice";
-import { useEffect } from "react";
+import { useEffect, useTransition } from "react";
 import { PaymentResponse } from "@/type/tossPayments";
 import { Order } from "@/type/order";
 import { formatTime } from "@/utils/formatTime";
+import { deleteCheckoutData } from "@/app/actions";
+import { toast } from "react-toastify";
 
 interface CheckoutSuccessClientProps {
   payment: PaymentResponse;
   order: Order;
 }
 
-const CheckoutSuccessClient = ({
+export default function CheckoutSuccessClient({
   payment,
   order,
-}: CheckoutSuccessClientProps) => {
+}: CheckoutSuccessClientProps) {
   const dispatch = useDispatch();
+  const [isPending, startTransition] = useTransition();
 
   useEffect(() => {
-    // 장바구니에서 결제 완료된 상품들 제거
-    dispatch(REMOVE_CHECKED_ITEMS_FROM_CART());
+    startTransition(async () => {
+      try {
+        // 체크아웃 데이터 삭제
+        await deleteCheckoutData();
+        // 장바구니에서 결제 완료된 상품들 제거
+        dispatch(REMOVE_CHECKED_ITEMS_FROM_CART());
+      } catch (error) {
+        console.error("Failed to cleanup checkout data:", error);
+        toast.error(
+          error instanceof Error
+            ? error.message
+            : "체크아웃 데이터 정리 중 오류가 발생했습니다.",
+        );
+      }
+    });
   }, [dispatch]);
 
   const listStyle = "flex justify-between text-lg mb-4";
@@ -91,6 +107,4 @@ const CheckoutSuccessClient = ({
       </div>
     </div>
   );
-};
-
-export default CheckoutSuccessClient;
+}

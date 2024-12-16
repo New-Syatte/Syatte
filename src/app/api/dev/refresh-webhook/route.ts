@@ -1,11 +1,11 @@
-import { NextRequest, NextResponse } from "next/server";
+import { NextRequest } from "next/server";
 import { client } from "@/services/sanity/sanity";
 import { registerWebhook } from "@/services/deliveryTracker";
 
 // 개발 환경에서만 사용 가능한 엔드포인트
 export async function GET(req: NextRequest) {
   if (process.env.NODE_ENV === "production") {
-    return NextResponse.json(
+    return Response.json(
       { error: "This endpoint is only available in development" },
       { status: 403 },
     );
@@ -46,7 +46,7 @@ export async function GET(req: NextRequest) {
       r => r.status === "rejected" || r.value?.status === "failed",
     ).length;
 
-    return NextResponse.json({
+    return Response.json({
       success: true,
       summary: {
         total: orders.length,
@@ -56,9 +56,6 @@ export async function GET(req: NextRequest) {
     });
   } catch (error) {
     console.error("Webhook refresh error:", error);
-    return NextResponse.json(
-      { error: "Internal server error" },
-      { status: 500 },
-    );
+    return Response.json({ error: "Internal server error" }, { status: 500 });
   }
 }

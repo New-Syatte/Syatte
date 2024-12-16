@@ -1,123 +1,95 @@
 "use client";
-import Image from "next/image";
-import Link from "next/link";
-import { usePathname } from "next/navigation";
+
 import { Order } from "@/type/order";
-import { CartItem } from "@/type/cart";
-import { useEffect, useState } from "react";
-import URLS from "@/constants/urls";
+import Image from "next/image";
 import OrderStatus from "@/components/order/OrderStatus";
-import { useOrders } from "@/hooks/useOrders";
+import { formatTime } from "@/utils/formatTime";
+import priceFormat from "@/utils/priceFormat";
 
 interface OrderProductProps {
   order: Order;
+  onTrackDelivery: (order: Order) => void;
+  disabled: boolean;
 }
 
-export default function OrderProduct({ order }: OrderProductProps) {
-  const pathname = usePathname();
-  const orderTime = new Date(order.createdAt).toISOString();
-  const [isDetail, setIsDetail] = useState(false);
-  const { trackDelivery } = useOrders();
+export default function OrderProduct({
+  order,
+  onTrackDelivery,
+  disabled,
+}: OrderProductProps) {
+  const {
+    orderDate,
+    cartItems,
+    orderAmount,
+    orderStatus,
+    shippingInfo,
+    createdAt,
+  } = order;
 
-  useEffect(() => {
-    if (pathname.includes(URLS.ORDER_DETAILS)) {
-      trackDelivery(order);
-    }
-  }, [order, trackDelivery, pathname]);
-
-  useEffect(() => {
-    setIsDetail(pathname !== "/order/history");
-  }, [pathname]);
-
-  const renderProductItem = (product: CartItem, itemIndex: number) => {
-    const discountedPrice =
-      product.price - product.price * (product.discount / 100);
-
-    return (
-      <div
-        key={itemIndex}
-        className="flex items-center justify-between px-8 sm:px-4 py-[10px] h-[170px] sm:h-auto"
-      >
-        <div className="flex justify-start items-center gap-16 sm:gap-4 w-1/3 sm:w-auto">
-          <p className="text-base sm:text-sm">{itemIndex + 1}</p>
-          <div className="w-20 h-20 sm:w-[77px] sm:h-[77px] flex justify-center items-center border border-lightGray">
-            <Image
-              src={product.imageURL || ""}
-              alt={product.name}
-              width={0}
-              height={0}
-              sizes="100vw"
-              className="w-[70%] sm:w-[80%] h-auto"
-            />
-          </div>
-          <div className="flex flex-col justify-start items-start sm:w-3/5">
-            <p className="font-normal text-black mb-2 whitespace-nowrap text-lg sm:text-sm">
-              {product.name}
-            </p>
-            <OrderStatus order={order} className="sm:text-xs" />
-            <div className="hidden sm:flex sm:w-full sm:justify-between sm:items-center sm:font-bold sm:mt-2">
-              <p>{product.cartQuantity}개</p>
-              <p>
-                {Number(
-                  discountedPrice * product.cartQuantity,
-                ).toLocaleString()}
-                원
-              </p>
-            </div>
-          </div>
-        </div>
-        <div className="w-1/3 flex justify-end items-center text-lg sm:hidden">
-          <div className="flex justify-end items-center w-1/2 gap-20">
-            <p className="font-normal whitespace-nowrap">
-              {product.cartQuantity}개
-            </p>
-            <p className="font-normal whitespace-nowrap">
-              {Number(discountedPrice * product.cartQuantity).toLocaleString()}
-              원
-            </p>
-          </div>
-        </div>
-      </div>
-    );
+  const handleTrackDelivery = () => {
+    onTrackDelivery(order);
   };
 
   return (
-    <div className="w-full pb-10">
-      <Link
-        href={!isDetail ? `${URLS.ORDER_DETAILS}/${order._id}` : "/"}
-        onClick={e => {
-          if (isDetail) {
-            e.preventDefault();
-          }
-        }}
-        className={`
-          flex sm:flex-col sm:gap-2 w-full h-[60px] sm:h-auto 
-          justify-between sm:justify-start sm:items-start pb-3 
-          bg-bgWhiteSmoke border border-lightGray rounded-md p-3 px-4
-          ${!isDetail ? "cursor-pointer" : "cursor-default"}
-          transition-all duration-600 ease-in-out
-        `}
-      >
-        <div className="flex sm:flex-col sm:items-start justify-start items-center gap-10 sm:gap-1 text-sm font-bold">
-          <h3>
-            <span>주문일자: </span>
-            <span className="text-darkGray font-normal">
-              {orderTime.split("T")[0]}
-            </span>
-          </h3>
-          <h3>
-            <span>주문번호: </span>
-            <span className="text-darkGray font-normal">{order._id}</span>
-          </h3>
+    <div className="w-full border border-lightGray rounded-md p-6 sm:p-4">
+      <div className="flex justify-between items-center border-b border-lightGray pb-4 sm:flex-col sm:items-start sm:gap-2">
+        <div className="flex gap-4 items-center sm:flex-col sm:items-start sm:gap-2">
+          <p className="text-lg sm:text-base text-darkGray">
+            주문일자: {orderDate}
+          </p>
+          <p className="text-lg sm:text-base text-darkGray">
+            주문시간: {formatTime(createdAt).split(" ")[1]}
+          </p>
         </div>
-        <div className="flex sm:w-full sm:justify-between justify-end items-center gap-10 font-bold text-lg">
-          <h3 className="text-lg">총 결제금액</h3>
-          <h3 className="text-[22px]">
-            {order.orderAmount ? order.orderAmount.toLocaleString() : "0"}원
-          </h3>
+        <div className="flex gap-4 items-center">
+          <OrderStatus order={order} className="text-lg sm:text-base" />
+          {shippingInfo?.trackingNumber && (
+            <button
+              onClick={handleTrackDelivery}
+              className="text-lg sm:text-base text-darkGray hover:text-black disabled:opacity-50"
+              disabled={disabled}
+            >
+              {disabled ? "배송 조회중..." : "배송 조회"}
+            </button>
+          )}
         </div>
-      </Link>
-      {order.cartItems?.map((product, idx) => renderProductItem(product, idx))}
+      </div>
+      <div className="flex flex-col gap-4 py-4">
+        {cartItems.map(item => (
+          <div
+            key={item.id}
+            className="flex justify-between items-center sm:flex-col sm:items-start sm:gap-4"
+          >
+            <div className="flex gap-4 items-center">
+              <div className="w-[100px] h-[100px] sm:w-[77px] sm:h-[77px] border border-lightGray flex justify-center items-center">
+                <Image
+                  src={item.imageURL}
+                  alt={item.name}
+                  width={0}
+                  height={0}
+                  sizes="100vw"
+                  style={{ width: "80%", height: "auto" }}
+                />
+              </div>
+              <div>
+                <p className="text-lg sm:text-base">{item.name}</p>
+                <p className="text-base sm:text-sm text-darkGray">
+                  {item.cartQuantity}개
+                </p>
+              </div>
+            </div>
+            <p className="text-lg sm:text-base font-bold">
+              {priceFormat(item.price * item.cartQuantity)}원
+            </p>
+          </div>
+        ))}
+      </div>
+      <div className="flex justify-between items-center border-t border-lightGray pt-4">
+        <p className="text-lg sm:text-base">총 결제금액</p>
+        <p className="text-xl sm:text-lg font-bold">
+          {priceFormat(orderAmount)}원
+        </p>
+      </div>
     </div>
   );
 }
