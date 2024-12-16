@@ -2,7 +2,7 @@ import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
 import { getProviders } from "next-auth/react";
 import SignInClient from "@/components/Login/Signin";
-import { authOptions } from "@/app/api/auth/[...nextauth]/route";
+import { authOptions } from "@/app/api/auth/[...nextauth]/auth";
 
 type SearchParams = Promise<{
   callbackUrl?: string;

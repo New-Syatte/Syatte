@@ -1,17 +1,16 @@
-import { NextRequest } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { client } from "@/services/sanity/sanity";
 import { registerWebhook } from "@/services/deliveryTracker";
 
 // Vercel Cron Job에서 24시간마다 호출
 export const dynamic = "force-dynamic";
-export const maxDuration = 300; // 5분 타임아웃
 
 export async function GET(req: NextRequest) {
   try {
     // API 키 검증
     const authHeader = req.headers.get("authorization");
     if (authHeader !== `Bearer ${process.env.CRON_SECRET}`) {
-      return Response.json({ error: "Unauthorized" }, { status: 401 });
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
     // 배송중인 주문 조회 (moving, ready 상태)
@@ -48,7 +47,7 @@ export async function GET(req: NextRequest) {
       r => r.status === "rejected" || r.value?.status === "failed",
     ).length;
 
-    return Response.json({
+    return NextResponse.json({
       success: true,
       summary: {
         total: orders.length,
@@ -58,6 +57,9 @@ export async function GET(req: NextRequest) {
     });
   } catch (error) {
     console.error("Webhook refresh cron error:", error);
-    return Response.json({ error: "Internal server error" }, { status: 500 });
+    return NextResponse.json(
+      { error: "Internal server error" },
+      { status: 500 },
+    );
   }
 }

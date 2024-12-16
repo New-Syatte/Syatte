@@ -23,7 +23,7 @@ export async function middleware(request: NextRequest) {
   if (pathname.startsWith("/api/")) {
     if (isAuthRequired && !token) {
       console.log("Middleware - API Auth Failed");
-      return Response.json(
+      return NextResponse.json(
         { error: "인증되지 않은 사용자입니다." },
         { status: 401 },
       );
