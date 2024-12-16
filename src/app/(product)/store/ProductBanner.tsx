@@ -43,7 +43,12 @@ const ProductBanner = () => {
               }
             />
             <div className="absolute right-0 top-0 sm:w-[49%] w-1/2 sm:h-[121px] h-[245px]">
-              <Image src={banner.img} alt="product-banner" fill />
+              <Image
+                src={banner.img}
+                alt="product-banner"
+                fill
+                sizes="(max-width: 768px) 49vw, 50vw"
+              />
             </div>
           </div>
         </CategoryToSearchLink>

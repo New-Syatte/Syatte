@@ -10,10 +10,11 @@ export async function getOrders(userId: string) {
 
 export async function getOrder(orderId: string) {
   if (!orderId) {
-    throw new Error("orderId is required");
+    throw new Error("주문 ID가 필요합니다");
   }
 
   try {
+    console.log("Fetching order from Sanity:", orderId);
     const order = await client.fetch(
       `*[ _type == "order" && _id == $orderId][0]{
         username,
@@ -30,9 +31,14 @@ export async function getOrder(orderId: string) {
       }`,
       { orderId },
     );
-    return order;
+    console.log("Sanity order fetch result:", order);
+    return order || null;
   } catch (error: any) {
-    console.error(`주문 불러오기 실패: ${error.message}`);
+    console.error("Sanity order fetch error:", {
+      error: error.message,
+      orderId,
+    });
+    return null;
   }
 }
 

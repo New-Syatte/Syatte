@@ -1,4 +1,4 @@
-import { NextRequest, NextResponse } from "next/server";
+import { NextRequest } from "next/server";
 import { updateOrderStatus } from "@/services/sanity/orders";
 import { client } from "@/services/sanity/sanity";
 import { trackDelivery, unregisterWebhook } from "@/services/deliveryTracker";
@@ -10,7 +10,7 @@ export async function POST(req: NextRequest) {
     const { carrierId, trackingNumber } = data;
 
     if (!carrierId || !trackingNumber) {
-      return NextResponse.json(
+      return Response.json(
         { error: "Missing required fields" },
         { status: 400 },
       );
@@ -20,7 +20,7 @@ export async function POST(req: NextRequest) {
     const trackingResult = await trackDelivery(carrierId, trackingNumber);
 
     if (!trackingResult.data?.track) {
-      return NextResponse.json(
+      return Response.json(
         { error: "Failed to fetch tracking information" },
         { status: 500 },
       );
@@ -33,7 +33,7 @@ export async function POST(req: NextRequest) {
     );
 
     if (!order) {
-      return NextResponse.json({ error: "Order not found" }, { status: 404 });
+      return Response.json({ error: "Order not found" }, { status: 404 });
     }
 
     // 배송 상태 매핑
@@ -44,7 +44,7 @@ export async function POST(req: NextRequest) {
 
     // 이전 상태와 동일한 경우 업데이트 스킵
     if (order.orderStatus === orderStatus) {
-      return NextResponse.json(
+      return Response.json(
         { success: true, message: "Status unchanged" },
         { status: 202 },
       );
@@ -63,12 +63,10 @@ export async function POST(req: NextRequest) {
         await unregisterWebhook(carrierId, trackingNumber);
       } catch (error) {
         console.error("Failed to unregister webhook:", error);
-        // webhook 해제 실패는 전체 프로세스를 실패시키지 않음
       }
     }
 
-    // 202 Accepted 응답
-    return NextResponse.json(
+    return Response.json(
       {
         success: true,
         data: {
@@ -80,9 +78,6 @@ export async function POST(req: NextRequest) {
     );
   } catch (error) {
     console.error("Delivery webhook error:", error);
-    return NextResponse.json(
-      { error: "Internal server error" },
-      { status: 500 },
-    );
+    return Response.json({ error: "Internal server error" }, { status: 500 });
   }
 }

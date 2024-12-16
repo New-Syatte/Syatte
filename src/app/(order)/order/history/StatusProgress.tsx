@@ -5,7 +5,6 @@ import { useSelector } from "react-redux";
 import { selectOrders } from "@/redux/slice/orderSlice";
 
 const StatusProgress = () => {
-  // orders 배열의 status 기준으로, status 별로 몇 개의 주문이 있는지 카운트
   const statusArray = ORDER_STATUS.map(status => status.value).slice(1, 5);
   const statusTitleArr = ORDER_STATUS.map(status => status.title).slice(1, 5);
   const orders = useSelector(selectOrders);
@@ -20,11 +19,10 @@ const StatusProgress = () => {
   }, {});
 
   return (
-    <div className="w-full flex justify-around items-center">
-      {/* statusArray에서 각 요소들과, 그에 맞는 statusCount를 배치 */}
+    <div className="w-full grid grid-cols-7 items-center gap-2 px-4">
       {statusArray.map((status, index) => (
-        <>
-          <div className="flex flex-col justify-center items-center relative font-medium text-lg bg-bgWhiteSmoke w-[200px] sm:w-16 sm:h-[50px] h-[120px] rounded-md border border-lightGray p-3 sm:p-1">
+        <div key={`status-group-${status}`} className="contents">
+          <div className="col-span-1 flex flex-col justify-center items-center relative font-medium text-lg bg-bgWhiteSmoke w-full sm:h-[50px] h-[120px] rounded-md border border-lightGray p-3 sm:p-1">
             <p className="mb-2.5 sm:mb-0 text-[22px] sm:text-[10px] font-bold leading-4">
               {statusTitleArr[index]}
             </p>
@@ -33,9 +31,11 @@ const StatusProgress = () => {
             </p>
           </div>
           {index < statusArray.length - 1 && (
-            <BsChevronRight className="text-3xl sm:text-sm text-black" />
+            <div className="col-span-1 flex justify-center items-center">
+              <BsChevronRight className="text-3xl sm:text-sm text-black" />
+            </div>
           )}
-        </>
+        </div>
       ))}
     </div>
   );

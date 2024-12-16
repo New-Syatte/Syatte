@@ -43,7 +43,6 @@ export default async function RootLayout({ children }: RootLayoutProps) {
     >
       <body>
         <Providers>
-          {/* @ts-expect-error Async Server Component */}
           <Header />
           <section className="block min-h-contentHeight bg-white">
             {children}

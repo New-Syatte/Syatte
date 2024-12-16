@@ -3,14 +3,14 @@ import Button from "@/components/button/Button";
 import Motion from "@/components/motion/Motion";
 
 // assets
-import Banner from "@/assets/main/main-banner.png";
-import intro1 from "@/assets/main/introduce1.png";
-import intro2 from "@/assets/main/introduce2.png";
-import intro3 from "@/assets/main/introduce3.png";
-import intro4 from "@/assets/main/introduce4.png";
-import intro5 from "@/assets/main/introduce5.png";
-import eduImg from "@/assets/main/main-edu.png";
-import bottomBanner from "@/assets/main/bottom-banner.png";
+import Banner from "@/assets/main/main-banner.webp";
+import intro1 from "@/assets/main/introduce1.webp";
+import intro2 from "@/assets/main/introduce2.webp";
+import intro3 from "@/assets/main/introduce3.webp";
+import intro4 from "@/assets/main/introduce4.webp";
+import intro5 from "@/assets/main/introduce5.webp";
+import eduImg from "@/assets/main/main-edu.webp";
+import bottomBanner from "@/assets/main/bottom-banner.webp";
 
 import Image from "next/image";
 import Link from "next/link";
@@ -30,33 +30,9 @@ export default async function Home() {
     { imageUrl: intro5 },
   ];
 
-  const container = {
-    hidden: { opacity: 0, y: 100 },
-    visible: {
-      y: 0,
-      opacity: 1,
-      transition: {
-        duration: 1,
-        ease: "easeIn",
-      },
-    },
-  };
-
   const containerBox = {
     hidden: { opacity: 0 },
     visible: {
-      opacity: 1,
-      transition: {
-        duration: 1,
-        ease: "easeIn",
-      },
-    },
-  };
-
-  const titleLeftMove = {
-    hidden: { opacity: 0, x: -100 },
-    visible: {
-      x: 0,
       opacity: 1,
       transition: {
         duration: 1,

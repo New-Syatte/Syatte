@@ -54,6 +54,7 @@ export default function Card({
             src={mainImage.imageUrl}
             alt="image"
             fill
+            sizes="(max-width: 768px) 115px, 212px"
             style={{ objectFit: "cover" }}
           />
         </div>
@@ -76,7 +77,13 @@ export default function Card({
       </div>
       {/* 나중에 장바구니 이벤트처리로 따로 빼기 */}
       <article className="flex gap-2 mt-[10px]">
-        <Image src="/download.svg" alt="toCart" width={15} height={15} />
+        <Image
+          src="/download.svg"
+          alt="toCart"
+          width={15}
+          height={15}
+          style={{ width: "15px", height: "auto" }}
+        />
         <p className="text-center text-neutral-400 text-base font-normal">
           카트 담기
         </p>

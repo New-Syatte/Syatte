@@ -16,11 +16,11 @@ export const requestPayment = async (
   }
 
   try {
-    await tosspayment.requestPayment("카드", {
+    const response = await tosspayment.requestPayment("카드", {
       amount,
       orderId,
       orderName,
-      successUrl: `${URLS.rootURL}${URLS.CHECKOUT_SUCCESS}`,
+      successUrl: `${URLS.rootURL}/api/payment/confirm`,
       failUrl: `${URLS.rootURL}${URLS.CHECKOUT_FAIL}`,
     });
     return orderId;

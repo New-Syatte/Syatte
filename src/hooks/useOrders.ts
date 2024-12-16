@@ -7,14 +7,15 @@ import {
 } from "@/redux/slice/orderSlice";
 import { getOrders } from "@/services/sanity/orders";
 import useSWR from "swr";
-import { Order, TrackingResponseEvent } from "@/type/order";
-import { useEffect, useRef } from "react";
+import { Order } from "@/type/order";
+import { useEffect, useRef, useTransition } from "react";
 
 export function useOrders() {
   const { data: session } = useSession();
   const userId = session?.user?.id;
   const dispatch = useDispatch();
   const updatingRef = useRef<{ [key: string]: boolean }>({});
+  const [isPending, startTransition] = useTransition();
 
   // SWR로 주문 데이터 가져오기
   const {
@@ -39,7 +40,7 @@ export function useOrders() {
             reduxOrder.shippingInfo?.events &&
             !updatingRef.current[matchedOrder._id]
           ) {
-            (async () => {
+            startTransition(async () => {
               try {
                 updatingRef.current[matchedOrder._id] = true;
                 const response = await fetch("/api/orders/update-status", {
@@ -64,7 +65,7 @@ export function useOrders() {
               } finally {
                 delete updatingRef.current[matchedOrder._id];
               }
-            })();
+            });
           }
         }
       });
@@ -87,7 +88,9 @@ export function useOrders() {
       order.orderStatus !== "preparing" &&
       order.orderStatus !== "canceled"
     ) {
-      dispatch(trackDeliveryThunk(order) as any);
+      startTransition(() => {
+        dispatch(trackDeliveryThunk(order) as any);
+      });
     }
   };
 
@@ -96,5 +99,6 @@ export function useOrders() {
     error,
     isLoading: !orders && !error,
     trackDelivery,
+    isPending,
   };
 }
