@@ -1,57 +1,99 @@
 "use client";
 
-import { ProductForDetail } from "@/type/products";
+import { Product } from "@/type/products";
 import Button from "@/components/button/Button";
 import { ADD_TO_CART } from "@/redux/slice/cartSlice";
-import { useDispatch } from "react-redux";
-import { useState, useTransition } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useTransition } from "react";
 import { useRouter } from "next/navigation";
 import Slider from "@/components/slider/Slider";
 import URLS from "@/constants/urls";
 import SliderPreview from "@/components/slider/SliderPreview";
 import { Slide, toast } from "react-toastify";
+import ProductSelects from "./ProductSelects";
+import { selectColor, selectSize } from "@/redux/slice/productOptionsSlice";
+import TempItem from "./TempItem";
+import {
+  addTempItem,
+  updateTempItemQuantity,
+  removeTempItem,
+  selectTempItems,
+} from "@/redux/slice/productTempSlice";
 
-type ProductSummaryProps = Omit<
-  ProductForDetail,
-  "category" | "detailCategory" | "detailImage"
->;
-
-export default function ProductSummary({
-  _id,
-  productName,
-  price,
-  description,
-  images,
-  discount,
-}: ProductSummaryProps) {
+export default function ProductSummary({ product }: { product: Product }) {
   const dispatch = useDispatch();
   const router = useRouter();
-  const [count, setCount] = useState(1);
   const [isPending, startTransition] = useTransition();
+  const selectedColor = useSelector(selectColor);
+  const selectedSize = useSelector(selectSize);
+  const tempItems = useSelector(selectTempItems);
+
+  const { _id, productName, options, description, images } = product;
+
+  const handleAddOption = () => {
+    if (!selectedColor || !selectedSize) {
+      toast.error("옵션을 선택해주세요.");
+      return;
+    }
+
+    const colorOption = options.find(
+      opt => opt.color.colorName === selectedColor,
+    );
+    const sizeOption = colorOption?.sizes.find(
+      size => size.size === selectedSize,
+    );
+
+    if (!sizeOption) return;
+
+    const newItem = {
+      color: selectedColor,
+      size: selectedSize,
+      price: sizeOption.price,
+      discount: sizeOption.discount,
+      quantity: 1,
+    };
+
+    dispatch(addTempItem(newItem));
+  };
+
+  const handleQuantityChange = (index: number, quantity: number) => {
+    dispatch(updateTempItemQuantity({ index, quantity }));
+  };
+
+  const handleDeleteItem = (index: number) => {
+    dispatch(removeTempItem(index));
+  };
+
+  const getTotalPrice = () => {
+    return tempItems.reduce((total, item) => {
+      const discountedPrice = item.price - (item.price * item.discount) / 100;
+      return total + discountedPrice * item.quantity;
+    }, 0);
+  };
 
   const handleAddToCart = (redirectToCart: boolean = false) => {
-    try {
-      dispatch(
-        ADD_TO_CART({
-          id: _id,
-          name: productName,
-          price,
-          imageURL: images[0].imageUrl,
-          discount,
-          quantity: count,
-        }),
-      );
+    if (tempItems.length === 0) {
+      toast.error("상품을 선택해주세요.");
+      return;
+    }
 
-      toast.success("장바구니에 추가되었습니다.", {
-        position: "top-right",
-        autoClose: 2000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        theme: "light",
-        transition: Slide,
+    try {
+      tempItems.forEach(item => {
+        dispatch(
+          ADD_TO_CART({
+            id: _id,
+            name: productName,
+            price: item.price - (item.price * item.discount) / 100,
+            imageURL: images[0].imageUrl,
+            discount: item.discount,
+            quantity: item.quantity,
+            selectedColor: item.color,
+            selectedSize: item.size,
+          }),
+        );
       });
+
+      toast.success("장바구니에 추가되었습니다.");
 
       if (redirectToCart) {
         startTransition(() => {
@@ -60,39 +102,9 @@ export default function ProductSummary({
       }
     } catch (error) {
       console.error("Failed to add to cart:", error);
-      toast.error(
-        error instanceof Error
-          ? error.message
-          : "장바구니에 추가하는 중 오류가 발생했습니다.",
-        {
-          position: "top-right",
-          autoClose: 2000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          theme: "light",
-          transition: Slide,
-        },
-      );
+      toast.error("장바구니에 추가하는 중 오류가 발생했습니다.");
     }
   };
-
-  const handleCountChange = (increment: boolean) => {
-    setCount(prev => {
-      const newCount = increment ? prev + 1 : prev - 1;
-      return Math.max(1, newCount); // 최소값 1 보장
-    });
-  };
-
-  const calculateDiscountedPrice = (
-    originalPrice: number,
-    discountPercent: number,
-  ) => {
-    return originalPrice - (originalPrice * discountPercent) / 100;
-  };
-
-  const discountedPrice = calculateDiscountedPrice(price, discount);
 
   return (
     <>
@@ -114,7 +126,7 @@ export default function ProductSummary({
             <div key={index} className="flex items-center justify-center w-1/5">
               <SliderPreview
                 id="productDetailSlider"
-                imgUrl={image.imageUrl as any}
+                imgUrl={image.imageUrl}
                 index={index}
               />
             </div>
@@ -127,61 +139,44 @@ export default function ProductSummary({
           <p className="text-neutral-800 text-sm font-normal sm:leading-normal leading-[25.20px]">
             {description}
           </p>
-          {/* 가격 */}
-          <article className="flex flex-col font-bold py-10 justify-between items-start gap-2">
-            <div className="flex gap-2 justify-start items-end">
-              <p className="text-rose-500 text-2xl font-bold leading-[30px]">
-                {discount}%
-              </p>
-              <p className="text-zinc-400 text-lg font-normal line-through leading-[30px]">
-                {price.toLocaleString()} 원
-              </p>
-            </div>
-            <p className="text-black text-[38px] font-bold leading-[30px]">
-              {discountedPrice.toLocaleString()}원
-            </p>
-          </article>
-          {/* 수량 버튼 */}
-          <div className="flex justify-between items-center border-b-2 gap-8 sm:w-full w-[415px] h-[61px] bg-zinc-100 rounded mt-7 p-3">
-            <div className="sm:w-1/2 w-[103px] h-9">
-              <div className="flex justify-between items-center h-9 bg-white border border-zinc-300 rounded">
-                <Button
-                  onClick={() => handleCountChange(false)}
-                  disabled={count <= 1 || isPending}
-                  styleType="blank"
-                  style="w-10 h-9 p-0"
-                >
-                  -
-                </Button>
-                <p className="w-10 h-9 flex justify-center items-center">
-                  <b className="text-black text-lg">{count}</b>
-                </p>
-                <Button
-                  onClick={() => handleCountChange(true)}
-                  disabled={isPending}
-                  styleType="blank"
-                  style="w-10 h-9 p-0"
-                >
-                  +
-                </Button>
-              </div>
-            </div>
-            <div>
-              <p className="text-neutral-800 sm:text-base text-[22px] font-bold">
-                {(discountedPrice * count).toLocaleString()}원
-              </p>
-            </div>
+
+          {/* Option Select */}
+          <div className="mt-8">
+            <ProductSelects options={options} />
+            <Button
+              onClick={handleAddOption}
+              styleType="blank"
+              style="w-full h-12 mt-4 border border-gray-300 rounded"
+            >
+              옵션 추가
+            </Button>
           </div>
-          {/* 주문 금액 */}
-          <div>
-            <div className="flex justify-between items-center gap-8 sm:w-full w-[415px] h-[61px] mt-7 p-3">
-              <p className="text-neutral-800 text-[22px] font-bold">주문금액</p>
-              <p className="text-neutral-800 text-[28px] font-bold">
-                {(discountedPrice * count).toLocaleString()}원
-              </p>
-            </div>
+
+          {/* Selected Items */}
+          <div className="mt-8 space-y-4">
+            {tempItems.map((item, index) => (
+              <TempItem
+                key={`${item.color}-${item.size}-${index}`}
+                item={item}
+                onQuantityChange={quantity =>
+                  handleQuantityChange(index, quantity)
+                }
+                onDelete={() => handleDeleteItem(index)}
+              />
+            ))}
           </div>
-          {/* 구매하기 버튼 */}
+
+          {/* Total Price */}
+          {tempItems.length > 0 && (
+            <div className="flex justify-between items-center mt-8 py-4 border-t-2">
+              <span className="text-xl font-bold">총 상품금액</span>
+              <span className="text-2xl font-bold">
+                {getTotalPrice().toLocaleString()}원
+              </span>
+            </div>
+          )}
+
+          {/* Buttons */}
           <div className="flex justify-center items-center gap-[18px] mt-8">
             <Button
               onClick={() => handleAddToCart(false)}

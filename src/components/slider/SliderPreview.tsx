@@ -3,13 +3,13 @@ import { useDispatch } from "react-redux";
 import { setCurrentSlide } from "@/redux/slice/sliderSlice";
 import Image, { StaticImageData } from "next/image";
 
-interface SliderPreviewProps {
+interface Props {
   id: string;
-  imgUrl: StaticImageData;
+  imgUrl: string | StaticImageData;
   index: number;
 }
 
-const SliderPreview = ({ id, imgUrl, index }: SliderPreviewProps) => {
+const SliderPreview = ({ id, imgUrl, index }: Props) => {
   const dispatch = useDispatch();
   return (
     <Image

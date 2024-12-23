@@ -16,28 +16,16 @@ export interface Product {
   productName: string;
   mainImage: ProductImage;
   images: ProductImage[];
+  detailImage: string;
   description: string;
   mainCategory: "midasMetal" | "modernMasters";
   subCategory: string;
-  options: {
-    color: {
-      colorName: string;
-      colorCode: string;
-    };
-    sizes: {
-      size: string;
-      price: number;
-      discount: number;
-      stock: number;
-    }[];
-  }[];
+  options: ProductOption[];
   slug?: string;
   tags?: string[];
   isNewProduct?: boolean;
   isBestSeller?: boolean;
 }
-
-export type ProductForDetail = Omit<Product, "mainImage">;
 export type ProductForList = Pick<
   Product,
   "_id" | "productName" | "options" | "mainImage"
@@ -45,4 +33,17 @@ export type ProductForList = Pick<
 
 type ProductImage = {
   imageUrl: string;
+};
+
+export type ProductOption = {
+  color: {
+    colorName: string;
+    colorCode: string;
+  };
+  sizes: {
+    size: string;
+    price: number;
+    discount: number;
+    stock: number;
+  }[];
 };
