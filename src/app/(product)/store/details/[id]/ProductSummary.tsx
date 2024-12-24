@@ -84,7 +84,7 @@ export default function ProductSummary({ product }: { product: Product }) {
           ADD_TO_CART({
             id: _id,
             name: productName,
-            price: item.price - (item.price * item.discount) / 100,
+            price: item.price,
             imageURL: images[0].imageUrl,
             discount: item.discount,
             quantity: item.quantity,

@@ -8,7 +8,6 @@ import Heading from "@/components/heading/Heading";
 import { useOrders } from "@/hooks/useOrders";
 import { toast } from "react-toastify";
 import { useTransition } from "react";
-import { ServerActionResult } from "@/type/action";
 
 interface WebhookRefreshResponse {
   success: boolean;
@@ -21,7 +20,6 @@ interface WebhookRefreshResponse {
 }
 
 export default function OrderHistoryClient() {
-  const { orders, error, isLoading } = useOrders();
   const [isPending, startTransition] = useTransition();
 
   const refreshWebhooks = async () => {
@@ -49,20 +47,6 @@ export default function OrderHistoryClient() {
       });
     }
   };
-
-  if (error) {
-    return (
-      <div className="w-full text-center text-red-500 py-4">
-        주문 내역을 불러오는데 실패했습니다.
-        <br />
-        <span className="text-sm text-gray-500">
-          {error instanceof Error ? error.message : String(error)}
-        </span>
-      </div>
-    );
-  }
-
-  if (isLoading) return <Loader />;
 
   return (
     <section className="w-full flex flex-col gap-y-40 sm:gap-y-10 font-kor">

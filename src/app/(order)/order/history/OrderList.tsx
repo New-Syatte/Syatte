@@ -19,14 +19,19 @@ export default function OrderList() {
 
   return (
     <div className="w-full flex flex-col gap-10">
-      {orders.map((order: Order) => (
-        <OrderProduct
-          key={order._id}
-          order={order}
-          onTrackDelivery={trackDelivery}
-          disabled={isPending}
-        />
-      ))}
+      {orders
+        .sort(
+          (a: Order, b: Order) =>
+            new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
+        )
+        .map((order: Order) => (
+          <OrderProduct
+            key={order._id}
+            order={order}
+            onTrackDelivery={trackDelivery}
+            disabled={isPending}
+          />
+        ))}
     </div>
   );
 }

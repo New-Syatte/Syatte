@@ -1,10 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { serverTrackDelivery } from "@/app/actions";
-import {
-  Order,
-  TrackingResponseError,
-  DeliveryTrackingResponse,
-} from "@/type/order";
+import { Order, DeliveryTrackingResponse } from "@/type/order";
 import { RootState } from "../store";
 
 type IOrderState = Order[];

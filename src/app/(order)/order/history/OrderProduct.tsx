@@ -5,6 +5,7 @@ import Image from "next/image";
 import OrderStatus from "@/components/order/OrderStatus";
 import { formatTime } from "@/utils/formatTime";
 import priceFormat from "@/utils/priceFormat";
+import { getDiscountPrice } from "@/utils/getDiscount";
 
 interface OrderProductProps {
   order: Order;
@@ -17,14 +18,7 @@ export default function OrderProduct({
   onTrackDelivery,
   disabled,
 }: OrderProductProps) {
-  const {
-    orderDate,
-    cartItems,
-    orderAmount,
-    orderStatus,
-    shippingInfo,
-    createdAt,
-  } = order;
+  const { orderDate, cartItems, orderAmount, shippingInfo, createdAt } = order;
 
   const handleTrackDelivery = () => {
     onTrackDelivery(order);
@@ -57,7 +51,7 @@ export default function OrderProduct({
       <div className="flex flex-col gap-4 py-4">
         {cartItems.map(item => (
           <div
-            key={item.id}
+            key={item._key}
             className="flex justify-between items-center sm:flex-col sm:items-start sm:gap-4"
           >
             <div className="flex gap-4 items-center">
@@ -73,14 +67,39 @@ export default function OrderProduct({
               </div>
               <div>
                 <p className="text-lg sm:text-base">{item.name}</p>
+                <div className="flex gap-2 items-center">
+                  <div className="flex gap-2 items-center">
+                    <div
+                      className="w-[10px] h-[10px]"
+                      style={{ backgroundColor: item.colorCode }}
+                    />
+                    <p className="text-base sm:text-sm text-darkGray">
+                      {item.color}
+                    </p>
+                  </div>
+                  <p className="text-base sm:text-sm text-darkGray">
+                    {item.size}
+                  </p>
+                </div>
                 <p className="text-base sm:text-sm text-darkGray">
-                  {item.cartQuantity}개
+                  {item.quantity}개
                 </p>
               </div>
             </div>
-            <p className="text-lg sm:text-base font-bold">
-              {priceFormat(item.price * item.cartQuantity)}원
-            </p>
+            <div className="flex gap-1 items-center justify-end">
+              <p className="text-lg sm:text-base font-bold text-darkGray line-through opacity-50">
+                {priceFormat(item.price * item.quantity)}원
+              </p>
+              <p className="text-lg sm:text-base font-bold text-colorRed line-through opacity-50">
+                {item.discount}%
+              </p>
+              <p className="text-lg sm:text-base font-bold">
+                {priceFormat(
+                  getDiscountPrice(item.price, item.discount) * item.quantity,
+                )}
+                원
+              </p>
+            </div>
           </div>
         ))}
       </div>
