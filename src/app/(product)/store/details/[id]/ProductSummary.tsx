@@ -9,7 +9,7 @@ import { useRouter } from "next/navigation";
 import Slider from "@/components/slider/Slider";
 import URLS from "@/constants/urls";
 import SliderPreview from "@/components/slider/SliderPreview";
-import { Slide, toast } from "react-toastify";
+import { toast } from "react-toastify";
 import ProductSelects from "./ProductSelects";
 import { selectColor, selectSize } from "@/redux/slice/productOptionsSlice";
 import TempItem from "./TempItem";
@@ -37,7 +37,7 @@ export default function ProductSummary({ product }: { product: Product }) {
     }
 
     const colorOption = options.find(
-      opt => opt.color.colorName === selectedColor,
+      opt => opt.color.colorName === selectedColor.colorName,
     );
     const sizeOption = colorOption?.sizes.find(
       size => size.size === selectedSize,
@@ -46,7 +46,8 @@ export default function ProductSummary({ product }: { product: Product }) {
     if (!sizeOption) return;
 
     const newItem = {
-      color: selectedColor,
+      color: selectedColor.colorName,
+      colorCode: selectedColor.colorCode,
       size: selectedSize,
       price: sizeOption.price,
       discount: sizeOption.discount,
@@ -87,8 +88,10 @@ export default function ProductSummary({ product }: { product: Product }) {
             imageURL: images[0].imageUrl,
             discount: item.discount,
             quantity: item.quantity,
-            selectedColor: item.color,
-            selectedSize: item.size,
+            color: item.color,
+            colorCode: item.colorCode,
+            size: item.size,
+            key: _id + item.color + item.size,
           }),
         );
       });

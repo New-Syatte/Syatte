@@ -1,11 +1,9 @@
 "use client";
-import { useState } from "react";
 import { ProductOption } from "@/type/products";
 import { useDispatch, useSelector } from "react-redux";
 import {
   setColor,
   setSize,
-  resetOptions,
   selectColor,
   selectSize,
 } from "@/redux/slice/productOptionsSlice";
@@ -16,13 +14,16 @@ const ProductSelects = ({ options }: { options: ProductOption[] }) => {
   const selectedSize = useSelector(selectSize);
 
   const handleColorChange = (colorName: string) => {
-    dispatch(setColor(colorName));
-    // 색상이 변경되면 해당 색상의 첫 번째 사이즈로 자동 선택
     const selectedOption = options.find(
       opt => opt.color.colorName === colorName,
     );
-    if (selectedOption?.sizes[0]) {
-      dispatch(setSize(selectedOption.sizes[0].size));
+
+    if (selectedOption) {
+      dispatch(setColor(selectedOption.color));
+      // 색상이 변경되면 해당 색상의 첫 번째 사이즈로 자동 선택
+      if (selectedOption.sizes[0]) {
+        dispatch(setSize(selectedOption.sizes[0].size));
+      }
     }
   };
 
@@ -32,14 +33,15 @@ const ProductSelects = ({ options }: { options: ProductOption[] }) => {
 
   const getSelectedColorSizes = () => {
     return (
-      options.find(opt => opt.color.colorName === selectedColor)?.sizes || []
+      options.find(opt => opt.color.colorName === selectedColor?.colorName)
+        ?.sizes || []
     );
   };
 
   return (
     <div className="flex flex-col gap-4">
       <select
-        value={selectedColor || ""}
+        value={selectedColor?.colorName || ""}
         onChange={e => handleColorChange(e.target.value)}
         className="select w-full h-12 border border-gray-300 rounded px-4"
       >

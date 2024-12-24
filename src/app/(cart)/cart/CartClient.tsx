@@ -9,10 +9,7 @@ import {
   ALTERNATE_CHECKED_ITEMS,
   SELECT_ALL_ITEMS,
   UNCHECK_ALL_ITEMS,
-  CALCULATE_SUBTOTAL,
-  CALCULATE_CHECKED_ITEMS_SUBTOTAL,
   selectCartItems,
-  selectCheckedCartItems,
   selectAllChecked,
 } from "@/redux/slice/cartSlice";
 import { useEffect, useState, useTransition, Suspense } from "react";
@@ -53,7 +50,6 @@ const LoadingFallback = () => (
 
 export default function CartClient() {
   const cartItems = useSelector(selectCartItems);
-  const checkedItems = useSelector(selectCheckedCartItems);
   const isAllChecked = useSelector(selectAllChecked);
   const [isDisabled, setIsDisabled] = useState(false);
   const [mounted, setMounted] = useState(false);
@@ -66,13 +62,6 @@ export default function CartClient() {
   useEffect(() => {
     setMounted(true);
   }, []);
-
-  useEffect(() => {
-    startTransition(() => {
-      dispatch(CALCULATE_SUBTOTAL());
-      dispatch(CALCULATE_CHECKED_ITEMS_SUBTOTAL());
-    });
-  }, [dispatch, cartItems]);
 
   useEffect(() => {
     setIsDisabled(

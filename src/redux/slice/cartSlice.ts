@@ -17,10 +17,37 @@ const initialState: ICartState = {
         ? JSON.parse(localStorage.getItem("cartItems")!)
         : []
       : [],
-  cartTotalAmount: 0,
-  cartCheckedTotalAmount: 0,
-  isAllChecked: false,
+  cartTotalAmount:
+    typeof window !== "undefined"
+      ? Number(localStorage.getItem("cartTotalAmount")) || 0
+      : 0,
+  cartCheckedTotalAmount:
+    typeof window !== "undefined"
+      ? Number(localStorage.getItem("cartCheckedTotalAmount")) || 0
+      : 0,
+  isAllChecked:
+    typeof window !== "undefined"
+      ? localStorage.getItem("isAllChecked") === "true"
+      : false,
   previousURL: "",
+};
+
+const calculateTotalAmount = (items: CartItem[]) => {
+  return items.reduce((total, item) => {
+    const { price, quantity, discount } = item;
+    const discountedPrice = price - price * (discount / 100);
+    return total + discountedPrice * quantity;
+  }, 0);
+};
+
+const calculateCheckedTotalAmount = (items: CartItem[]) => {
+  return items
+    .filter(item => item.isChecked)
+    .reduce((total, item) => {
+      const { price, quantity, discount } = item;
+      const discountedPrice = price - price * (discount / 100);
+      return total + discountedPrice * quantity;
+    }, 0);
 };
 
 const cartSlice = createSlice({
@@ -29,7 +56,7 @@ const cartSlice = createSlice({
   reducers: {
     ADD_TO_CART: (state, action) => {
       const productIndex = state.cartItems.findIndex(
-        item => item.id === action.payload.id,
+        item => item.key === action.payload.key,
       );
 
       const increaseCount = action.payload.quantity
@@ -37,67 +64,115 @@ const cartSlice = createSlice({
         : 1;
 
       if (productIndex >= 0) {
-        state.cartItems[productIndex].cartQuantity += increaseCount;
+        state.cartItems[productIndex].quantity += increaseCount;
       } else {
-        const tempProduct = {
-          id: action.payload.id,
+        const tempProduct: CartItem = {
+          productId: action.payload.id,
           imageURL: action.payload.imageURL,
           name: action.payload.name,
           price: action.payload.price,
-          cartQuantity: increaseCount,
+          quantity: increaseCount,
           discount: action.payload.discount,
           isChecked: true,
-          _key: action.payload.id,
+          size: action.payload.size,
+          color: action.payload.color,
+          colorCode: action.payload.colorCode,
+          key: action.payload.key,
         };
 
         state.cartItems.push(tempProduct);
       }
+
+      // 금액 자동 계산
+      state.cartTotalAmount = calculateTotalAmount(state.cartItems);
+      state.cartCheckedTotalAmount = calculateCheckedTotalAmount(
+        state.cartItems,
+      );
+
       localStorage.setItem("cartItems", JSON.stringify(state.cartItems));
-    },
-
-    CALCULATE_SUBTOTAL: state => {
-      const array: number[] = [];
-      state.cartItems.map(item => {
-        const { price, cartQuantity, discount } = item;
-        const discountedPrice = price - price * (discount / 100);
-        const cartItemAmount = discountedPrice * cartQuantity;
-        return array.push(cartItemAmount);
-      });
-
-      const totalAmount = array.reduce((a, b) => {
-        return a + b;
-      }, 0);
-
-      state.cartTotalAmount = totalAmount;
-    },
-
-    SAVE_URL: (state, action) => {
-      state.previousURL = action.payload;
+      localStorage.setItem("cartTotalAmount", state.cartTotalAmount.toString());
+      localStorage.setItem(
+        "cartCheckedTotalAmount",
+        state.cartCheckedTotalAmount.toString(),
+      );
     },
 
     DECREASE_CART: (state, action) => {
       const productIndex = state.cartItems.findIndex(
-        item => item.id === action.payload.id,
+        item => item.key === action.payload.key,
       );
 
-      if (state.cartItems[productIndex].cartQuantity > 1) {
-        state.cartItems[productIndex].cartQuantity -= 1;
-      } else if (state.cartItems[productIndex].cartQuantity === 1) {
+      if (state.cartItems[productIndex].quantity > 1) {
+        state.cartItems[productIndex].quantity -= 1;
+      } else if (state.cartItems[productIndex].quantity === 1) {
         const newCartItem = state.cartItems.filter(
-          item => item.id !== action.payload.id,
+          item => item.key !== action.payload.key,
         );
         state.cartItems = newCartItem;
       }
+
+      // 금액 자동 계산
+      state.cartTotalAmount = calculateTotalAmount(state.cartItems);
+      state.cartCheckedTotalAmount = calculateCheckedTotalAmount(
+        state.cartItems,
+      );
+
       localStorage.setItem("cartItems", JSON.stringify(state.cartItems));
+      localStorage.setItem("cartTotalAmount", state.cartTotalAmount.toString());
+      localStorage.setItem(
+        "cartCheckedTotalAmount",
+        state.cartCheckedTotalAmount.toString(),
+      );
     },
 
     REMOVE_FROM_CART: (state, action) => {
       const newCartItem = state.cartItems.filter(
-        item => item.id !== action.payload.id,
+        item => item.key !== action.payload.key,
       );
 
       state.cartItems = newCartItem;
+
+      // 금액 자동 계산
+      state.cartTotalAmount = calculateTotalAmount(state.cartItems);
+      state.cartCheckedTotalAmount = calculateCheckedTotalAmount(
+        state.cartItems,
+      );
+
       localStorage.setItem("cartItems", JSON.stringify(state.cartItems));
+      localStorage.setItem("cartTotalAmount", state.cartTotalAmount.toString());
+      localStorage.setItem(
+        "cartCheckedTotalAmount",
+        state.cartCheckedTotalAmount.toString(),
+      );
+    },
+
+    ALTERNATE_CHECKED_ITEMS: (state, action) => {
+      const productIndex = state.cartItems.findIndex(
+        item => item.key === action.payload.key,
+      );
+
+      state.cartItems[productIndex].isChecked =
+        !state.cartItems[productIndex].isChecked;
+
+      // 금액 자동 계산
+      state.cartTotalAmount = calculateTotalAmount(state.cartItems);
+      state.cartCheckedTotalAmount = calculateCheckedTotalAmount(
+        state.cartItems,
+      );
+
+      state.isAllChecked = state.cartItems.every(item => item.isChecked);
+
+      localStorage.setItem("cartItems", JSON.stringify(state.cartItems));
+      localStorage.setItem("cartTotalAmount", state.cartTotalAmount.toString());
+      localStorage.setItem(
+        "cartCheckedTotalAmount",
+        state.cartCheckedTotalAmount.toString(),
+      );
+      localStorage.setItem("isAllChecked", state.isAllChecked.toString());
+    },
+
+    SAVE_URL: (state, action) => {
+      state.previousURL = action.payload;
     },
 
     REMOVE_CHECKED_ITEMS_FROM_CART: state => {
@@ -128,9 +203,9 @@ const cartSlice = createSlice({
       state.cartItems
         .filter(item => item.isChecked)
         .map(item => {
-          const { price, cartQuantity, discount } = item;
+          const { price, quantity, discount } = item;
           const discountedPrice = price - price * (discount / 100);
-          const cartItemAmount = discountedPrice * cartQuantity;
+          const cartItemAmount = discountedPrice * quantity;
           return array.push(cartItemAmount);
         });
 
@@ -140,24 +215,11 @@ const cartSlice = createSlice({
 
       state.cartCheckedTotalAmount = totalAmount;
     },
-
-    ALTERNATE_CHECKED_ITEMS: (state, action) => {
-      const productIndex = state.cartItems.findIndex(
-        item => item.id === action.payload.id,
-      );
-
-      state.cartItems[productIndex].isChecked =
-        !state.cartItems[productIndex].isChecked;
-      localStorage.setItem("cartItems", JSON.stringify(state.cartItems));
-
-      state.isAllChecked = state.cartItems.every(item => item.isChecked);
-    },
   },
 });
 
 export const {
   ADD_TO_CART,
-  CALCULATE_SUBTOTAL,
   REMOVE_CHECKED_ITEMS_FROM_CART,
   SELECT_ALL_ITEMS,
   UNCHECK_ALL_ITEMS,
@@ -179,7 +241,7 @@ export const selectCheckedCartItems = createSelector(
 
 export const selectCheckedTotalQuantity = createSelector(
   [selectCheckedCartItems],
-  cartItems => cartItems.reduce((sum, item) => sum + item.cartQuantity, 0),
+  cartItems => cartItems.reduce((sum, item) => sum + item.quantity, 0),
 );
 
 export const selectCartTotalAmount = (state: RootState) =>

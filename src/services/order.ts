@@ -9,7 +9,7 @@ interface OrderInput {
   userId: string;
   userEmail: string;
   displayName: string;
-  cartItems: CartItem[];
+  cartItems: Omit<CartItem, "isChecked">[];
   shippingAddress: {
     name: string;
     phone: string;
@@ -57,18 +57,23 @@ export async function createOrderFromPayment(input: OrderInput) {
       orderDate: formatTime(now.toISOString()).split(" ")[0], // YYYY-MM-DD
       createdAt: formatTime(now.toISOString()), // YYYY-MM-DD HH:mm:ss
       orderAmount: input.payment.totalAmount,
-      orderCount: input.cartItems.reduce(
-        (sum, item) => sum + item.cartQuantity,
-        0,
-      ),
+      orderCount: input.cartItems.reduce((sum, item) => sum + item.quantity, 0),
       orderStatus: "payed",
       cartItems: input.cartItems.map(item => ({
-        _key: item.id,
-        id: item.id,
+        _key: item.key,
         imageURL: item.imageURL,
         name: item.name,
         price: item.price,
-        cartQuantity: item.cartQuantity,
+        color: item.color,
+        size: item.size,
+        colorCode: item.colorCode,
+        productId: item.productId,
+        discount: item.discount,
+        quantity: item.quantity,
+        product: {
+          _type: "product",
+          _ref: item.productId,
+        },
       })),
       shippingAddress: {
         ...input.shippingAddress,

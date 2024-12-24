@@ -2,7 +2,7 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { RootState } from "../store";
 
 interface ProductOptionsState {
-  selectedColor: string | null;
+  selectedColor: { colorName: string; colorCode: string } | null;
   selectedSize: string | null;
 }
 
@@ -15,7 +15,10 @@ const productOptionsSlice = createSlice({
   name: "productOptions",
   initialState,
   reducers: {
-    setColor(state, action: PayloadAction<string>) {
+    setColor(
+      state,
+      action: PayloadAction<{ colorName: string; colorCode: string }>,
+    ) {
       state.selectedColor = action.payload;
       state.selectedSize = null; // 색상이 변경되면 크기 초기화
     },

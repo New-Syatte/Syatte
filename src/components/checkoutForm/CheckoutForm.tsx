@@ -15,11 +15,21 @@ export default function CheckoutForm() {
       <div>
         <div className="py-20 px-5 sm:py-10 sm:px-3 border-y border-lightGray flex flex-col gap-8">
           {cartItems.map((item, index) => {
-            const { id, name, price, discount, cartQuantity, imageURL } = item;
+            const {
+              name,
+              price,
+              discount,
+              quantity,
+              imageURL,
+              key,
+              color,
+              size,
+              colorCode,
+            } = item;
             const discountedPrice = price - price * (discount / 100);
             if (isMobile)
               return (
-                <div key={id}>
+                <div key={key}>
                   <div className="flex justify-start items-center gap-8">
                     <p>{index + 1}</p>
                     <div className="w-[77px] h-[77px] flex justify-center items-center border border-lightGray">
@@ -33,11 +43,19 @@ export default function CheckoutForm() {
                       />
                     </div>
                     <div className="w-1/2 h-[77px] flex flex-col justify-between">
-                      <p className={"text-sm text-nomal w-full"}>{name}</p>
+                      <div className="flex items-center gap-2">
+                        <p
+                          className="w-4 h-4"
+                          style={{ backgroundColor: colorCode }}
+                        ></p>
+                        <p className="text-sm text-nomal w-full">{color}</p>
+                        <p className="text-sm text-nomal w-full">{size}</p>
+                        <p className={"text-sm text-nomal w-full"}>{name}</p>
+                      </div>
                       <div className="flex h-5 justify-between items-center">
-                        <p className="text-lg font-bold">{cartQuantity}개</p>
+                        <p className="text-lg font-bold">{quantity}개</p>
                         <p className={"text-lg font-bold text-right"}>
-                          {priceFormat(discountedPrice * cartQuantity)} 원
+                          {priceFormat(discountedPrice * quantity)} 원
                         </p>
                       </div>
                     </div>
@@ -47,7 +65,7 @@ export default function CheckoutForm() {
             else
               return (
                 <div
-                  key={id}
+                  key={key}
                   className={
                     "flex justify-between items-center px-3 gap-3 text-[20px]"
                   }
@@ -64,11 +82,19 @@ export default function CheckoutForm() {
                     />
                   </div>
                   <div className="w-1/3">
-                    <p className={"text-lg text-nomal w-full"}>{name}</p>
+                    <p className={"text-sm text-nomal w-full"}>{name}</p>
+                    <div className="flex items-center gap-2">
+                      <p
+                        className="w-4 h-4"
+                        style={{ backgroundColor: colorCode }}
+                      ></p>
+                      <p className="text-sm text-nomal w-full">{color}</p>
+                    </div>
+                    <p className="text-sm text-nomal w-full">{size}</p>
                   </div>
-                  <p className="text-lg">{cartQuantity}</p>
+                  <p className="text-lg">{quantity}</p>
                   <p className="font-bold text-[22px]">
-                    {priceFormat(discountedPrice * cartQuantity)} 원
+                    {priceFormat(discountedPrice * quantity)} 원
                   </p>
                 </div>
               );

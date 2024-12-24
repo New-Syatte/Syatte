@@ -64,7 +64,7 @@ function CartList({
     <div className="space-y-4">
       {cartItems.map(cart => (
         <CartItem
-          key={cart.id}
+          key={cart.key}
           cart={cart}
           isMobile={isMobile}
           disabled={disabled}

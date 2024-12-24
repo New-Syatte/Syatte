@@ -4,6 +4,7 @@ import { RootState } from "../store";
 
 interface TempItem {
   color: string;
+  colorCode: string;
   size: string;
   price: number;
   discount: number;

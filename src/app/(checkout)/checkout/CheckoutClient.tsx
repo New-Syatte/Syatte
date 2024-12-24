@@ -60,9 +60,12 @@ export default function CheckoutClient() {
     e.preventDefault();
 
     if (!validateCheckoutData()) return;
-
+    const cartItemsForCheckout = cartItems.map(item => {
+      const { isChecked, ...others } = item;
+      return others;
+    });
     const checkoutData: CheckoutData = {
-      cartItems,
+      cartItems: cartItemsForCheckout,
       shippingAddress,
       billingAddress,
     };

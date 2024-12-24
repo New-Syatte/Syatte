@@ -12,7 +12,7 @@ const CartInfoArticle = () => {
   const checkedTotalAmount = useSelector(selectCheckedTotalAmount);
   const checkedItemsQuantity = cartItems
     .filter(item => item.isChecked)
-    .reduce((total, item) => total + item.cartQuantity, 0);
+    .reduce((total, item) => total + item.quantity, 0);
 
   return (
     <div className="flex flex-col justify-between border border-lightGray h-[200px] w-full p-4 rounded-md">
