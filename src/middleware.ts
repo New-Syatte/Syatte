@@ -22,7 +22,6 @@ export async function middleware(request: NextRequest) {
   // API 요청 처리
   if (pathname.startsWith("/api/")) {
     if (isAuthRequired && !token) {
-      console.log("Middleware - API Auth Failed");
       return NextResponse.json(
         { error: "인증되지 않은 사용자입니다." },
         { status: 401 },
@@ -47,7 +46,6 @@ export async function middleware(request: NextRequest) {
 
   // 페이지 요청 처리
   if (isAuthRequired && !token) {
-    console.log("Middleware - Page Auth Failed");
     const url = new URL("/signin", request.url);
     url.searchParams.set("callbackUrl", pathname);
     return NextResponse.redirect(url);

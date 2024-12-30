@@ -113,7 +113,6 @@ function CartItem({
     key,
   } = cart;
   const discountedPrice = price - price * (discount / 100);
-  console.log(cart);
 
   const handleToggleCheck = useCallback(() => {
     if (!disabled) {

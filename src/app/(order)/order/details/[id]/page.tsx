@@ -38,7 +38,6 @@ const OrderDetails = async ({ params }: OrderDetailsProps) => {
         </div>
       );
     }
-    console.log(order);
 
     return (
       <>

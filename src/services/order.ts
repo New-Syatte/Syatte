@@ -26,7 +26,6 @@ interface OrderInput {
 
 export async function createOrderFromPayment(input: OrderInput) {
   try {
-    console.log("Checking for existing order:", input.orderId);
     // 1. 기존 주문 확인 (읽기 작업은 client 사용)
     const existingOrder = await client.fetch(
       `*[_type == "order" && _id == $orderId][0]`,
@@ -35,17 +34,10 @@ export async function createOrderFromPayment(input: OrderInput) {
 
     // 이미 주문이 존재하면 해당 주문 반환
     if (existingOrder) {
-      console.log("Found existing order:", existingOrder);
       return existingOrder;
     }
 
     const now = new Date();
-    console.log("Creating new order with data:", {
-      orderId: input.orderId,
-      userId: input.userId,
-      cartItemsCount: input.cartItems.length,
-      totalAmount: input.payment.totalAmount,
-    });
 
     // 2. 새 주문 생성 (쓰기 작업은 writeClient 사용)
     const order = await writeClient.create({
@@ -89,7 +81,6 @@ export async function createOrderFromPayment(input: OrderInput) {
       },
     });
 
-    console.log("Order created successfully:", order);
     return order;
   } catch (error: any) {
     // Sanity 에러 처리
@@ -102,13 +93,12 @@ export async function createOrderFromPayment(input: OrderInput) {
 
     if (error.statusCode === 409) {
       // 동시성 문제로 인한 중복 생성 시도
-      console.log("Handling concurrent creation, checking for existing order");
+
       const existingOrder = await client.fetch(
         `*[_type == "order" && _id == $orderId][0]`,
         { orderId: input.orderId },
       );
       if (existingOrder) {
-        console.log("Found existing order after conflict:", existingOrder);
         return existingOrder;
       }
     }

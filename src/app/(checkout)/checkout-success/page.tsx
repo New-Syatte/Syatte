@@ -30,8 +30,6 @@ export default async function CheckoutSuccessPage({
   const params = await Promise.resolve(searchParams);
   const orderId = params.orderId;
 
-  console.log("Checkout success page params:", params);
-
   if (!orderId) {
     console.error("Order ID is missing from search params");
     const message = encodeURIComponent("주문 정보를 찾을 수 없습니다.");
@@ -39,7 +37,6 @@ export default async function CheckoutSuccessPage({
   }
 
   try {
-    console.log("Fetching order with ID:", orderId);
     const order = await getOrder(orderId);
 
     if (!order) {
@@ -47,8 +44,6 @@ export default async function CheckoutSuccessPage({
       const message = encodeURIComponent("주문 정보를 찾을 수 없습니다.");
       redirect(`/checkout-fail?message=${message}`);
     }
-
-    console.log("Order fetch result:", order);
 
     // 결제 정보 생성
     const payment: PaymentResponse = {
@@ -70,7 +65,6 @@ export default async function CheckoutSuccessPage({
       checkout: { url: "" },
     };
 
-    console.log("Generated payment info:", payment);
     return (
       <Suspense fallback={<PaymentProcessing />}>
         <CheckoutSuccessClient order={order} payment={payment} />
