@@ -4,7 +4,7 @@ import { Product } from "@/type/products";
 import Button from "@/components/button/Button";
 import { ADD_TO_CART } from "@/redux/slice/cartSlice";
 import { useDispatch, useSelector } from "react-redux";
-import { useTransition } from "react";
+import { useTransition, useEffect, useState, useRef } from "react";
 import { useRouter } from "next/navigation";
 import Slider from "@/components/slider/Slider";
 import URLS from "@/constants/urls";
@@ -25,6 +25,35 @@ export default function ProductSummary({ product }: { product: Product }) {
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
   const tempItems = useSelector(selectTempItems);
+  const [isFixed, setIsFixed] = useState(false);
+  const observerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        // 요소가 뷰포트 상단을 벗어났는지 확인
+        const boundingRect = entry.boundingClientRect;
+        console.log(boundingRect.top);
+
+        // 요소가 뷰포트 상단을 벗어났을 때만 fixed 적용
+        if (boundingRect.top < 0) {
+          setIsFixed(true);
+        } else {
+          setIsFixed(false);
+        }
+      },
+      {
+        threshold: 0,
+        rootMargin: "0px", // 뷰포트의 경계를 기준으로 함
+      },
+    );
+
+    if (observerRef.current) {
+      observer.observe(observerRef.current);
+    }
+
+    return () => observer.disconnect();
+  }, []);
 
   const { _id, productName, options, description, images } = product;
 
@@ -120,8 +149,17 @@ export default function ProductSummary({ product }: { product: Product }) {
             <ProductSelects options={options} />
           </div>
 
+          {/* Observer Target */}
+          <div ref={observerRef} className="w-full h-1" />
+
           {/* Selected Items */}
-          <div className="mt-8 space-y-4">
+          <div
+            className={`mt-8 space-y-4 ${
+              isFixed && tempItems.length > 0
+                ? "sm:fixed sm:bottom-20 sm:left-0 sm:w-full sm:h-32 sm:px-7 sm:py-4 sm:bg-white sm:border-t sm:border-gray-200 sm:overflow-y-auto"
+                : ""
+            }`}
+          >
             {tempItems.map((item, index) => (
               <TempItem
                 key={`${item.color}-${item.size}-${index}`}
@@ -137,7 +175,7 @@ export default function ProductSummary({ product }: { product: Product }) {
 
           {/* Total Price */}
           {tempItems.length > 0 && (
-            <div className="flex justify-between items-center mt-8 py-4 border-t-2">
+            <div className="flex justify-between items-center mt-8 py-4 border-t-2 sm:hidden">
               <span className="text-xl font-bold">총 상품금액</span>
               <span className="text-2xl font-bold">
                 {getTotalPrice().toLocaleString()}원
@@ -146,7 +184,14 @@ export default function ProductSummary({ product }: { product: Product }) {
           )}
 
           {/* Buttons */}
-          <div className="flex justify-center items-center gap-[18px] mt-8">
+          <div
+            id="cart-buttons"
+            className={`flex justify-center items-center gap-[18px] mt-8 ${
+              isFixed
+                ? "sm:fixed sm:bottom-0 sm:left-0 sm:w-full sm:bg-white sm:p-4 sm:border-t sm:border-gray-200 sm:h-20"
+                : ""
+            }`}
+          >
             <Button
               onClick={() => handleAddToCart(false)}
               styleType="blank"
