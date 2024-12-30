@@ -5,9 +5,19 @@ import OrderProduct from "./OrderProduct";
 import { Order } from "@/type/order";
 
 export default function OrderList() {
-  const { orders, trackDelivery, isPending } = useOrders();
+  const { orders, trackDelivery, isPending, isLoading } = useOrders();
 
-  if (!orders || orders.length === 0) {
+  if (!orders?.length) {
+    return (
+      <div className="w-full h-96 flex justify-center items-center">
+        <p className="text-3xl text-[#dddddd] font-bold">
+          데이터를 불러오는 중입니다...
+        </p>
+      </div>
+    );
+  }
+
+  if (!isLoading && !orders?.length) {
     return (
       <div className="w-full h-96 flex justify-center items-center">
         <p className="text-3xl text-[#dddddd] font-bold">

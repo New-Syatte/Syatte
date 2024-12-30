@@ -6,10 +6,12 @@ import OrderStatus from "@/components/order/OrderStatus";
 import { formatTime } from "@/utils/formatTime";
 import priceFormat from "@/utils/priceFormat";
 import { getDiscountPrice } from "@/utils/getDiscount";
+import { usePathname } from "next/navigation";
+import Link from "next/link";
 
 interface OrderProductProps {
   order: Order;
-  onTrackDelivery: (order: Order) => void;
+  onTrackDelivery?: (order: Order) => void;
   disabled: boolean;
 }
 
@@ -19,14 +21,27 @@ export default function OrderProduct({
   disabled,
 }: OrderProductProps) {
   const { orderDate, cartItems, orderAmount, shippingInfo, createdAt } = order;
+  const pathname = usePathname();
 
   const handleTrackDelivery = () => {
-    onTrackDelivery(order);
+    onTrackDelivery && onTrackDelivery(order);
   };
 
   return (
     <div className="w-full border border-lightGray rounded-md p-6 sm:p-4">
-      <div className="flex justify-between items-center border-b border-lightGray pb-4 sm:flex-col sm:items-start sm:gap-2">
+      <Link
+        href={`${
+          pathname === "/order/history"
+            ? `/order/details/${order._id}`
+            : "javascript:void(0);"
+        }`}
+        className={
+          "flex justify-between items-center border-b border-lightGray pb-4 sm:flex-col sm:items-start sm:gap-2" +
+          ` ${
+            pathname === "/order/history" ? "cursor-pointer" : "cursor-default"
+          }`
+        }
+      >
         <div className="flex gap-4 items-center sm:flex-col sm:items-start sm:gap-2">
           <p className="text-lg sm:text-base text-darkGray">
             주문일자: {orderDate}
@@ -47,7 +62,7 @@ export default function OrderProduct({
             </button>
           )}
         </div>
-      </div>
+      </Link>
       <div className="flex flex-col gap-4 py-4">
         {cartItems.map(item => (
           <div

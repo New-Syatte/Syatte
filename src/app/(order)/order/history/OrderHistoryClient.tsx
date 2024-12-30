@@ -2,12 +2,10 @@
 
 import StatusProgress from "./StatusProgress";
 import PeriodSelector from "@/layouts/periodSelector/PeriodSelector";
-import OrderList from "./OrderList";
-import Loader from "@/components/loader/Loader";
 import Heading from "@/components/heading/Heading";
-import { useOrders } from "@/hooks/useOrders";
-import { toast } from "react-toastify";
 import { useTransition } from "react";
+import OrderList from "./OrderList";
+import { toast } from "react-toastify";
 
 interface WebhookRefreshResponse {
   success: boolean;

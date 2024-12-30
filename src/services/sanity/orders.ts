@@ -14,7 +14,6 @@ export async function getOrder(orderId: string) {
   }
 
   try {
-    console.log("Fetching order from Sanity:", orderId);
     const order = await client.fetch(
       `*[ _type == "order" && _id == $orderId][0]{
         username,
@@ -31,19 +30,33 @@ export async function getOrder(orderId: string) {
       }`,
       { orderId },
     );
-    console.log("Sanity order fetch result:", order);
 
     if (!order) {
-      throw new Error("주문을 찾을 수 없습니다");
+      console.error("Order not found for ID:", orderId);
+      throw new Error(`주문을 찾을 수 없습니다 (ID: ${orderId})`);
     }
 
     return order;
   } catch (error: any) {
     console.error("Sanity order fetch error:", {
-      error: error.message,
+      message: error.message || "Unknown error",
+      code: error.statusCode,
+      name: error.name,
+      stack: error.stack,
       orderId,
     });
-    throw new Error(`주문 조회 실패: ${error.message}`);
+
+    if (error.statusCode === 404) {
+      throw new Error(`주문을 찾을 수 없습니다 (ID: ${orderId})`);
+    }
+
+    if (error.statusCode === 401 || error.statusCode === 403) {
+      throw new Error("주문 조회 권한이 없습니다");
+    }
+
+    throw new Error(
+      `주문 조회 실패: ${error.message || "알 수 없는 오류가 발생했습니다"}`,
+    );
   }
 }
 

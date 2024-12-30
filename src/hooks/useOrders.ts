@@ -20,6 +20,7 @@ export function useOrders() {
   // SWR로 주문 데이터 가져오기
   const {
     data: orders,
+    isLoading,
     error,
     mutate,
   } = useSWR(userId ? ["orders", userId] : null, () => getOrders(userId!));
@@ -97,7 +98,7 @@ export function useOrders() {
   return {
     orders,
     error,
-    isLoading: !orders && !error,
+    isLoading,
     trackDelivery,
     isPending,
   };
