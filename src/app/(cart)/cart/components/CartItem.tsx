@@ -6,6 +6,7 @@ import { HiMinus, HiPlus } from "react-icons/hi2";
 import { RxCross2 } from "react-icons/rx";
 import priceFormat from "@/utils/priceFormat";
 import { memo, useCallback } from "react";
+import { getDiscountPrice } from "@/utils/getDiscount";
 
 interface CartItemProps {
   cart: CartItemType;
@@ -112,7 +113,7 @@ function CartItem({
     size,
     key,
   } = cart;
-  const discountedPrice = price - price * (discount / 100);
+  const discountedPrice = getDiscountPrice(price, discount);
 
   const handleToggleCheck = useCallback(() => {
     if (!disabled) {

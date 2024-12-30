@@ -1,6 +1,7 @@
 import { CartItem } from "@/type/cart";
 import { createSelector, createSlice } from "@reduxjs/toolkit";
 import { RootState } from "../store";
+import { getDiscountPrice } from "@/utils/getDiscount";
 
 interface ICartState {
   cartItems: CartItem[];
@@ -35,7 +36,7 @@ const initialState: ICartState = {
 const calculateTotalAmount = (items: CartItem[]) => {
   return items.reduce((total, item) => {
     const { price, quantity, discount } = item;
-    const discountedPrice = price - price * (discount / 100);
+    const discountedPrice = getDiscountPrice(price, discount);
     return total + discountedPrice * quantity;
   }, 0);
 };
@@ -45,7 +46,7 @@ const calculateCheckedTotalAmount = (items: CartItem[]) => {
     .filter(item => item.isChecked)
     .reduce((total, item) => {
       const { price, quantity, discount } = item;
-      const discountedPrice = price - price * (discount / 100);
+      const discountedPrice = getDiscountPrice(price, discount);
       return total + discountedPrice * quantity;
     }, 0);
 };
@@ -204,7 +205,7 @@ const cartSlice = createSlice({
         .filter(item => item.isChecked)
         .map(item => {
           const { price, quantity, discount } = item;
-          const discountedPrice = price - price * (discount / 100);
+          const discountedPrice = getDiscountPrice(price, discount);
           const cartItemAmount = discountedPrice * quantity;
           return array.push(cartItemAmount);
         });

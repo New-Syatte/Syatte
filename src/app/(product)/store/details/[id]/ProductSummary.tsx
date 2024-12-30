@@ -11,51 +11,22 @@ import URLS from "@/constants/urls";
 import SliderPreview from "@/components/slider/SliderPreview";
 import { toast } from "react-toastify";
 import ProductSelects from "./ProductSelects";
-import { selectColor, selectSize } from "@/redux/slice/productOptionsSlice";
 import TempItem from "./TempItem";
 import {
-  addTempItem,
   updateTempItemQuantity,
   removeTempItem,
   selectTempItems,
+  resetTempItems,
 } from "@/redux/slice/productTempSlice";
+import { getDiscountPrice } from "@/utils/getDiscount";
 
 export default function ProductSummary({ product }: { product: Product }) {
   const dispatch = useDispatch();
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
-  const selectedColor = useSelector(selectColor);
-  const selectedSize = useSelector(selectSize);
   const tempItems = useSelector(selectTempItems);
 
   const { _id, productName, options, description, images } = product;
-
-  const handleAddOption = () => {
-    if (!selectedColor || !selectedSize) {
-      toast.error("옵션을 선택해주세요.");
-      return;
-    }
-
-    const colorOption = options.find(
-      opt => opt.color.colorName === selectedColor.colorName,
-    );
-    const sizeOption = colorOption?.sizes.find(
-      size => size.size === selectedSize,
-    );
-
-    if (!sizeOption) return;
-
-    const newItem = {
-      color: selectedColor.colorName,
-      colorCode: selectedColor.colorCode,
-      size: selectedSize,
-      price: sizeOption.price,
-      discount: sizeOption.discount,
-      quantity: 1,
-    };
-
-    dispatch(addTempItem(newItem));
-  };
 
   const handleQuantityChange = (index: number, quantity: number) => {
     dispatch(updateTempItemQuantity({ index, quantity }));
@@ -67,7 +38,7 @@ export default function ProductSummary({ product }: { product: Product }) {
 
   const getTotalPrice = () => {
     return tempItems.reduce((total, item) => {
-      const discountedPrice = item.price - (item.price * item.discount) / 100;
+      const discountedPrice = getDiscountPrice(item.price, item.discount);
       return total + discountedPrice * item.quantity;
     }, 0);
   };
@@ -94,6 +65,7 @@ export default function ProductSummary({ product }: { product: Product }) {
             key: _id + item.color + item.size,
           }),
         );
+        dispatch(resetTempItems());
       });
 
       toast.success("장바구니에 추가되었습니다.");
@@ -146,13 +118,6 @@ export default function ProductSummary({ product }: { product: Product }) {
           {/* Option Select */}
           <div className="mt-8">
             <ProductSelects options={options} />
-            <Button
-              onClick={handleAddOption}
-              styleType="blank"
-              style="w-full h-12 mt-4 border border-gray-300 rounded"
-            >
-              옵션 추가
-            </Button>
           </div>
 
           {/* Selected Items */}
@@ -165,6 +130,7 @@ export default function ProductSummary({ product }: { product: Product }) {
                   handleQuantityChange(index, quantity)
                 }
                 onDelete={() => handleDeleteItem(index)}
+                productName={product && productName}
               />
             ))}
           </div>

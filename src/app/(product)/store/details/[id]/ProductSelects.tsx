@@ -1,17 +1,16 @@
 "use client";
 import { ProductOption } from "@/type/products";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  setColor,
-  setSize,
-  selectColor,
-  selectSize,
-} from "@/redux/slice/productOptionsSlice";
+import { setColor, selectColor } from "@/redux/slice/productOptionsSlice";
+import CustomSelect from "@/components/customSelect/CustomSelect";
+import { toast } from "react-toastify";
+import { addTempItem } from "@/redux/slice/productTempSlice";
+import { useState } from "react";
 
 const ProductSelects = ({ options }: { options: ProductOption[] }) => {
   const dispatch = useDispatch();
   const selectedColor = useSelector(selectColor);
-  const selectedSize = useSelector(selectSize);
+  const [selectedSize, setSelectedSize] = useState("");
 
   const handleColorChange = (colorName: string) => {
     const selectedOption = options.find(
@@ -20,15 +19,40 @@ const ProductSelects = ({ options }: { options: ProductOption[] }) => {
 
     if (selectedOption) {
       dispatch(setColor(selectedOption.color));
-      // 색상이 변경되면 해당 색상의 첫 번째 사이즈로 자동 선택
-      if (selectedOption.sizes[0]) {
-        dispatch(setSize(selectedOption.sizes[0].size));
-      }
+      setSelectedSize(""); // 색상이 변경되면 size 선택 초기화
     }
   };
 
-  const handleSizeChange = (size: string) => {
-    dispatch(setSize(size));
+  const handleAddOption = (size: string) => {
+    if (!selectedColor) {
+      toast.error("컬러를 선택해주세요.");
+      return;
+    }
+
+    const colorOption = options.find(
+      opt => opt.color.colorName === selectedColor.colorName,
+    );
+    const sizeOption = colorOption?.sizes.find(
+      sizeOpt => sizeOpt.size === size,
+    );
+
+    if (!sizeOption) return;
+
+    const newItem = {
+      color: selectedColor.colorName,
+      colorCode: selectedColor.colorCode,
+      size,
+      price: sizeOption.price,
+      discount: sizeOption.discount,
+      quantity: 1,
+    };
+
+    dispatch(addTempItem(newItem));
+  };
+
+  const submitAddOption = (value: string) => {
+    setSelectedSize(value);
+    handleAddOption(value);
   };
 
   const getSelectedColorSizes = () => {
@@ -38,38 +62,35 @@ const ProductSelects = ({ options }: { options: ProductOption[] }) => {
     );
   };
 
+  const colorOptions = options.map((option, index) => ({
+    value: option.color.colorName,
+    label: `${index + 1}) ${option.color.colorName}`,
+  }));
+
+  const sizeOptions = getSelectedColorSizes().map((size, index) => ({
+    value: size.size,
+    label: `${index + 1}) ${size.size} - ${size.price.toLocaleString()}원${
+      size.discount > 0 ? ` (${size.discount}% 할인)` : ""
+    }`,
+  }));
+
   return (
-    <div className="flex flex-col gap-4">
-      <select
+    <div className="flex flex-col gap-4 font-helvetica text-sm">
+      <CustomSelect
+        id="color-select"
         value={selectedColor?.colorName || ""}
-        onChange={e => handleColorChange(e.target.value)}
-        className="select w-full h-12 border border-gray-300 rounded px-4"
-      >
-        <option value="" disabled>
-          컬러 선택
-        </option>
-        {options.map(option => (
-          <option key={option.color.colorName} value={option.color.colorName}>
-            {option.color.colorName}
-          </option>
-        ))}
-      </select>
-      <select
-        value={selectedSize || ""}
-        onChange={e => handleSizeChange(e.target.value)}
-        className="select w-full h-12 border border-gray-300 rounded px-4"
+        onChange={handleColorChange}
+        options={colorOptions}
+        placeholder="컬러 선택"
+      />
+      <CustomSelect
+        id="size-select"
+        value={selectedSize}
+        onChange={submitAddOption}
+        options={sizeOptions}
+        placeholder="용량 선택"
         disabled={!selectedColor}
-      >
-        <option value="" disabled>
-          용량 선택
-        </option>
-        {getSelectedColorSizes().map(size => (
-          <option key={size.size} value={size.size}>
-            {size.size} - {size.price.toLocaleString()}원
-            {size.discount > 0 && ` (${size.discount}% 할인)`}
-          </option>
-        ))}
-      </select>
+      />
     </div>
   );
 };
