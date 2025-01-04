@@ -43,6 +43,7 @@
     "react-youtube": "^10.1.0",
     "slick-carousel": "^1.8.1",
     "swr": "^2.2.4",
+    "tailwind-scrollbar-hide": "^2.0.0",
     "typescript": "^5.0.4"
   },
   "devDependencies": {

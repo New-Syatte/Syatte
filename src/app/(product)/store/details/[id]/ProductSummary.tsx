@@ -53,7 +53,7 @@ export default function ProductSummary({ product }: { product: Product }) {
     }
 
     return () => observer.disconnect();
-  }, []);
+  }, [tempItems]);
 
   const { _id, productName, options, description, images } = product;
 
@@ -66,11 +66,32 @@ export default function ProductSummary({ product }: { product: Product }) {
   };
 
   const getTotalPrice = () => {
-    return tempItems.reduce((total, item) => {
-      const discountedPrice = getDiscountPrice(item.price, item.discount);
-      return total + discountedPrice * item.quantity;
-    }, 0);
+    const { totalOriginalPrice, totalDiscountedPrice } = tempItems.reduce(
+      (acc, item) => {
+        const originalPrice = item.price * item.quantity;
+        const discountedPrice =
+          getDiscountPrice(item.price, item.discount) * item.quantity;
+
+        acc.totalOriginalPrice += originalPrice;
+        acc.totalDiscountedPrice += discountedPrice;
+        return acc;
+      },
+      { totalOriginalPrice: 0, totalDiscountedPrice: 0 },
+    );
+
+    // 전체 할인율 계산 (소수점 제거)
+    const totalDiscountPercentage = Math.floor(
+      ((totalOriginalPrice - totalDiscountedPrice) / totalOriginalPrice) * 100,
+    );
+
+    return {
+      totalOriginalPrice,
+      totalDiscountedPrice,
+      totalDiscountPercentage,
+    };
   };
+  const { totalOriginalPrice, totalDiscountedPrice, totalDiscountPercentage } =
+    getTotalPrice();
 
   const handleAddToCart = (redirectToCart: boolean = false) => {
     if (tempItems.length === 0) {
@@ -154,10 +175,8 @@ export default function ProductSummary({ product }: { product: Product }) {
 
           {/* Selected Items */}
           <div
-            className={`mt-8 space-y-4 ${
-              isFixed && tempItems.length > 0
-                ? "sm:fixed sm:bottom-20 sm:left-0 sm:w-full sm:h-32 sm:px-7 sm:py-4 sm:bg-white sm:border-t sm:border-gray-200 sm:overflow-y-auto"
-                : ""
+            className={`mt-8 space-y-4 overflow-y-auto h-52 md:scrollbar-thin lg:scrollbar-thin ${
+              isFixed && tempItems.length > 0 && "sm:hidden"
             }`}
           >
             {tempItems.map((item, index) => (
@@ -175,10 +194,22 @@ export default function ProductSummary({ product }: { product: Product }) {
 
           {/* Total Price */}
           {tempItems.length > 0 && (
-            <div className="flex justify-between items-center mt-8 py-4 border-t-2 sm:hidden">
-              <span className="text-xl font-bold">총 상품금액</span>
+            <div
+              className={`flex justify-between items-center mt-8 py-4 border-t-2 ${
+                isFixed &&
+                "sm:fixed sm:bottom-20 sm:left-0 sm:w-full sm:h-[60px] sm:px-7 sm:py-4 sm:bg-white sm:border-t sm:border-gray-200 sm:overflow-y-hidden"
+              }`}
+            >
+              <div className="flex items-center gap-4">
+                <span className="text-2xl font-bold text-secondaryRed">
+                  {totalDiscountPercentage}%
+                </span>
+                <span className="text-lg font-bold text-darkGray line-through">
+                  {totalOriginalPrice.toLocaleString()}원
+                </span>
+              </div>
               <span className="text-2xl font-bold">
-                {getTotalPrice().toLocaleString()}원
+                {totalDiscountedPrice.toLocaleString()}원
               </span>
             </div>
           )}

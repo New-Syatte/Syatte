@@ -25,7 +25,10 @@ export default function Card({
   linkTo,
   titleSize = "xl",
 }: EachProductProps) {
-  const { productName: title, discount, price, mainImage } = product;
+  console.log(product);
+  const { productName: title, options, mainImage } = product;
+  const price = options[0].sizes[0].price;
+  const discount = options[0].sizes[0].discount;
 
   const discountedPrice = price - price * (discount / 100);
 
@@ -75,19 +78,6 @@ export default function Card({
           {discountedPrice.toLocaleString()}원
         </span>
       </div>
-      {/* 나중에 장바구니 이벤트처리로 따로 빼기 */}
-      <article className="flex gap-2 mt-[10px]">
-        <Image
-          src="/download.svg"
-          alt="toCart"
-          width={15}
-          height={15}
-          style={{ width: "15px", height: "auto" }}
-        />
-        <p className="text-center text-neutral-400 text-base font-normal">
-          카트 담기
-        </p>
-      </article>
     </Link>
   );
 }
