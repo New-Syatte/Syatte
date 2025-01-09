@@ -131,7 +131,7 @@ export default function CartClient() {
 
   return (
     <section className="w-[80%] sm:w-full h-auto mx-auto sm:my-0 my-24 min-h-[80vh] font-kor">
-      <div className="w-full flex flex-col items-start justify-start py-16 pt-24">
+      <div className="w-full flex flex-col items-start justify-start pb-16 sm:pt-24">
         <Heading
           title={"장바구니"}
           center={isMobile}

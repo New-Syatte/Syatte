@@ -65,9 +65,11 @@ export default function Footer() {
             주소 기입 고객센터 : 고객센터 기입
           </div>
           <div className="flex gap-6 font-bold sm:flex-col sm:gap-2 sm:mt-[30px]">
-            {personalData.map(data => (
+            {personalData.map((data, index) => (
               <>
-                <div className="cursor-pointer">{data}</div>
+                <div key={index} className="cursor-pointer">
+                  {data}
+                </div>
               </>
             ))}
           </div>
