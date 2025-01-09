@@ -1,7 +1,6 @@
 import { combineReducers, configureStore } from "@reduxjs/toolkit";
 import cartReducer from "./slice/cartSlice";
 import checkoutReducer from "./slice/checkoutSlice";
-import orderReducer from "./slice/orderSlice";
 import periodReducer from "./slice/periodSlice";
 import searchReducer from "./slice/searchSlice";
 import sliderSlice from "./slice/sliderSlice";
@@ -11,7 +10,6 @@ import productOptionsReducer from "./slice/productOptionsSlice";
 const rootReducer = combineReducers({
   cart: cartReducer,
   checkout: checkoutReducer,
-  orders: orderReducer,
   period: periodReducer,
   search: searchReducer,
   slider: sliderSlice,

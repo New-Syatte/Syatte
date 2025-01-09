@@ -11,21 +11,11 @@ import Link from "next/link";
 
 interface OrderProductProps {
   order: Order;
-  onTrackDelivery?: (order: Order) => void;
-  disabled: boolean;
 }
 
-export default function OrderProduct({
-  order,
-  onTrackDelivery,
-  disabled,
-}: OrderProductProps) {
+export default function OrderProduct({ order }: OrderProductProps) {
   const { orderDate, cartItems, orderAmount, shippingInfo, createdAt } = order;
   const pathname = usePathname();
-
-  const handleTrackDelivery = () => {
-    onTrackDelivery && onTrackDelivery(order);
-  };
 
   return (
     <div className="w-full border border-lightGray rounded-md p-6 sm:p-4">
@@ -52,15 +42,6 @@ export default function OrderProduct({
         </div>
         <div className="flex gap-4 items-center">
           <OrderStatus order={order} className="text-lg sm:text-base" />
-          {shippingInfo?.trackingNumber && (
-            <button
-              onClick={handleTrackDelivery}
-              className="text-lg sm:text-base text-darkGray hover:text-black disabled:opacity-50"
-              disabled={disabled}
-            >
-              {disabled ? "배송 조회중..." : "배송 조회"}
-            </button>
-          )}
         </div>
       </Link>
       <div className="flex flex-col gap-4 py-4">

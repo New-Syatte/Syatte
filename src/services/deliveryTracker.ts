@@ -7,8 +7,23 @@ const CLIENT_SECRET = process.env.DELIVERY_CLIENT_SECRET;
 
 const getAuthHeader = () => {
   if (!CLIENT_ID || !CLIENT_SECRET) {
+    console.error("Missing credentials:", {
+      hasClientId: !!CLIENT_ID,
+      hasClientSecret: !!CLIENT_SECRET,
+    });
     throw new Error("Delivery tracker credentials are not configured");
   }
+
+  // API 키 형식 검증 추가
+  if (
+    !CLIENT_ID.match(/^[A-Za-z0-9]+$/) ||
+    !CLIENT_SECRET.match(/^[A-Za-z0-9]+$/)
+  ) {
+    throw new Error("Invalid credential format");
+  }
+
+  console.log("Auth Header:", `TRACKQL-API-KEY ${CLIENT_ID}:${CLIENT_SECRET}`);
+
   return `TRACKQL-API-KEY ${CLIENT_ID}:${CLIENT_SECRET}`;
 };
 
@@ -84,7 +99,7 @@ export async function trackDelivery(
               }
               time
             }
-            events {
+            events(last: 10) {
               edges {
                 node {
                   status {
@@ -107,15 +122,29 @@ export async function trackDelivery(
     const result = await response.json();
 
     if (result.errors) {
+      console.error("API Error Details:", result.errors);
       throw new Error(result.errors[0]?.message || "Tracking query failed");
     }
 
-    // 배송 추적 성공 시 webhook 등록
-    await registerWebhook(carrierId, trackingNumber);
+    // 2. Webhook 등록 실패를 별도로 처리
+    try {
+      if (process.env.NODE_ENV === "development") {
+        console.log("no resgister webhook");
+      } else {
+        await registerWebhook(carrierId, trackingNumber);
+      }
+    } catch (webhookError) {
+      console.error("Webhook registration failed:", webhookError);
+      // Webhook 등록 실패해도 배송 조회 결과는 반환
+    }
 
     return result;
   } catch (error) {
-    console.error("배송 조회 중 오류가 발생했습니다:", error);
+    console.error("Delivery tracking error details:", {
+      error,
+      message: (error as Error).message,
+      stack: (error as Error).stack,
+    });
     throw error;
   }
 }

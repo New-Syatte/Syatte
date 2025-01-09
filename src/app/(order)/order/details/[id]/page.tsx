@@ -42,7 +42,7 @@ const OrderDetails = async ({ params }: OrderDetailsProps) => {
     return (
       <>
         <div className="w-full border-b-2 border-colorBlack pb-14">
-          <OrderProduct order={order} disabled={true} />
+          <OrderProduct order={order} />
         </div>
         <div className="flex justify-between items-center w-full border-b-2 border-colorBlack pb-24 sm:pb-4 gap-x-28 sm:gap-x-0 p-7 sm:p-4 sm:text-sm">
           <h2 className="text-xl sm:text-base font-bold w-1/4 sm:w-1/3">
