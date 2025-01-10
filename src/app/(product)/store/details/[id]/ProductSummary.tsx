@@ -176,8 +176,10 @@ export default function ProductSummary({ product }: { product: Product }) {
           {/* Selected Items */}
           <div
             className={`mt-8 space-y-4 overflow-y-auto h-52 md:scrollbar-thin lg:scrollbar-thin ${
-              isFixed && tempItems.length > 0 && "sm:hidden"
-            }`}
+              isFixed &&
+              tempItems.length > 0 &&
+              "sm:fixed sm:bottom-[140px] sm:left-0 sm:w-full sm:h-32 sm:px-7 sm:py-2 sm:bg-white sm:border-t sm:border-gray-200 sm:overflow-y-hidden"
+            } ${tempItems.length > 0 ? "h-52" : "h-auto"}`}
           >
             {tempItems.map((item, index) => (
               <TempItem
