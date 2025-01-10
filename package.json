@@ -19,6 +19,7 @@
     "@tosspayments/payment-sdk": "^1.6.1",
     "@tosspayments/payment-widget-sdk": "^0.10.1",
     "@types/react-responsive": "^8.0.8",
+    "@vercel/speed-insights": "^1.1.0",
     "axios": "^1.6.7",
     "dayjs": "^1.11.10",
     "eslint": "8.41.0",
