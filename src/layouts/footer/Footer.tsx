@@ -66,11 +66,9 @@ export default function Footer() {
           </div>
           <div className="flex gap-6 font-bold sm:flex-col sm:gap-2 sm:mt-[30px]">
             {personalData.map((data, index) => (
-              <>
-                <div key={index} className="cursor-pointer">
-                  {data}
-                </div>
-              </>
+              <div key={index} className="cursor-pointer">
+                {data}
+              </div>
             ))}
           </div>
         </div>
@@ -78,7 +76,7 @@ export default function Footer() {
         {/* 중앙 메뉴 */}
         <div className="flex w-[35%] px-6 justify-between sm:w-full sm:flex-col sm:px-0 sm:mb-[50px]">
           {pagesData.map(data => (
-            <>
+            <div key={data.title}>
               <ul className="flex flex-col gap-2 sm:gap-0">
                 <li className="text-[18px] font-bold sm:mb-[12px]">
                   {data.title}
@@ -99,7 +97,7 @@ export default function Footer() {
                   </Link>
                 </li>
               </ul>
-            </>
+            </div>
           ))}
         </div>
 
