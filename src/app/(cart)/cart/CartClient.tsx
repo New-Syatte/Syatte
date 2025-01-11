@@ -80,9 +80,9 @@ export default function CartClient() {
     });
   };
 
-  const handleToggleCheck = (id: string) => {
+  const handleToggleCheck = (key: string) => {
     handleCartAction(
-      () => dispatch(ALTERNATE_CHECKED_ITEMS({ id })),
+      () => dispatch(ALTERNATE_CHECKED_ITEMS({ key })),
       "상품 선택 상태 변경에 실패했습니다.",
     );
   };

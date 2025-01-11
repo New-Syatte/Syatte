@@ -12,7 +12,7 @@ interface CartItemProps {
   cart: CartItemType;
   isMobile: boolean;
   disabled?: boolean;
-  onToggleCheck: (id: string) => void;
+  onToggleCheck: (key: string) => void;
   onIncreaseQuantity: (cart: CartItemType) => void;
   onDecreaseQuantity: (cart: CartItemType) => void;
   onDeleteItem: (cart: CartItemType) => void;

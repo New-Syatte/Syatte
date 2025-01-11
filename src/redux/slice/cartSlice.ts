@@ -149,7 +149,7 @@ const cartSlice = createSlice({
 
     ALTERNATE_CHECKED_ITEMS: (state, action) => {
       const productIndex = state.cartItems.findIndex(
-        item => item.key === action.payload.id,
+        item => item.key === action.payload.key,
       );
       state.cartItems[productIndex].isChecked =
         !state.cartItems[productIndex].isChecked;
