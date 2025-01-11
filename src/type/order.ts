@@ -1,5 +1,9 @@
 import { CartItem } from "./cart";
 
+interface OrderCartItem extends Omit<CartItem, "isChecked" | "key"> {
+  _key: string;
+}
+
 export type Order = {
   userId: string;
   userEmail: string;
@@ -9,7 +13,7 @@ export type Order = {
   orderAmount: number;
   orderCount: number;
   orderStatus: OrderStatus;
-  cartItems: CartItem[];
+  cartItems: OrderCartItem[];
   billingAddress: BillingAddress;
   shippingAddress: ShippingAddress;
   shippingInfo: ShippingInfo;
@@ -65,6 +69,7 @@ export type DeliveryTrackingResponse = {
 };
 
 export type TrackingResponseEvent = {
+  _key: string;
   node: {
     status: {
       code: string;

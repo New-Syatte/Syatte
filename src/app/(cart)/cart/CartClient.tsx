@@ -9,10 +9,7 @@ import {
   ALTERNATE_CHECKED_ITEMS,
   SELECT_ALL_ITEMS,
   UNCHECK_ALL_ITEMS,
-  CALCULATE_SUBTOTAL,
-  CALCULATE_CHECKED_ITEMS_SUBTOTAL,
   selectCartItems,
-  selectCheckedCartItems,
   selectAllChecked,
 } from "@/redux/slice/cartSlice";
 import { useEffect, useState, useTransition, Suspense } from "react";
@@ -53,7 +50,6 @@ const LoadingFallback = () => (
 
 export default function CartClient() {
   const cartItems = useSelector(selectCartItems);
-  const checkedItems = useSelector(selectCheckedCartItems);
   const isAllChecked = useSelector(selectAllChecked);
   const [isDisabled, setIsDisabled] = useState(false);
   const [mounted, setMounted] = useState(false);
@@ -66,13 +62,6 @@ export default function CartClient() {
   useEffect(() => {
     setMounted(true);
   }, []);
-
-  useEffect(() => {
-    startTransition(() => {
-      dispatch(CALCULATE_SUBTOTAL());
-      dispatch(CALCULATE_CHECKED_ITEMS_SUBTOTAL());
-    });
-  }, [dispatch, cartItems]);
 
   useEffect(() => {
     setIsDisabled(
@@ -91,9 +80,9 @@ export default function CartClient() {
     });
   };
 
-  const handleToggleCheck = (id: string) => {
+  const handleToggleCheck = (key: string) => {
     handleCartAction(
-      () => dispatch(ALTERNATE_CHECKED_ITEMS({ id })),
+      () => dispatch(ALTERNATE_CHECKED_ITEMS({ key })),
       "상품 선택 상태 변경에 실패했습니다.",
     );
   };
@@ -142,7 +131,7 @@ export default function CartClient() {
 
   return (
     <section className="w-[80%] sm:w-full h-auto mx-auto sm:my-0 my-24 min-h-[80vh] font-kor">
-      <div className="w-full flex flex-col items-start justify-start py-16 pt-24">
+      <div className="w-full flex flex-col items-start justify-start pb-16 sm:pt-24">
         <Heading
           title={"장바구니"}
           center={isMobile}

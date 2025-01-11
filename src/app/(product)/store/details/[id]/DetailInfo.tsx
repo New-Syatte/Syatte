@@ -16,9 +16,19 @@ const DetailInfo = ({ detailImage }: DetailInfoProps) => {
       <Image
         src={detailImage}
         alt="details"
+        width={980}
+        height={15969}
         sizes="100vw"
-        style={{ width: "100%", height: "auto" }}
+        style={{
+          width: "auto",
+          height: "auto",
+          maxWidth: "980px",
+          aspectRatio: "auto",
+        }}
+        quality={100}
+        priority
       />
+      {/* <img src={detailImage} alt="detailImage" /> */}
     </article>
   );
 };

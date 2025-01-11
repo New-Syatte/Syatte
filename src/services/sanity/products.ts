@@ -1,8 +1,9 @@
-import { client } from "@/services/sanity/sanity";
+import { client, urlForDetailImage } from "@/services/sanity/sanity";
+import { Product } from "@/type/products";
 
 export function getProducts() {
   try {
-    const products = client.fetch(
+    const products: Promise<Product[]> = client.fetch(
       '*[_type == "product"] {..., mainImage {"imageUrl": asset->url}}',
     );
     return products;
@@ -11,40 +12,35 @@ export function getProducts() {
   }
 }
 
-export function getDetailProduct(id: string) {
+export async function getDetailProduct(id: string) {
   try {
-    const product = client.fetch(
-      `*[_type == "product" && _id == $id][0] {
+    const product = client
+      .fetch(
+        `*[_type == "product" && _id == $id][0] {
         _id,
         productName,
-        category,
-        price,
-        detailCategory,
+        mainCategory,
+        subCategory,
         "images": images[] { 
           "imageUrl": asset->url
         },
+        "detailImage": detailImage.asset,
         description,
-        discount,
-        "detailImage": detailImage.asset->url,
+        options,
+        tags,
+        isNewProduct,
+        isBestSeller,
       }`,
-      { id },
-    );
+        { id },
+      )
+      .then(product => {
+        return {
+          ...product,
+          detailImage: urlForDetailImage(product.detailImage),
+        };
+      });
     return product;
   } catch (error: any) {
     console.error(`상세 제품 불러오기 실패: ${error.message}`);
-  }
-}
-
-export function getProductsByCategory(
-  category: string,
-  isDetail: boolean = false,
-) {
-  try {
-    let param = isDetail ? "detailCategory" : "category";
-    const query = `*[_type == "product" && ${param} == $category] {_id, productName, category, price, mainImage {"imageUrl": asset->url}, detailCategory}`;
-    const products = client.fetch(query, { category });
-    return products;
-  } catch (error: any) {
-    console.error(`카테고리별 제품 불러오기 실패: ${error.message}`);
   }
 }

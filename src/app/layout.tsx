@@ -3,6 +3,7 @@ import { EB_Garamond, Crimson_Pro, Noto_Sans_KR } from "next/font/google";
 import Footer from "@/layouts/footer/Footer";
 import Providers from "./Providers";
 import Header from "@/layouts/header/Header";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 
 export const garamond = EB_Garamond({
   subsets: ["latin"],
@@ -50,6 +51,7 @@ export default async function RootLayout({ children }: RootLayoutProps) {
           <Footer />
         </Providers>
         <div id={"portal"} />
+        <SpeedInsights />
       </body>
     </html>
   );

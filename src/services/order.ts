@@ -9,7 +9,7 @@ interface OrderInput {
   userId: string;
   userEmail: string;
   displayName: string;
-  cartItems: CartItem[];
+  cartItems: Omit<CartItem, "isChecked">[];
   shippingAddress: {
     name: string;
     phone: string;
@@ -26,7 +26,6 @@ interface OrderInput {
 
 export async function createOrderFromPayment(input: OrderInput) {
   try {
-    console.log("Checking for existing order:", input.orderId);
     // 1. 기존 주문 확인 (읽기 작업은 client 사용)
     const existingOrder = await client.fetch(
       `*[_type == "order" && _id == $orderId][0]`,
@@ -35,17 +34,10 @@ export async function createOrderFromPayment(input: OrderInput) {
 
     // 이미 주문이 존재하면 해당 주문 반환
     if (existingOrder) {
-      console.log("Found existing order:", existingOrder);
       return existingOrder;
     }
 
     const now = new Date();
-    console.log("Creating new order with data:", {
-      orderId: input.orderId,
-      userId: input.userId,
-      cartItemsCount: input.cartItems.length,
-      totalAmount: input.payment.totalAmount,
-    });
 
     // 2. 새 주문 생성 (쓰기 작업은 writeClient 사용)
     const order = await writeClient.create({
@@ -57,18 +49,23 @@ export async function createOrderFromPayment(input: OrderInput) {
       orderDate: formatTime(now.toISOString()).split(" ")[0], // YYYY-MM-DD
       createdAt: formatTime(now.toISOString()), // YYYY-MM-DD HH:mm:ss
       orderAmount: input.payment.totalAmount,
-      orderCount: input.cartItems.reduce(
-        (sum, item) => sum + item.cartQuantity,
-        0,
-      ),
+      orderCount: input.cartItems.reduce((sum, item) => sum + item.quantity, 0),
       orderStatus: "payed",
       cartItems: input.cartItems.map(item => ({
-        _key: item.id,
-        id: item.id,
+        _key: item.key,
         imageURL: item.imageURL,
         name: item.name,
         price: item.price,
-        cartQuantity: item.cartQuantity,
+        color: item.color,
+        size: item.size,
+        colorCode: item.colorCode,
+        productId: item.productId,
+        discount: item.discount,
+        quantity: item.quantity,
+        product: {
+          _type: "product",
+          _ref: item.productId,
+        },
       })),
       shippingAddress: {
         ...input.shippingAddress,
@@ -84,7 +81,6 @@ export async function createOrderFromPayment(input: OrderInput) {
       },
     });
 
-    console.log("Order created successfully:", order);
     return order;
   } catch (error: any) {
     // Sanity 에러 처리
@@ -97,13 +93,12 @@ export async function createOrderFromPayment(input: OrderInput) {
 
     if (error.statusCode === 409) {
       // 동시성 문제로 인한 중복 생성 시도
-      console.log("Handling concurrent creation, checking for existing order");
+
       const existingOrder = await client.fetch(
         `*[_type == "order" && _id == $orderId][0]`,
         { orderId: input.orderId },
       );
       if (existingOrder) {
-        console.log("Found existing order after conflict:", existingOrder);
         return existingOrder;
       }
     }

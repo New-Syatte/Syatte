@@ -1,25 +1,15 @@
 import { categorys } from "@/constants/categorys";
-import ProductsByCategory from "./ProductsByCategory";
-import { getProducts } from "@/services/sanity/products";
 import BrandSlider from "./BrandsSlider";
-import Heading from "@/components/heading/Heading";
 import ProductBanner from "./ProductBanner";
 import CategoryToSearchLink from "./CategoryToSearchLink";
-import Loader from "@/components/loader/Loader";
 import URLS from "@/constants/urls";
+import { getProducts } from "@/services/sanity/products";
+import { Product } from "@/type/products";
+import ProductCards from "./ProductCards";
 
-export default async function Products({}) {
-  const products = await getProducts();
+export default async function Products() {
   const categoryValues = categorys.map(category => category.value);
-
-  if (!products) return <Loader />;
-  if (products.length === 0)
-    return (
-      <div className="flex justify-center items-center text-lg w-[300px] bg-bgGray">
-        제품이 없습니다!
-      </div>
-    );
-
+  const products = await getProducts();
   return (
     <main className="w-full mt-8 sm:mt-0 mx-auto mb-[200px] flex flex-col justify-around items-center overflow-x-hidden">
       <header className="w-full h-52 sm:mt-16 sm:mb-12 mb-[70px] flex justify-center items-center gap-44 relative">
@@ -54,10 +44,11 @@ export default async function Products({}) {
                   {"상품 더보기 >"}
                 </CategoryToSearchLink>
               </div>
-              <ProductsByCategory
+              <ProductCards
                 key={category}
-                products={products}
-                category={category}
+                products={products.filter(
+                  (product: Product) => product.mainCategory === category,
+                )}
               />
               {index === 0 && <ProductBanner />}
             </div>

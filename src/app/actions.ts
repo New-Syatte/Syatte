@@ -1,16 +1,13 @@
 "use server";
 
 import { cookies } from "next/headers";
-import { trackDelivery } from "@/services/deliveryTracker";
 import { redirect } from "next/navigation";
 import URLS from "@/constants/urls";
 import { revalidatePath } from "next/cache";
 import {
   HandleCheckoutErrorAction,
-  TrackDeliveryAction,
   SetCheckoutDataAction,
   DeleteCheckoutDataAction,
-  ServerActionResult,
   CheckoutData,
 } from "@/type/action";
 
@@ -23,27 +20,6 @@ export const handleCheckoutError: HandleCheckoutErrorAction = async (
       message,
     )}&orderId=${orderId}`,
   );
-};
-
-export const serverTrackDelivery: TrackDeliveryAction = async (
-  carrierId,
-  trackingNumber,
-) => {
-  "use server";
-
-  try {
-    const deliveryData = await trackDelivery(carrierId, trackingNumber);
-
-    if (deliveryData.errors) {
-      throw new Error(deliveryData.errors[0].message);
-    }
-
-    revalidatePath("/order/history");
-    return deliveryData;
-  } catch (error: any) {
-    console.error("배송 조회 중 오류가 발생했습니다:", error);
-    throw new Error("배송 조회 중 오류가 발생했습니다.");
-  }
 };
 
 export const setCheckoutData: SetCheckoutDataAction = async data => {

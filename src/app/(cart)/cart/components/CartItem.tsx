@@ -6,12 +6,13 @@ import { HiMinus, HiPlus } from "react-icons/hi2";
 import { RxCross2 } from "react-icons/rx";
 import priceFormat from "@/utils/priceFormat";
 import { memo, useCallback } from "react";
+import { getDiscountPrice } from "@/utils/getDiscount";
 
 interface CartItemProps {
   cart: CartItemType;
   isMobile: boolean;
   disabled?: boolean;
-  onToggleCheck: (id: string) => void;
+  onToggleCheck: (key: string) => void;
   onIncreaseQuantity: (cart: CartItemType) => void;
   onDecreaseQuantity: (cart: CartItemType) => void;
   onDeleteItem: (cart: CartItemType) => void;
@@ -100,14 +101,25 @@ function CartItem({
   onDecreaseQuantity,
   onDeleteItem,
 }: CartItemProps) {
-  const { id, name, imageURL, price, discount, cartQuantity, isChecked } = cart;
-  const discountedPrice = price - price * (discount / 100);
+  const {
+    name,
+    imageURL,
+    price,
+    discount,
+    quantity,
+    isChecked,
+    color,
+    colorCode,
+    size,
+    key,
+  } = cart;
+  const discountedPrice = getDiscountPrice(price, discount);
 
   const handleToggleCheck = useCallback(() => {
     if (!disabled) {
-      onToggleCheck(id);
+      onToggleCheck(key);
     }
-  }, [disabled, id, onToggleCheck]);
+  }, [disabled, key, onToggleCheck]);
 
   const handleIncreaseQuantity = useCallback(() => {
     if (!disabled) {
@@ -129,7 +141,7 @@ function CartItem({
 
   if (isMobile) {
     return (
-      <div key={id} className="my-7">
+      <div key={key} className="my-7">
         <div className="flex justify-start items-center gap-8">
           <input
             type="checkbox"
@@ -141,12 +153,17 @@ function CartItem({
           <ProductImage imageURL={imageURL} name={name} isMobile={true} />
           <div className="w-1/3 h-[77px]">
             <p className="text-sm text-nomal w-full">{name}</p>
+            <div className="flex items-center gap-2">
+              <p className="w-4 h-4" style={{ backgroundColor: colorCode }}></p>
+              <p className="text-sm text-nomal w-full">{color}</p>
+            </div>
+            <p className="text-sm text-nomal w-full">{size}</p>
           </div>
         </div>
         <div className="flex h-5 justify-between items-center mt-5">
           <div className="flex w-[77px] justify-between items-center gap-4 ml-12">
             <QuantityControl
-              quantity={cartQuantity}
+              quantity={quantity}
               onIncrease={handleIncreaseQuantity}
               onDecrease={handleDecreaseQuantity}
               disabled={disabled}
@@ -154,7 +171,7 @@ function CartItem({
             />
           </div>
           <p className="text-lg font-bold text-right">
-            {priceFormat(discountedPrice * cartQuantity)} 원
+            {priceFormat(discountedPrice * quantity)} 원
           </p>
           <div>
             <button
@@ -172,7 +189,7 @@ function CartItem({
   }
 
   return (
-    <div className="flex justify-between items-center px-3 py-3" key={id}>
+    <div className="flex justify-between items-center px-3 py-3" key={key}>
       <input
         type="checkbox"
         checked={isChecked}
@@ -183,16 +200,21 @@ function CartItem({
       <ProductImage imageURL={imageURL} name={name} isMobile={false} />
       <div className="w-1/3">
         <p className="text-lg text-nomal w-full">{name}</p>
+        <div className="flex gap-2 items-center">
+          <p className="w-4 h-4" style={{ backgroundColor: colorCode }}></p>
+          <p className="text-sm text-nomal w-full">{color}</p>
+        </div>
+        <p className="text-sm text-nomal w-full">{size}</p>
       </div>
       <QuantityControl
-        quantity={cartQuantity}
+        quantity={quantity}
         onIncrease={handleIncreaseQuantity}
         onDecrease={handleDecreaseQuantity}
         disabled={disabled}
         isMobile={false}
       />
       <p className="text-[22px] font-bold w-1/5 text-right">
-        {priceFormat(discountedPrice * cartQuantity)} 원
+        {priceFormat(discountedPrice * quantity)} 원
       </p>
       <div>
         <button

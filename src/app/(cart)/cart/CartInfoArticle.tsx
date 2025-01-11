@@ -1,18 +1,26 @@
 "use client";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import {
   selectCartItems,
   selectCheckedTotalAmount,
+  CALCULATE_CHECKED_ITEMS_SUBTOTAL,
 } from "@/redux/slice/cartSlice";
 import deliveryFee from "@/constants/deliveryFee";
 import priceFormat from "@/utils/priceFormat";
+import { useEffect } from "react";
 
 const CartInfoArticle = () => {
   const cartItems = useSelector(selectCartItems);
   const checkedTotalAmount = useSelector(selectCheckedTotalAmount);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(CALCULATE_CHECKED_ITEMS_SUBTOTAL());
+  }, [cartItems]);
+
   const checkedItemsQuantity = cartItems
     .filter(item => item.isChecked)
-    .reduce((total, item) => total + item.cartQuantity, 0);
+    .reduce((total, item) => total + item.quantity, 0);
 
   return (
     <div className="flex flex-col justify-between border border-lightGray h-[200px] w-full p-4 rounded-md">

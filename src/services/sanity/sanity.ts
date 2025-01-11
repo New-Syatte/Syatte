@@ -22,10 +22,7 @@ export const writeClient = createClient({
 
 const builder = imageUrlBuilder(client);
 
-export function urlFor(source: SanityImageSource) {
-  return builder.image(source).width(800).url();
-}
-
-export function urlForImage(source: SanityImageSource, width: number) {
-  return builder.image(source).width(width).url();
+export function urlForDetailImage(source: SanityImageSource) {
+  if (!source) return null;
+  return builder.image(source).format("webp").quality(100).url();
 }

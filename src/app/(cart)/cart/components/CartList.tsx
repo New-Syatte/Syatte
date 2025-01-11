@@ -18,7 +18,7 @@ interface CartListProps {
   cartItems: CartItemType[];
   isMobile: boolean;
   disabled?: boolean;
-  onToggleCheck: (id: string) => void;
+  onToggleCheck: (key: string) => void;
   onIncreaseQuantity: (cart: CartItemType) => void;
   onDecreaseQuantity: (cart: CartItemType) => void;
   onDeleteItem: (cart: CartItemType) => void;
@@ -64,7 +64,7 @@ function CartList({
     <div className="space-y-4">
       {cartItems.map(cart => (
         <CartItem
-          key={cart.id}
+          key={cart.key}
           cart={cart}
           isMobile={isMobile}
           disabled={disabled}

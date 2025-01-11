@@ -3,7 +3,7 @@ import { DeliveryTrackingResponse } from "./order";
 
 // 체크아웃 데이터 타입
 export interface CheckoutData {
-  cartItems: CartItem[];
+  cartItems: Omit<CartItem, "isChecked">[];
   shippingAddress: {
     name: string;
     phone: string;

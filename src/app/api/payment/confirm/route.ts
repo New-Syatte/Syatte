@@ -47,7 +47,6 @@ export async function GET(req: NextRequest) {
     const checkoutData = JSON.parse(checkoutDataCookie.value);
 
     // 결제 승인 요청
-    console.log("Requesting payment confirmation...");
     const payment = await confirmPayment(paymentKey, orderId, amount);
 
     if (!payment) {
@@ -61,18 +60,8 @@ export async function GET(req: NextRequest) {
       );
     }
 
-    console.log("Payment confirmed:", payment);
-
     // 주문 생성
     try {
-      console.log("Creating order with data:", {
-        orderId,
-        userId,
-        userEmail,
-        displayName: decodedUserName,
-        cartItemsCount: checkoutData.cartItems?.length,
-      });
-
       const order = await createOrderFromPayment({
         payment,
         orderId,
@@ -87,8 +76,6 @@ export async function GET(req: NextRequest) {
       if (!order) {
         throw new Error("주문 생성 결과가 없습니다");
       }
-
-      console.log("Order created:", order);
 
       // 체크아웃 데이터 쿠키 삭제
       cookieStore.delete("checkoutData");

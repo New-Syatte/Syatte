@@ -14,15 +14,16 @@ module.exports = {
         colorWhite: "#fff",
         colorBlack: "#222",
         colorRed: "#ff0000",
+        secondaryRed: "#ff5353",
       },
       keyframes: {
         slide: {
-          '100%': { transform: 'translateX(100%)' },
-          '0%': { transform: 'translateX(-100%)' },
+          "100%": { transform: "translateX(100%)" },
+          "0%": { transform: "translateX(-100%)" },
         },
       },
       animation: {
-        slide: 'slide 3s linear infinite',
+        slide: "slide 3s linear infinite",
       },
       height: {
         headerHeight: "80px",
@@ -53,7 +54,5 @@ module.exports = {
       },
     },
   },
-  variants: {
-    extend: {},
-  },
+  plugins: [require("tailwind-scrollbar-hide")],
 };
