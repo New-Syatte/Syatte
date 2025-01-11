@@ -19,8 +19,8 @@ const SearchClient = () => {
       const results = data.filter(
         (product: Product) =>
           product.productName.includes(searchQuery) ||
-          product.category.includes(searchQuery) ||
-          product.detailCategory.includes(searchQuery),
+          product.mainCategory.includes(searchQuery) ||
+          product.subCategory.includes(searchQuery),
       );
       setMatchingResults(results);
     }

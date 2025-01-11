@@ -10,13 +10,17 @@ const mockDeleteItem = jest.fn();
 
 // 테스트에서 사용할 샘플 장바구니 아이템 데이터
 const mockCartItem: CartItemType = {
-  id: "test-id",
+  productId: "test-id",
   name: "테스트 상품",
   price: 10000,
   discount: 10,
-  cartQuantity: 1,
+  quantity: 1,
   imageURL: "/test-image.jpg",
   isChecked: false,
+  color: "red",
+  colorCode: "red",
+  size: "M",
+  key: "test-key",
 };
 
 // 이미지 컴포넌트 모의(mock)
@@ -107,7 +111,7 @@ describe("CartItem 컴포넌트", () => {
   });
 
   // disabled 상태 테스트
-  it("disabled 상태일 때 모든 상호작용�� 비활성화되어야 함", () => {
+  it("disabled 상태일 때 모든 상호작용 비활성화되어야 함", () => {
     render(
       <CartItem
         cart={mockCartItem}

@@ -49,11 +49,11 @@ export function useOrderTracking(order: Order) {
 
     try {
       const events: TrackingResponseEvent[] =
-        data?.data?.track?.events?.edges.map(event => ({
+        data?.data?.track?.events?.edges.map((event, index) => ({
           node: {
             ...event.node,
           },
-          _key: crypto.randomUUID(),
+          _key: `${Date.now()}-${index}`,
         })) || [];
 
       const response = await fetch("/api/orders/update-status", {
@@ -62,7 +62,7 @@ export function useOrderTracking(order: Order) {
         body: JSON.stringify({
           orderId: order._id,
           status: orderStatus, // 매핑된 상태값 사용
-          events: data?.data?.track?.events?.edges,
+          events: events,
         }),
       });
 
