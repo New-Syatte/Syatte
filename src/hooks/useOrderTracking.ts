@@ -1,7 +1,7 @@
 // src/hooks/useOrderTracking.ts
 import useSWR from "swr";
 import { Order } from "@/type/order";
-import { DeliveryTrackingResponse } from "@/type/order";
+import { DeliveryTrackingResponse, TrackingResponseEvent } from "@/type/order";
 import { DELIVERY_STATUS } from "@/constants/deliveryStatus";
 
 export function useOrderTracking(order: Order) {
@@ -42,13 +42,20 @@ export function useOrderTracking(order: Order) {
     const orderStatus =
       DELIVERY_STATUS[trackingStatus as keyof typeof DELIVERY_STATUS] ||
       "unknown";
-    console.log("orderStatus", orderStatus);
     // 현재 상태와 새로운 상태가 같으면 업데이트하지 않음
     if (order.orderStatus === orderStatus) {
       return;
     }
 
     try {
+      const events: TrackingResponseEvent[] =
+        data?.data?.track?.events?.edges.map(event => ({
+          node: {
+            ...event.node,
+          },
+          _key: crypto.randomUUID(),
+        })) || [];
+
       const response = await fetch("/api/orders/update-status", {
         method: "POST",
         headers: { "Content-Type": "application/json" },

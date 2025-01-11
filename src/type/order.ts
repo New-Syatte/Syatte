@@ -69,6 +69,7 @@ export type DeliveryTrackingResponse = {
 };
 
 export type TrackingResponseEvent = {
+  _key: string;
   node: {
     status: {
       code: string;
