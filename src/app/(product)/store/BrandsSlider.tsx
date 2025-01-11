@@ -3,7 +3,6 @@
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import SyattLogo from "@/assets/SYATT.svg";
 import ModernMastersLogo from "@/assets/product/modern-masters-logo-inverted.png";
 import MidasMetalLogo from "@/assets/product/midas-metal-logo-inverted.png";
 import MetalEffectLogo from "@/assets/product/metal-effect-logo.png";

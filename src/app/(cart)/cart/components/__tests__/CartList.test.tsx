@@ -11,22 +11,30 @@ const mockDeleteItem = jest.fn();
 // 테스트용 장바구니 아이템 데이터 배열
 const mockCartItems: CartItem[] = [
   {
-    id: "1",
+    productId: "1",
     name: "상품 1",
     price: 10000,
     discount: 10,
-    cartQuantity: 1,
+    quantity: 1,
     imageURL: "/test-image-1.jpg",
     isChecked: false,
+    color: "red",
+    colorCode: "red",
+    size: "M",
+    key: "test-key",
   },
   {
-    id: "2",
+    productId: "2",
     name: "상품 2",
     price: 20000,
     discount: 20,
-    cartQuantity: 2,
+    quantity: 2,
     imageURL: "/test-image-2.jpg",
     isChecked: true,
+    color: "blue",
+    colorCode: "blue",
+    size: "L",
+    key: "test-key-2",
   },
 ];
 
@@ -35,7 +43,7 @@ jest.mock("next/dynamic", () => ({
   __esModule: true,
   default: () => {
     const MockCartItem = ({ cart }: { cart: CartItem }) => (
-      <div data-testid={`cart-item-${cart.id}`}>{cart.name}</div>
+      <div data-testid={`cart-item-${cart.key}`}>{cart.name}</div>
     );
     return Promise.resolve(MockCartItem);
   },
@@ -84,7 +92,7 @@ describe("CartList 컴포넌트", () => {
     );
 
     mockCartItems.forEach(item => {
-      const cartItem = screen.getByTestId(`cart-item-${item.id}`);
+      const cartItem = screen.getByTestId(`cart-item-${item.key}`);
       expect(cartItem).toBeInTheDocument();
       expect(screen.getByText(item.name)).toBeInTheDocument();
     });
@@ -105,7 +113,7 @@ describe("CartList 컴포넌트", () => {
     );
 
     mockCartItems.forEach(item => {
-      expect(screen.getByTestId(`cart-item-${item.id}`)).toBeInTheDocument();
+      expect(screen.getByTestId(`cart-item-${item.key}`)).toBeInTheDocument();
     });
   });
 
@@ -123,7 +131,7 @@ describe("CartList 컴포넌트", () => {
     );
 
     mockCartItems.forEach(item => {
-      expect(screen.getByTestId(`cart-item-${item.id}`)).toBeInTheDocument();
+      expect(screen.getByTestId(`cart-item-${item.key}`)).toBeInTheDocument();
     });
   });
 });
