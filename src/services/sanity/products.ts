@@ -1,9 +1,8 @@
 import { client, urlForDetailImage } from "@/services/sanity/sanity";
-import { Product } from "@/type/products";
 
 export function getProducts() {
   try {
-    const products: Promise<Product[]> = client.fetch(
+    const products = client.fetch(
       '*[_type == "product"] {..., mainImage {"imageUrl": asset->url}}',
     );
     return products;
@@ -12,7 +11,7 @@ export function getProducts() {
   }
 }
 
-export async function getDetailProduct(id: string) {
+export function getDetailProduct(id: string) {
   try {
     const product = client
       .fetch(
