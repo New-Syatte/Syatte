@@ -1,4 +1,4 @@
-import { client } from "@/services/sanity/sanity";
+import { client } from "@/services/sanity";
 
 export async function getEdu() {
   return await client.fetch('*[_type == "education"]');

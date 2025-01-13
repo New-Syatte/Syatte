@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { updateOrderStatus } from "@/services/sanity/orders";
-import { client } from "@/services/sanity/sanity";
+import { client } from "@/services/sanity";
 
 export async function POST(req: NextRequest) {
   try {

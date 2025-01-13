@@ -1,4 +1,4 @@
-import { client, urlForDetailImage } from "@/services/sanity/sanity";
+import { client, urlForDetailImage } from "@/services/sanity";
 
 export function getProducts() {
   try {

@@ -1,4 +1,4 @@
-import { writeClient } from "@/services/sanity/sanity";
+import { writeClient } from "@/services/sanity";
 
 type OAuthUser = {
   id: string;
