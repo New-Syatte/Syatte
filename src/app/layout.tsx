@@ -4,6 +4,7 @@ import Footer from "@/layouts/footer/Footer";
 import Providers from "./Providers";
 import Header from "@/layouts/header/Header";
 import { SpeedInsights } from "@vercel/speed-insights/next";
+import { Analytics } from "@vercel/analytics/react";
 
 export const garamond = EB_Garamond({
   subsets: ["latin"],
@@ -52,6 +53,7 @@ export default async function RootLayout({ children }: RootLayoutProps) {
         </Providers>
         <div id={"portal"} />
         <SpeedInsights />
+        <Analytics />
       </body>
     </html>
   );
