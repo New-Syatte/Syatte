@@ -1,28 +1,21 @@
 import { client, writeClient } from "@/services/sanity/sanity";
-import { CartItem } from "@/type/cart";
 import { PaymentResponse } from "@/type/tossPayments";
 import { formatTime } from "@/utils/formatTime";
+import { Order } from "@/type/order";
 
-interface OrderInput {
+export type OrderInput = Omit<
+  Order,
+  | "_id"
+  | "orderDate"
+  | "createdAt"
+  | "orderStatus"
+  | "orderCount"
+  | "shippingInfo"
+  | "orderAmount"
+> & {
   payment: PaymentResponse;
   orderId: string;
-  userId: string;
-  userEmail: string;
-  displayName: string;
-  cartItems: Omit<CartItem, "isChecked">[];
-  shippingAddress: {
-    name: string;
-    phone: string;
-    line?: string;
-    city?: string;
-    postalCode?: string;
-    memo?: string;
-  };
-  billingAddress: {
-    name: string;
-    phone: string;
-  };
-}
+};
 
 export async function createOrderFromPayment(input: OrderInput) {
   try {
@@ -52,7 +45,7 @@ export async function createOrderFromPayment(input: OrderInput) {
       orderCount: input.cartItems.reduce((sum, item) => sum + item.quantity, 0),
       orderStatus: "payed",
       cartItems: input.cartItems.map(item => ({
-        _key: item.key,
+        _key: item._key,
         imageURL: item.imageURL,
         name: item.name,
         price: item.price,

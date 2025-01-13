@@ -1,10 +1,12 @@
-import { CartItem } from "./cart";
+import { BaseCartItem, CheckoutCartItem } from "./cart";
 
-interface OrderCartItem extends Omit<CartItem, "isChecked" | "key"> {
+// Sanity DB에 저장되는 주문 아이템
+export interface OrderCartItem extends BaseCartItem {
   _key: string;
 }
 
-export type Order = {
+export interface Order {
+  _id: string;
   userId: string;
   userEmail: string;
   displayName: string;
@@ -17,8 +19,7 @@ export type Order = {
   billingAddress: BillingAddress;
   shippingAddress: ShippingAddress;
   shippingInfo: ShippingInfo;
-  _id: string;
-};
+}
 
 export type BillingAddress = {
   name: string;
@@ -97,3 +98,14 @@ export interface DeliveryError {
   type: DeliveryErrorType;
   message: string;
 }
+
+export type OrderInput = {
+  payment: PaymentResponse;
+  orderId: string;
+  userId: string;
+  userEmail: string;
+  displayName: string;
+  cartItems: CheckoutCartItem[];
+  shippingAddress: ShippingAddress;
+  billingAddress: BillingAddress;
+};
