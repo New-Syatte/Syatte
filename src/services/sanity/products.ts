@@ -4,6 +4,13 @@ export function getProducts() {
   try {
     const products = client.fetch(
       '*[_type == "product"] {..., mainImage {"imageUrl": asset->url}}',
+      {},
+      {
+        cache: "force-cache",
+        next: {
+          revalidate: 3600,
+        },
+      },
     );
     return products;
   } catch (error: any) {
@@ -31,6 +38,12 @@ export function getDetailProduct(id: string) {
         isBestSeller,
       }`,
         { id },
+        {
+          cache: "force-cache",
+          next: {
+            revalidate: 3600,
+          },
+        },
       )
       .then(product => {
         return {
