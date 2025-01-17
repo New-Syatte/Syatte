@@ -1,9 +1,9 @@
 import { NextRequest, NextResponse } from "next/server";
-import { client } from "@/services/sanity/sanity";
+import { client } from "@/services/sanity";
 import { registerWebhook } from "@/services/deliveryTracker";
 
-// Vercel Cron Job에서 24시간마다 호출
-export const dynamic = "force-dynamic";
+const MAX_RETRY_COUNT = 3;
+const WEBHOOK_EXPIRATION_HOURS = 48;
 
 export async function GET(req: NextRequest) {
   try {
@@ -17,48 +17,74 @@ export async function GET(req: NextRequest) {
     const orders = await client.fetch(`
       *[_type == "order" && (orderStatus == "moving" || orderStatus == "ready") && defined(shippingInfo.trackingNumber)] {
         _id,
-        shippingInfo
+        orderStatus,
+        shippingInfo,
+        _updatedAt
       }
     `);
 
-    const results = await Promise.allSettled(
-      orders.map(async (order: any) => {
+    const results = {
+      success: 0,
+      failed: 0,
+      skipped: 0,
+    };
+
+    for (const order of orders) {
+      const { carrierId, trackingNumber } = order.shippingInfo;
+      const lastUpdateTime = new Date(order._updatedAt);
+      const hoursSinceUpdate =
+        (Date.now() - lastUpdateTime.getTime()) / (1000 * 60 * 60);
+
+      // webhook 갱신이 필요한 경우 (마지막 업데이트로부터 24시간 이상 지난 경우)
+      if (hoursSinceUpdate >= 24) {
         try {
-          const { carrierId, trackingNumber } = order.shippingInfo;
-          if (!carrierId || !trackingNumber) return null;
-
-          // webhook 갱신
-          await registerWebhook(carrierId, trackingNumber);
-          return { orderId: order._id, status: "success" };
-        } catch (error) {
-          console.error(
-            `Failed to refresh webhook for order ${order._id}:`,
-            error,
+          await registerWebhook(
+            carrierId,
+            trackingNumber,
+            WEBHOOK_EXPIRATION_HOURS,
           );
-          return { orderId: order._id, status: "failed", error };
-        }
-      }),
-    );
+          results.success++;
 
-    const succeeded = results.filter(
-      r => r.status === "fulfilled" && r.value?.status === "success",
-    ).length;
-    const failed = results.filter(
-      r => r.status === "rejected" || r.value?.status === "failed",
-    ).length;
+          console.log("Webhook refreshed:", {
+            orderId: order._id,
+            carrierId,
+            trackingNumber,
+            orderStatus: order.orderStatus,
+            hoursSinceUpdate,
+            timestamp: new Date().toISOString(),
+          });
+        } catch (error) {
+          results.failed++;
+          console.error("Failed to refresh webhook:", {
+            orderId: order._id,
+            carrierId,
+            trackingNumber,
+            orderStatus: order.orderStatus,
+            error: error instanceof Error ? error.message : "Unknown error",
+            timestamp: new Date().toISOString(),
+          });
+        }
+      } else {
+        results.skipped++;
+      }
+    }
 
     return NextResponse.json({
-      success: true,
-      summary: {
-        total: orders.length,
-        succeeded,
-        failed,
-      },
+      message: "Webhook refresh completed",
+      results,
+      timestamp: new Date().toISOString(),
     });
   } catch (error) {
-    console.error("Webhook refresh cron error:", error);
+    console.error("Webhook refresh job failed:", {
+      error: error instanceof Error ? error.message : "Unknown error",
+      timestamp: new Date().toISOString(),
+    });
+
     return NextResponse.json(
-      { error: "Internal server error" },
+      {
+        error: "Failed to process webhook refresh",
+        details: error instanceof Error ? error.message : "Unknown error",
+      },
       { status: 500 },
     );
   }

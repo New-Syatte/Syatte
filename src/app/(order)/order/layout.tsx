@@ -6,11 +6,6 @@ import URLS from "@/constants/urls";
 import Heading from "@/components/heading/Heading";
 
 const OrderLayout = async ({ children }: { children: React.ReactNode }) => {
-  const session = await getServerSession(authOptions); // 서버에서 session 정보 호출
-  const user = session?.user;
-  if (!user) {
-    redirect(URLS.SIGNIN);
-  }
   const links = [URLS.CART, URLS.ORDER_HISTORY];
   const listStr = ["나의 장바구니", "배송/주문 확인"];
   return (

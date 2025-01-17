@@ -1,9 +1,9 @@
-import { CartItem } from "./cart";
+import { CheckoutCartItem } from "./cart";
 import { DeliveryTrackingResponse } from "./order";
 
 // 체크아웃 데이터 타입
 export interface CheckoutData {
-  cartItems: Omit<CartItem, "isChecked">[];
+  cartItems: CheckoutCartItem[];
   shippingAddress: {
     name: string;
     phone: string;

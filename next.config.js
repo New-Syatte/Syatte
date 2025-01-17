@@ -27,7 +27,7 @@ const nextConfig = {
       allowedOrigins: ["localhost:3000", "syatte.vercel.app"],
     },
   },
-  webpack: (config, { dev, isServer }) => {
+  webpack: config => {
     // react-toastify에 대한 소스맵 생성 비활성화
     config.module.rules.push({
       test: /react-toastify\.esm\.mjs$/,

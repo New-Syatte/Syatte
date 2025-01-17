@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { cookies } from "next/headers";
-import { createOrderFromPayment } from "@/services/order";
+import { createOrderFromPayment } from "@/services/sanity/orders";
 import { confirmPayment } from "@/services/payment";
 
 export async function GET(req: NextRequest) {

@@ -43,9 +43,10 @@ export async function registerWebhook(
         Authorization: getAuthHeader(),
       },
       body: JSON.stringify({
-        query: `mutation RegisterTrackWebhook($input: RegisterTrackWebhookInput!) {
+        query:
+          `mutation RegisterTrackWebhook($input: RegisterTrackWebhookInput!) {
           registerTrackWebhook(input: $input)
-        }`,
+        }`.trim(),
         variables: {
           input: {
             carrierId,
@@ -58,11 +59,10 @@ export async function registerWebhook(
     });
 
     const data = await response.json();
-
     if (data.errors) {
       throw new Error(data.errors[0]?.message || "Webhook registration failed");
     }
-
+    console.log("Webhook registered successfully:", data);
     return data;
   } catch (error) {
     console.error("Error registering webhook:", error);
@@ -71,7 +71,7 @@ export async function registerWebhook(
 }
 
 // Webhook 등록 해제 함수
-export async function unregisterWebhook(
+export async function unRegisterWebhook(
   carrierId: string,
   trackingNumber: string,
 ) {
@@ -111,7 +111,7 @@ export async function trackDelivery(
               }
             }
           }
-        }`,
+        }`.trim(),
         variables: {
           carrierId,
           trackingNumber,
@@ -128,11 +128,7 @@ export async function trackDelivery(
 
     // 2. Webhook 등록 실패를 별도로 처리
     try {
-      if (process.env.NODE_ENV === "development") {
-        console.log("no resgister webhook");
-      } else {
-        await registerWebhook(carrierId, trackingNumber);
-      }
+      await registerWebhook(carrierId, trackingNumber);
     } catch (webhookError) {
       console.error("Webhook registration failed:", webhookError);
       // Webhook 등록 실패해도 배송 조회 결과는 반환
