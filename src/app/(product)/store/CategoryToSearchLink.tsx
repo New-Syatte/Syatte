@@ -1,5 +1,6 @@
 "use client";
-
+// legacy
+// (product)/store
 import Link from "next/link";
 import { useDispatch } from "react-redux";
 import { setSearchQuery } from "@/redux/slice/searchSlice";

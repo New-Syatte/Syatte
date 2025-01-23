@@ -1,4 +1,6 @@
 "use client";
+// legacy
+// (product)/store/search
 import { useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
 import { useState, useEffect } from "react";

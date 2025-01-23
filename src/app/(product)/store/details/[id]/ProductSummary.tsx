@@ -33,7 +33,6 @@ export default function ProductSummary({ product }: { product: Product }) {
       ([entry]) => {
         // 요소가 뷰포트 상단을 벗어났는지 확인
         const boundingRect = entry.boundingClientRect;
-        console.log(boundingRect.top);
 
         // 요소가 뷰포트 상단을 벗어났을 때만 fixed 적용
         if (boundingRect.top < 0) {

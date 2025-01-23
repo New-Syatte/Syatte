@@ -25,7 +25,6 @@ export default function Card({
   linkTo,
   titleSize = "xl",
 }: EachProductProps) {
-  console.log(product);
   const { productName: title, options, mainImage } = product;
   const price = options[0].sizes[0].price;
   const discount = options[0].sizes[0].discount;

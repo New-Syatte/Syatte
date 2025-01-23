@@ -3,20 +3,25 @@ import Banner1 from "@/assets/product/Product-Banner1.png";
 import Banner2 from "@/assets/product/Product-Banner2.png";
 import CategoryToSearchLink from "./CategoryToSearchLink";
 import URLS from "@/constants/urls";
+import Link from "next/link";
 
 const ProductBanner = () => {
   const banners = [
-    { img: Banner1, title: "메탈이펙트", query: "metalEffect" },
-    { img: Banner2, title: "컬러패스트", query: "colorFast" },
+    {
+      img: Banner1,
+      title: "메탈이펙트",
+      query: "/modernMasters/metalEffect",
+    },
+    {
+      img: Banner2,
+      title: "컬러패스트",
+      query: "/modernMasters/colorFast",
+    },
   ];
   return (
     <div className="flex sm:w-full sm:flex-col gap-5 mt-24">
       {banners.map((banner, index) => (
-        <CategoryToSearchLink
-          key={index}
-          to={URLS.PRODUCT_STORE_SEARCH} // 추후 수정 (Issue #20)
-          searchQuery={banner.query}
-        >
+        <Link key={index} href={`${URLS.PRODUCT_STORE_BRAND}/${banner.query}`}>
           <div
             className={
               "sm:w-[80%] w-[644px] sm:h-[121px] h-[245px] relative rounded-[10px]" +
@@ -51,7 +56,7 @@ const ProductBanner = () => {
               />
             </div>
           </div>
-        </CategoryToSearchLink>
+        </Link>
       ))}
     </div>
   );
