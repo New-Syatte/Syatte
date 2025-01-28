@@ -1,7 +1,7 @@
 import { categorys } from "@/constants/categorys";
 import BrandSlider from "./BrandsSlider";
 import ProductBanner from "./ProductBanner";
-import CategoryToSearchLink from "./CategoryToSearchLink";
+import Link from "next/link";
 import URLS from "@/constants/urls";
 import { getProducts } from "@/services/sanity/products";
 import { Product } from "@/type/products";
@@ -10,6 +10,9 @@ import ProductCards from "./ProductCards";
 export default async function Products() {
   const categoryValues = categorys.map(category => category.value);
   const products = await getProducts();
+  if (!products) {
+    return <div>제품이 없습니다.</div>;
+  }
   return (
     <main className="w-full mt-8 sm:mt-0 mx-auto mb-[200px] flex flex-col justify-around items-center overflow-x-hidden">
       <header className="w-full h-52 sm:mt-16 sm:mb-12 mb-[70px] flex justify-center items-center gap-44 relative">
@@ -36,13 +39,12 @@ export default async function Products() {
                 <div className="text-[40px] font-bold sm:pb-5">
                   {categorys[index].title}
                 </div>
-                <CategoryToSearchLink
-                  to={URLS.PRODUCT_STORE_SEARCH} // 추후 수정 (Issue #20)
-                  searchQuery={categorys[index].value}
+                <Link
+                  href={`${URLS.PRODUCT_STORE_BRAND}/${category}`}
                   className="mb-4 text-center text-black text-lg font-bold"
                 >
                   {"상품 더보기 >"}
-                </CategoryToSearchLink>
+                </Link>
               </div>
               <ProductCards
                 key={category}

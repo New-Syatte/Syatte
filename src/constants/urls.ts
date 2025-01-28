@@ -20,7 +20,7 @@ const URLS = {
   ORDER_DETAILS: "/order/details",
   ORDER_HISTORY: "/order/history",
   PRODUCT_STORE: "/store",
-  PRODUCT_STORE_SEARCH: "/store/search",
+  PRODUCT_STORE_BRAND: "/store/brand",
   PRODUCT_DETAILS: "/store/details",
 };
 

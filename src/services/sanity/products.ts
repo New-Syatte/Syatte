@@ -1,8 +1,9 @@
 import { client, urlForDetailImage } from "@/services/sanity";
+import { Product } from "@/type/products";
 
-export function getProducts() {
+export async function getProducts(): Promise<Product[] | undefined> {
   try {
-    const products = client.fetch(
+    const products = await client.fetch(
       '*[_type == "product"] {..., mainImage {"imageUrl": asset->url}}',
       {},
       {
@@ -12,9 +13,10 @@ export function getProducts() {
         },
       },
     );
-    return products;
+    return products as unknown as Product[];
   } catch (error: any) {
     console.error(`전체 제품 불러오기 실패: ${error.message}`);
+    return undefined;
   }
 }
 

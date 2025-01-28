@@ -1,4 +1,6 @@
 "use client";
+// legacy
+// (product/store/Search.tsx)
 import { setSearchQuery } from "@/redux/slice/searchSlice";
 import { useDispatch } from "react-redux";
 import { useState } from "react";
@@ -16,7 +18,7 @@ const Search = () => {
   const handleSearch = () => {
     dispatch(setSearchQuery(searchValue));
     if (pathname === "/store") {
-      router.push(URLS.PRODUCT_STORE_SEARCH);
+      // router.push(URLS.PRODUCT_STORE_SEARCH);
     }
   };
 

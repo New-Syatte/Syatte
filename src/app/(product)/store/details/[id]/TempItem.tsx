@@ -58,11 +58,6 @@ const TempItem = ({ item, onQuantityChange, onDelete, productName }: Props) => {
           </button>
         </div>
         <div className="flex flex-col items-end min-w-[100px]">
-          {discount > 0 && (
-            <span className="text-xs text-gray-500 line-through">
-              {(price * quantity).toLocaleString()}원
-            </span>
-          )}
           <span className="font-bold text-[22px]">
             {(discountedPrice * quantity).toLocaleString()}원
           </span>

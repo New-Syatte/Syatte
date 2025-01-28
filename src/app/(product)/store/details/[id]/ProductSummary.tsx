@@ -33,7 +33,6 @@ export default function ProductSummary({ product }: { product: Product }) {
       ([entry]) => {
         // 요소가 뷰포트 상단을 벗어났는지 확인
         const boundingRect = entry.boundingClientRect;
-        console.log(boundingRect.top);
 
         // 요소가 뷰포트 상단을 벗어났을 때만 fixed 적용
         if (boundingRect.top < 0) {
@@ -203,13 +202,18 @@ export default function ProductSummary({ product }: { product: Product }) {
               }`}
             >
               <div className="flex items-center gap-4">
-                <span className="text-2xl font-bold text-secondaryRed">
-                  {totalDiscountPercentage}%
-                </span>
-                <span className="text-lg font-bold text-darkGray line-through">
-                  {totalOriginalPrice.toLocaleString()}원
-                </span>
+                {totalDiscountPercentage > 0 && (
+                  <>
+                    <span className="text-2xl font-bold text-secondaryRed">
+                      {totalDiscountPercentage}%
+                    </span>
+                    <span className="text-lg font-bold text-darkGray line-through">
+                      {totalOriginalPrice.toLocaleString()}원
+                    </span>
+                  </>
+                )}
               </div>
+
               <span className="text-2xl font-bold">
                 {totalDiscountedPrice.toLocaleString()}원
               </span>
