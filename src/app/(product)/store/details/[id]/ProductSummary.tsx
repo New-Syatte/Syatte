@@ -202,13 +202,18 @@ export default function ProductSummary({ product }: { product: Product }) {
               }`}
             >
               <div className="flex items-center gap-4">
-                <span className="text-2xl font-bold text-secondaryRed">
-                  {totalDiscountPercentage}%
-                </span>
-                <span className="text-lg font-bold text-darkGray line-through">
-                  {totalOriginalPrice.toLocaleString()}원
-                </span>
+                {totalDiscountPercentage > 0 && (
+                  <>
+                    <span className="text-2xl font-bold text-secondaryRed">
+                      {totalDiscountPercentage}%
+                    </span>
+                    <span className="text-lg font-bold text-darkGray line-through">
+                      {totalOriginalPrice.toLocaleString()}원
+                    </span>
+                  </>
+                )}
               </div>
+
               <span className="text-2xl font-bold">
                 {totalDiscountedPrice.toLocaleString()}원
               </span>

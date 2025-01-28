@@ -68,10 +68,10 @@ export default function Card({
       </div>
       <div className="hover:underline sm:mt-1 mt-[10px] flex gap-2 items-end">
         <span className="text-rose-500 sm:text-xs text-2xl font-bold leading-[30px]">
-          {discount + "%"}
+          {discount !== 0 ? discount + "%" : ""}
         </span>
         <span className="text-zinc-400 sm:text-[10px] text-lg font-normal line-through leading-[30px] sm:leading-normal">
-          {price.toLocaleString()}원
+          {discount !== 0 ? price.toLocaleString() + "원" : ""}
         </span>
         <span className="text-black sm:text-sm text-2xl font-bold">
           {discountedPrice.toLocaleString()}원

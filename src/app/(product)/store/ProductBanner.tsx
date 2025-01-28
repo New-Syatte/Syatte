@@ -1,7 +1,6 @@
 import Image from "next/image";
 import Banner1 from "@/assets/product/Product-Banner1.png";
 import Banner2 from "@/assets/product/Product-Banner2.png";
-import CategoryToSearchLink from "./CategoryToSearchLink";
 import URLS from "@/constants/urls";
 import Link from "next/link";
 
