@@ -4,6 +4,7 @@ import PaintSlider from "./components/PaintSlider";
 import StoreSection from "./components/StoreSection";
 import VideoSection from "./components/VideoSection";
 import BrandLayout from "@/components/brandPage/BrandLayout";
+import Loader from "@/components/loader/Loader";
 
 const TITLE_BANNER_TEXT = `Modern Masters는 고급 특수 페인트를 제조하는 세계 최고의 회사입니다. 제품은 미국을 비롯한 다양한 국가의 4,000개 이상의 소매점에서 판매며, 회사의 제품 라인에는 건축가, 디자이너, 계약자, 그리고 장식 화가를 위해 특별히 제작된 다양한 제품이 포함되어 있습니다. Metallic Paint Collection, Metal Effects, 건축 텍스처, 테마 페인트, 블랙라이트 페인트, 유약, 광택제, 그리고 Crackles 등이 그 중에 속합니다. Modern Masters의 제품은 전 세계적으로 유명한 장소에서 사용되고 있습니다.`;
 const MODERN_MASTERS_INFO_TEXT_1 = `Modern Masters는 1960년대 초에 캘리포니아의 San Fernando Valley에서 시작된 회사로, 처음에는 Custom Paint & Chemical로 알려져 있었습니다. 주로 가구, 장식용 액세서리, 주거용 조명, 그리고 벽 장식용 코팅 제품을 생산했습니다. 회사는 최고 품질의 코팅을 제공하고 "지불한 만큼 얻는다"는 모토를 따르며 성장했습니다.`;
@@ -13,7 +14,9 @@ const MODERN_MASTERS_ARTWORK_TEXT = `모던마스터즈 페인트로 창조된 �
 
 export default async function ModernMasters() {
   const products = await getProducts();
-
+  if (!products) {
+    return <Loader />;
+  }
   return (
     <BrandLayout
       logo={logo}
