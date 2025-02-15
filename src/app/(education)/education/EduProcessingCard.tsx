@@ -2,22 +2,10 @@ import { Course } from "@/type/edu";
 import { formatDate } from "@/utils/date";
 import { formatPrice } from "@/utils/price";
 import Link from "next/link";
-import { format } from "date-fns";
-import { ko } from "date-fns/locale";
-import Image from "next/image";
-import Edu01 from "@/assets/education/edu-0.jpg";
 
 interface EduProcessingCardProps {
   course: Course;
 }
-
-const categoryMap = {
-  applicator_class: "A/C (Applicator Class)",
-  master_class: "M/C (Master Class)",
-  plaster_class: "Plaster Class",
-  vintage_class: "Vintage Class",
-  one_day_class: "One Day Class",
-};
 
 const EduProcessingCard = ({ course }: EduProcessingCardProps) => {
   const { _id, name, startDate, endDate, schedule, fee } = course;
