@@ -1,3 +1,4 @@
+"use client";
 import Motion from "@/components/motion/Motion";
 import EduDesignCard from "./EduDesignCard";
 
@@ -80,7 +81,11 @@ export default function TopBanner() {
   return (
     <section className="flex justify-center items-center">
       <div className="flex sm:flex-col justify-evenly items-center w-full sm:w-[84%] mb-24 px-36 pb-36 pt-20 sm:p-0 flex-wrap sm:flex-nowrap gap-11">
-        <div className={"w-[33.0625rem] sm:w-full mt-[0px] sm:mt-[80px] flex-shrink-0"}>
+        <div
+          className={
+            "w-[33.0625rem] sm:w-full mt-[0px] sm:mt-[80px] flex-shrink-0"
+          }
+        >
           <div className="sm:text-center text-left">
             <Motion initial="hidden" whileInView="visible" variants={motionTop}>
               <p

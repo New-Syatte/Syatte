@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { XCircle } from "lucide-react";
+import BackButton from "./BackButton";
 
 export default function CheckoutFailPage() {
   return (
@@ -19,12 +20,7 @@ export default function CheckoutFailPage() {
         >
           교육 목록으로 돌아가기
         </Link>
-        <button
-          onClick={() => window.history.back()}
-          className="block w-full bg-gray-100 text-gray-700 py-3 rounded-lg hover:bg-gray-200 transition-colors"
-        >
-          이전 페이지로 돌아가기
-        </button>
+        <BackButton />
       </div>
     </div>
   );
