@@ -3,7 +3,7 @@ import React, { forwardRef } from "react";
 import { BsChevronLeft, BsChevronRight } from "react-icons/bs";
 import { format } from "date-fns";
 import DatePicker from "react-datepicker";
-import { ko } from "date-fns/esm/locale";
+import ko from "date-fns/locale/ko";
 import "react-datepicker/dist/react-datepicker.css";
 
 interface DatePickerClientProps {
