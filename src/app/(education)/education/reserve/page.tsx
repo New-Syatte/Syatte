@@ -12,13 +12,16 @@ const courseQuery = `*[_type == "course" && _id == $id][0] {
 }`;
 
 interface PageProps {
-  searchParams: { courseId: string };
+  searchParams: Promise<{
+    courseId: string;
+  }>;
 }
 
 export default async function EducationReservePage({
   searchParams,
 }: PageProps) {
-  const { courseId } = searchParams;
+  const resolvedParams = await searchParams;
+  const { courseId } = resolvedParams;
 
   const course = await client.fetch(
     courseQuery,

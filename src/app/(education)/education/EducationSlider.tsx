@@ -8,19 +8,10 @@ import { Navigation, Pagination } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
-import { format } from "date-fns";
-import { ko } from "date-fns/locale";
 import { Mobile } from "@/hooks/useMediaQuery";
-
-interface Course {
-  _id: string;
-  category: string;
-  name: string;
-  startDate: string;
-  endDate: string;
-  schedule: string;
-  fee: string;
-}
+import { Course } from "@/type/edu";
+import { formatDate } from "@/utils/date";
+import { formatPrice } from "@/utils/price";
 
 interface EducationSliderProps {
   courses: Course[];
@@ -56,26 +47,19 @@ const EducationSlider = ({ courses }: EducationSliderProps) => {
       >
         {courses.map(course => (
           <SwiperSlide key={course._id}>
-            <Link href={`/education/${course._id}`}>
-              <div className="bg-white rounded-lg shadow-lg overflow-hidden cursor-pointer transition-transform hover:scale-105">
-                <div className="p-6">
-                  <span className="inline-block bg-primary text-white px-3 py-1 rounded-full text-sm mb-4">
-                    {categoryMap[course.category as keyof typeof categoryMap]}
-                  </span>
-                  <h3 className="text-xl font-bold mb-4">{course.name}</h3>
-                  <div className="space-y-2 text-gray-600">
-                    <p>
-                      {format(new Date(course.startDate), "yyyy년 MM월 dd일", {
-                        locale: ko,
-                      })}{" "}
-                      ~{" "}
-                      {format(new Date(course.endDate), "yyyy년 MM월 dd일", {
-                        locale: ko,
-                      })}
-                    </p>
-                    <p>{course.schedule}</p>
-                    <p className="text-primary font-bold">{course.fee}</p>
-                  </div>
+            <Link
+              href={`/education/reserve?courseId=${course._id}`}
+              className="flex flex-col gap-4 rounded-lg border border-gray-200 p-4 hover:border-primary"
+            >
+              <div className="flex flex-col gap-2">
+                <h3 className="text-lg font-bold">{course.name}</h3>
+                <div className="flex flex-col gap-1 text-sm text-gray-500">
+                  <p>
+                    {formatDate(course.startDate)} ~{" "}
+                    {formatDate(course.endDate)}
+                  </p>
+                  <p>{course.schedule}</p>
+                  <p>{formatPrice(course.fee)}원</p>
                 </div>
               </div>
             </Link>

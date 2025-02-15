@@ -4,6 +4,7 @@ import EducationSlider from "./EducationSlider";
 import EduProcessingCard from "@/app/(education)/education/EduProcessingCard";
 import Button from "@/components/button/Button";
 import Motion from "@/components/motion/Motion";
+import { Course } from "@/type/edu";
 
 // 교육 과정 목록을 가져오는 쿼리
 const coursesQuery = `*[_type == "course"] {
@@ -18,7 +19,7 @@ const coursesQuery = `*[_type == "course"] {
 
 export default async function Page() {
   // 교육 과정 데이터 가져오기
-  const courses = await client.fetch(coursesQuery);
+  const courses = await client.fetch<Course[]>(coursesQuery);
 
   const motionTop = {
     hidden: { opacity: 0, y: 50 },
@@ -128,7 +129,7 @@ export default async function Page() {
             style={{ display: "flex", width: "100%" }}
           >
             <EducationSlider
-              courses={courses.filter(course =>
+              courses={courses.filter((course: Course) =>
                 ["applicator_class", "master_class", "plaster_class"].includes(
                   course.category,
                 ),
@@ -191,10 +192,10 @@ export default async function Page() {
               }
             >
               {courses
-                .filter(course =>
+                .filter((course: Course) =>
                   ["vintage_class", "one_day_class"].includes(course.category),
                 )
-                .map(course => (
+                .map((course: Course) => (
                   <EduProcessingCard key={course._id} course={course} />
                 ))}
             </div>

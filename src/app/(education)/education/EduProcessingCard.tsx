@@ -1,18 +1,11 @@
+import { Course } from "@/type/edu";
+import { formatDate } from "@/utils/date";
+import { formatPrice } from "@/utils/price";
 import Link from "next/link";
 import { format } from "date-fns";
 import { ko } from "date-fns/locale";
 import Image from "next/image";
 import Edu01 from "@/assets/education/edu-0.jpg";
-
-interface Course {
-  _id: string;
-  category: string;
-  name: string;
-  startDate: string;
-  endDate: string;
-  schedule: string;
-  fee: string;
-}
 
 interface EduProcessingCardProps {
   course: Course;
@@ -27,27 +20,21 @@ const categoryMap = {
 };
 
 const EduProcessingCard = ({ course }: EduProcessingCardProps) => {
+  const { _id, name, startDate, endDate, schedule, fee } = course;
+
   return (
-    <Link href={`/education/${course._id}`}>
-      <div className="w-[384px] sm:w-full h-[384px] sm:h-[320px] bg-white rounded-lg shadow-lg overflow-hidden cursor-pointer transition-transform hover:scale-105">
-        <div className="p-6">
-          <span className="inline-block bg-primary text-white px-3 py-1 rounded-full text-sm mb-4">
-            {categoryMap[course.category as keyof typeof categoryMap]}
-          </span>
-          <h3 className="text-xl font-bold mb-4">{course.name}</h3>
-          <div className="space-y-2 text-gray-600">
-            <p>
-              {format(new Date(course.startDate), "yyyy년 MM월 dd일", {
-                locale: ko,
-              })}{" "}
-              ~{" "}
-              {format(new Date(course.endDate), "yyyy년 MM월 dd일", {
-                locale: ko,
-              })}
-            </p>
-            <p>{course.schedule}</p>
-            <p className="text-primary font-bold">{course.fee}</p>
-          </div>
+    <Link
+      href={`/education/reserve?courseId=${_id}`}
+      className="flex flex-col gap-4 rounded-lg border border-gray-200 p-4 hover:border-primary"
+    >
+      <div className="flex flex-col gap-2">
+        <h3 className="text-lg font-bold">{name}</h3>
+        <div className="flex flex-col gap-1 text-sm text-gray-500">
+          <p>
+            {formatDate(startDate)} ~ {formatDate(endDate)}
+          </p>
+          <p>{schedule}</p>
+          <p>{formatPrice(fee)}원</p>
         </div>
       </div>
     </Link>

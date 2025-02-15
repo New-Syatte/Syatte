@@ -1,7 +1,5 @@
 "use client";
 
-import { loadTossPayments } from "@tosspayments/payment-sdk";
-import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 interface Course {
