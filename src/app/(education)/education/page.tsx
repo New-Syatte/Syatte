@@ -1,12 +1,25 @@
 import TopBanner from "@/app/(education)/education/TopBanner";
-
+import { client } from "@/services/sanity";
 import EducationSlider from "./EducationSlider";
 import EduProcessingCard from "@/app/(education)/education/EduProcessingCard";
 import Button from "@/components/button/Button";
 import Motion from "@/components/motion/Motion";
 
+// 교육 과정 목록을 가져오는 쿼리
+const coursesQuery = `*[_type == "course"] {
+  _id,
+  category,
+  name,
+  startDate,
+  endDate,
+  schedule,
+  fee
+}`;
+
 export default async function Page() {
-  // const edu: Edu[] = await getEdu();
+  // 교육 과정 데이터 가져오기
+  const courses = await client.fetch(coursesQuery);
+
   const motionTop = {
     hidden: { opacity: 0, y: 50 },
     visible: {
@@ -104,7 +117,7 @@ export default async function Page() {
               }
             >
               다양한 과정은 패키지로 교육 받으실 수 있습니다. Aplicatior,
-              Master, 그리고{" "}<br className={"flex sm:hidden"} />
+              Master, 그리고 <br className={"flex sm:hidden"} />
               One Day 등 다양한 프로그램이 운영되고 있습니다.
             </span>
           </Motion>
@@ -114,7 +127,13 @@ export default async function Page() {
             variants={motionSlid}
             style={{ display: "flex", width: "100%" }}
           >
-            <EducationSlider />
+            <EducationSlider
+              courses={courses.filter(course =>
+                ["applicator_class", "master_class", "plaster_class"].includes(
+                  course.category,
+                ),
+              )}
+            />
           </Motion>
         </div>
       </Motion>
@@ -153,7 +172,8 @@ export default async function Page() {
                 "flex justify-center w-[851px] sm:w-auto mt-7 text-center text-black sm:text-sm text-lg font-normal font-helvetica sm:leading-normal leading-[30px]"
               }
             >
-              단과 교육은 짧은 기간 동안에도 효과적인 학습을 제공하는 프로그램으로,{" "}<br className={"flex sm:hidden"} />
+              단과 교육은 짧은 기간 동안에도 효과적인 학습을 제공하는
+              프로그램으로, <br className={"flex sm:hidden"} />
               명확한 목표를 가지고 집중적으로 학습하고자 하는 분들에게 적합니다
             </span>
           </Motion>
@@ -170,14 +190,13 @@ export default async function Page() {
                 "sm:w-[90%] w-4/6 mx-auto flex items-center justify-center gap-4 sm:space-x-0 space-x-5 flex-wrap"
               }
             >
-              <EduProcessingCard />
-              <EduProcessingCard />
-              <EduProcessingCard />
-              <EduProcessingCard />
-              <EduProcessingCard />
-              <EduProcessingCard />
-              <EduProcessingCard />
-              <EduProcessingCard />
+              {courses
+                .filter(course =>
+                  ["vintage_class", "one_day_class"].includes(course.category),
+                )
+                .map(course => (
+                  <EduProcessingCard key={course._id} course={course} />
+                ))}
             </div>
           </div>
           <div className={"flex justify-center"}>

@@ -1,36 +1,57 @@
+import Link from "next/link";
+import { format } from "date-fns";
+import { ko } from "date-fns/locale";
 import Image from "next/image";
 import Edu01 from "@/assets/education/edu-0.jpg";
 
-export default function EduProcessingCard() {
-  return (
-    <section className={"sm:w-[150px] w-[255px] sm:mb-6 mb-[60px]"}>
-      <div className={"sm:w-full sm:h-auto w-[255px] h-[220px] relative"}>
-        <Image
-          src={Edu01}
-          alt={"교육과정-01"}
-          sizes="100vw"
-          style={{ width: "100%", height: "auto" }}
-        />
-      </div>
-      <div className={"flex items-center justify-start"}>
-        <span
-          className={
-            "bg-amber-200 rounded-lg px-2 py-1 flex justify-center items-center mt-4 text-xs text-yellow-600"
-          }
-        >
-          모집중
-        </span>
-      </div>
-      <p
-        className={
-          "sm:mt-2 mt-[13px] w-full text-black sm:text-xs text-lg font-normal font-helvetica sm:leading-normal leading-[27px]"
-        }
-      >
-        샤뜨 페인팅 세미나를 진행합니다. 메탈릭 페인트 워크샵 등 ...
-      </p>
-      <p className={"sm:mt-2 mt-[13px] sm:text-[9px] text-lg text-gray-400"}>
-        2023.3.1 ~ 2023.6.28
-      </p>
-    </section>
-  );
+interface Course {
+  _id: string;
+  category: string;
+  name: string;
+  startDate: string;
+  endDate: string;
+  schedule: string;
+  fee: string;
 }
+
+interface EduProcessingCardProps {
+  course: Course;
+}
+
+const categoryMap = {
+  applicator_class: "A/C (Applicator Class)",
+  master_class: "M/C (Master Class)",
+  plaster_class: "Plaster Class",
+  vintage_class: "Vintage Class",
+  one_day_class: "One Day Class",
+};
+
+const EduProcessingCard = ({ course }: EduProcessingCardProps) => {
+  return (
+    <Link href={`/education/${course._id}`}>
+      <div className="w-[384px] sm:w-full h-[384px] sm:h-[320px] bg-white rounded-lg shadow-lg overflow-hidden cursor-pointer transition-transform hover:scale-105">
+        <div className="p-6">
+          <span className="inline-block bg-primary text-white px-3 py-1 rounded-full text-sm mb-4">
+            {categoryMap[course.category as keyof typeof categoryMap]}
+          </span>
+          <h3 className="text-xl font-bold mb-4">{course.name}</h3>
+          <div className="space-y-2 text-gray-600">
+            <p>
+              {format(new Date(course.startDate), "yyyy년 MM월 dd일", {
+                locale: ko,
+              })}{" "}
+              ~{" "}
+              {format(new Date(course.endDate), "yyyy년 MM월 dd일", {
+                locale: ko,
+              })}
+            </p>
+            <p>{course.schedule}</p>
+            <p className="text-primary font-bold">{course.fee}</p>
+          </div>
+        </div>
+      </div>
+    </Link>
+  );
+};
+
+export default EduProcessingCard;
