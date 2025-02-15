@@ -27,8 +27,8 @@ export default async function CheckoutSuccessPage({
 }: {
   searchParams: SearchParams;
 }) {
-  const params = await Promise.resolve(searchParams);
-  const orderId = params.orderId;
+  const resolvedParams = await searchParams;
+  const { orderId, paymentKey, amount } = resolvedParams;
 
   if (!orderId) {
     console.error("Order ID is missing from search params");
@@ -48,7 +48,7 @@ export default async function CheckoutSuccessPage({
     // 결제 정보 생성
     const payment: PaymentResponse = {
       version: "2022-11-16",
-      paymentKey: params.paymentKey,
+      paymentKey: paymentKey,
       type: "NORMAL",
       orderId,
       orderName: order.cartItems[0]?.name || "주문",
