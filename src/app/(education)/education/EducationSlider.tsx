@@ -48,7 +48,7 @@ const EducationSlider = ({ courses }: EducationSliderProps) => {
         {courses.map(course => (
           <SwiperSlide key={course._id}>
             <Link
-              href={`/education/reserve?courseId=${course._id}`}
+              href={`/education/${course._id}`}
               className="flex flex-col gap-4 rounded-lg border border-gray-200 p-4 hover:border-primary"
             >
               <div className="flex flex-col gap-2">

@@ -12,7 +12,7 @@ const EduProcessingCard = ({ course }: EduProcessingCardProps) => {
 
   return (
     <Link
-      href={`/education/reserve?courseId=${_id}`}
+      href={`/education/${_id}`}
       className="flex flex-col gap-4 rounded-lg border border-gray-200 p-4 hover:border-primary"
     >
       <div className="flex flex-col gap-2">

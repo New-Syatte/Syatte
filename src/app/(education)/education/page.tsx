@@ -128,13 +128,7 @@ export default async function Page() {
             variants={motionSlid}
             style={{ display: "flex", width: "100%" }}
           >
-            <EducationSlider
-              courses={courses.filter((course: Course) =>
-                ["applicator_class", "master_class", "plaster_class"].includes(
-                  course.category,
-                ),
-              )}
-            />
+            <EducationSlider courses={courses} />
           </Motion>
         </div>
       </Motion>
@@ -191,13 +185,9 @@ export default async function Page() {
                 "sm:w-[90%] w-4/6 mx-auto flex items-center justify-center gap-4 sm:space-x-0 space-x-5 flex-wrap"
               }
             >
-              {courses
-                .filter((course: Course) =>
-                  ["vintage_class", "one_day_class"].includes(course.category),
-                )
-                .map((course: Course) => (
-                  <EduProcessingCard key={course._id} course={course} />
-                ))}
+              {courses.map((course: Course) => (
+                <EduProcessingCard key={course._id} course={course} />
+              ))}
             </div>
           </div>
           <div className={"flex justify-center"}>
