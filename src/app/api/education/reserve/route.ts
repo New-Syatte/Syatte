@@ -5,9 +5,9 @@ import { NextResponse } from "next/server";
 export async function POST(request: Request) {
   try {
     const body = await request.json();
-    const { courseId, name, phone, email, company } = body;
+    const { classId, name, phone, email, company } = body;
 
-    if (!courseId || !name || !phone || !email) {
+    if (!classId || !name || !phone || !email) {
       return NextResponse.json(
         { error: "필수 입력 항목이 누락되었습니다." },
         { status: 400 },
@@ -26,9 +26,9 @@ export async function POST(request: Request) {
         email,
         phone,
         company,
-        course: {
+        class: {
           _type: "reference",
-          _ref: courseId,
+          _ref: classId,
         },
         status: "pending",
         createdAt: new Date().toISOString(),

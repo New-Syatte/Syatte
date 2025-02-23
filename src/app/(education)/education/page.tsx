@@ -7,19 +7,39 @@ import Motion from "@/components/motion/Motion";
 import { Course } from "@/type/edu";
 
 // 교육 과정 목록을 가져오는 쿼리
-const coursesQuery = `*[_type == "course"] {
+const coursesQuery = `*[_type == "course" && count(classes) > 0] {
   _id,
-  category,
   name,
-  startDate,
-  endDate,
-  schedule,
-  fee
+  description,
+  "classes": *[_type == "classSchema" && _id in ^.classes[]._ref] {
+    _id,
+    name,
+    category,
+    startDate,
+    endDate,
+    schedule,
+    fee,
+    location,
+    details,
+    "image" : image.asset->url
+  }
 }`;
 
 export default async function Page() {
-  // 교육 과정 데이터 가져오기
-  const courses = await client.fetch<Course[]>(coursesQuery);
+  const courses = await client.fetch(coursesQuery);
+
+  // 패키지 교육 (단일 클래스 과정 제외)
+  const packageCourses = courses.filter(
+    (course: Course) => course.classes && course.classes.length >= 1,
+  );
+
+  // 단과 교육 (One Day Class와 단일 클래스 과정)
+  const singleCourses = courses.filter(
+    (course: Course) =>
+      course.classes &&
+      course.classes.length === 1 &&
+      course.classes[0].category === "one_day_class",
+  );
 
   const motionTop = {
     hidden: { opacity: 0, y: 50 },
@@ -128,7 +148,7 @@ export default async function Page() {
             variants={motionSlid}
             style={{ display: "flex", width: "100%" }}
           >
-            <EducationSlider courses={courses} />
+            <EducationSlider courses={packageCourses} />
           </Motion>
         </div>
       </Motion>
@@ -185,7 +205,7 @@ export default async function Page() {
                 "sm:w-[90%] w-4/6 mx-auto flex items-center justify-center gap-4 sm:space-x-0 space-x-5 flex-wrap"
               }
             >
-              {courses.map((course: Course) => (
+              {singleCourses.map((course: Course) => (
                 <EduProcessingCard key={course._id} course={course} />
               ))}
             </div>

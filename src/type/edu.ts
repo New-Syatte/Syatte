@@ -1,24 +1,29 @@
-export type Edu = {
+export interface ClassSchema {
   _id: string;
-  eduName: string;
-  eduDescription: string;
-  eduImage: string;
-  eduStartDate: string;
-  deuEndDate: string;
-  eduType: string;
-  count: number;
-  money: number;
-};
-
-export interface Course {
-  _id: string;
-  category: string;
   name: string;
+  category: string;
   startDate: string;
   endDate: string;
   schedule: string;
   fee: number;
+  location: string;
   image?: string;
   detailImage?: string;
-  location?: string;
+  details: any[];
+}
+
+export interface Course {
+  _id: string;
+  name: string;
+  description: any[];
+  classes: ClassSchema[];
+}
+
+export interface EduReservation {
+  userName: string;
+  email?: string;
+  phone: string;
+  company: string;
+  class: ClassSchema;
+  status: "pending" | "confirmed" | "cancelled";
 }
