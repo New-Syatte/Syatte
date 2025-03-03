@@ -40,6 +40,7 @@ export interface Course {
 }
 
 export interface EduReservation {
+  _id?: string;
   userName: string;
   email?: string;
   phone: string;

@@ -1,8 +1,6 @@
 import TopBanner from "@/app/(education)/education/TopBanner";
 import { client } from "@/services/sanity";
 import EducationSlider from "./EducationSlider";
-import EduProcessingCard from "@/app/(education)/education/EduProcessingCard";
-import Button from "@/components/button/Button";
 import Motion from "@/components/motion/Motion";
 import { Course, ClassSchema } from "@/type/edu";
 import Image from "next/image";

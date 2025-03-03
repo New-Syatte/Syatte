@@ -31,10 +31,7 @@ export async function POST(request: Request) {
           _ref: classId,
         },
         status: "pending",
-        createdAt: new Date().toISOString(),
       });
-
-      console.log("Sanity 저장 결과:", result);
       return NextResponse.json({ orderId });
     } catch (sanityError: any) {
       console.error("Sanity 에러 상세:", sanityError);
