@@ -27,16 +27,19 @@ const getImageHeight = (classCount: number) => {
   if (classCount === 1) {
     return "h-[312px]";
   }
-  return "h-64"; // 모든 이미지 높이 통일
+
+  return "h-[200px]"; // 모든 이미지 높이 통일
 };
 
 // Portable Text에서 텍스트만 추출하는 함수
 const extractTextFromPortableText = (blocks: any[] = []): string => {
+  if (!blocks || !Array.isArray(blocks)) return "";
+
   return blocks
     ?.map(block => {
-      if (block._type === "block") {
+      if (block?._type === "block") {
         return block.children
-          ?.map((child: any) => child.text)
+          ?.map((child: any) => child?.text || "")
           .filter(Boolean)
           .join(" ");
       }
@@ -49,7 +52,7 @@ const extractTextFromPortableText = (blocks: any[] = []): string => {
 const EducationSlider = ({ courses }: EducationSliderProps) => {
   const router = useRouter();
   return (
-    <div className="w-full max-w-7xl mx-auto overflow-visible relative">
+    <div className="w-full max-w-7xl flex flex-col justify-center mx-auto overflow-visible relative">
       <Swiper
         modules={[Pagination]}
         spaceBetween={30}
@@ -64,30 +67,41 @@ const EducationSlider = ({ courses }: EducationSliderProps) => {
         {courses.map(course => (
           <SwiperSlide
             key={course._id}
-            className="!w-[1000px] opacity-40 transition-all duration-300"
+            className="!w-[90%] opacity-40 transition-all duration-300"
           >
-            <div className="mb-16 bg-white py-10 px-14 rounded-[20px] border border-lightGray h-[700px]">
-              <div className="flex justify-between items-center mb-4">
-                <h2 className="text-[40px] font-bold">{course.name}</h2>
+            <div className="mb-16 bg-white py-10 px-14 rounded-[20px] border border-lightGray h-[533px]">
+              <div className="flex justify-between items-center mb-1">
+                <h2 className="text-[40px] font-bold font-GmarketSans">
+                  {course.name}
+                </h2>
                 {course.classes.length === 1 && (
                   <div className="w-44">
                     <Button
                       style="p-3"
-                      onClick={() => router.push(`/education/${course._id}`)}
+                      onClick={() =>
+                        router.push(`/education/${course.classes[0]._id}`)
+                      }
                     >
                       풀코스 신청하기
                     </Button>
                   </div>
                 )}
               </div>
-              <div className="text-gray-600 mb-8 max-w-3xl text-lg">
+              <div className="text-gray-600 mb-4 max-w-3xl text-medium">
                 {extractTextFromPortableText(course.description)}
               </div>
 
               <div className="flex w-full gap-10">
                 {course.classes.map(classItem => (
-                  <div key={classItem._id} className="bg-white w-full">
-                    <div className={`relative w-full ${getImageHeight(1)}`}>
+                  <div
+                    key={classItem._id}
+                    className="bg-white w-full aspect-[23/7]"
+                  >
+                    <div
+                      className={`relative w-full ${getImageHeight(
+                        course.classes.length,
+                      )}`}
+                    >
                       <Image
                         src={classItem.image || "/images/default.webp"}
                         alt={classItem.name}
@@ -107,7 +121,7 @@ const EducationSlider = ({ courses }: EducationSliderProps) => {
                             ).slice(0, 50)}
                           </p>
                         </div>
-                        <div className="w-1/3 flex items-stretch self-stretch">
+                        <div className="w-1/3 flex items-center justify-center self-stretch h-[85px]">
                           <Button
                             styleType="secondary"
                             style="flex-1"

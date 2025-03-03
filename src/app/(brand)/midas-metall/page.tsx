@@ -1,5 +1,5 @@
 import { getProducts } from "@/services/sanity/products";
-import logo from "public/brand/midasmetall-img/midasmetall-logo.png";
+import midasMetallLogo from "/public/brand/midasmetall-img/midasmetall-logo.png";
 import PaintSlider from "./components/PaintSlider";
 import StoreSection from "./components/StoreSection";
 import VideoSection from "./components/VideoSection";
@@ -22,7 +22,7 @@ export default async function MidasMetall() {
 
   return (
     <BrandLayout
-      logo={logo}
+      logo={midasMetallLogo}
       brandName="Midas Metall"
       countryName="독일"
       titleBannerText={TITLE_BANNER_TEXT}
