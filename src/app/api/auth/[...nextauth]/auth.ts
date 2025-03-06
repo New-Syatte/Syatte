@@ -30,7 +30,7 @@ export const authOptions: NextAuthConfig = {
         }
         
         // 여기에 실제 로그인 로직 구현
-        // 예시: 
+        // 예시:
         return {
           id: "1",
           name: "사용자",
@@ -54,16 +54,21 @@ export const authOptions: NextAuthConfig = {
         return false;
       }
 
-      const userData = {
-        id: user.id,
-        name: user.name || "",
-        email: user.email,
-        image: user.image || "",
-        username: user.email.split("@")[0]
-      };
+      try {
+        const userData = {
+          id: user.id,
+          name: user.name || "",
+          email: user.email,
+          image: user.image || "",
+          username: user.email.split("@")[0]
+        };
 
-      await addUser(userData);
-      return true;
+        await addUser(userData);
+        return true;
+      } catch (error) {
+        console.error("Error in signIn callback:", error);
+        return true; // 에러가 발생해도 로그인은 허용
+      }
     },
     async jwt({ token, user }) {
       if (user) {
@@ -84,7 +89,9 @@ export const authOptions: NextAuthConfig = {
     signIn: "/signin",
     error: "/error",
   },
-  secret: process.env.NEXTAUTH_SECRET,
+  debug: process.env.NODE_ENV === "development",
+  secret: process.env.NEXTAUTH_SECRET || "your-secret-key",
+  trustHost: true,
 };
 
 export const { auth, handlers, signIn, signOut } = NextAuth(authOptions);
