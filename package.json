@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "build": "npm install --legacy-peer-deps && next build",
     "start": "next start",
     "lint": "next lint"
   },
@@ -13,6 +13,7 @@
     "@portabletext/react": "^3.2.1",
     "@reduxjs/toolkit": "^2.2.1",
     "@sanity/client": "^6.12.3",
+    "@sanity/icons": "^2.11.8",
     "@sanity/image-url": "^1.0.2",
     "@tosspayments/payment-sdk": "^1.9.1",
     "@tosspayments/payment-widget-sdk": "^0.10.1",
