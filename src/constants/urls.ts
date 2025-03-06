@@ -19,6 +19,7 @@ const URLS = {
   EDUCATION_DETAILS: "/education/details",
   ORDER_DETAILS: "/order/details",
   ORDER_HISTORY: "/order/history",
+  EDUCATION_HISTORY: "/order/education-history",
   PRODUCT_STORE: "/store",
   PRODUCT_STORE_BRAND: "/store/brand",
   PRODUCT_DETAILS: "/store/details",

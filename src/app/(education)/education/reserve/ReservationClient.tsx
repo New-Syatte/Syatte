@@ -4,22 +4,15 @@ import { loadTossPayments } from "@tosspayments/payment-sdk";
 import ReservationForm from "./ReservationForm";
 import EducationInfoArticle from "./EducationInfoArticle";
 import Button from "@/components/button/Button";
-
-interface Course {
-  _id: string;
-  name: string;
-  fee: number;
-  startDate: string;
-  endDate: string;
-  schedule: string;
-  location: string;
-}
+import { ClassSchema } from "@/type/edu";
 
 interface ReservationClientProps {
-  course: Course;
+  classData: ClassSchema;
 }
 
-export default function ReservationClient({ course }: ReservationClientProps) {
+export default function ReservationClient({
+  classData,
+}: ReservationClientProps) {
   const handleSubmit = async (formData: {
     name: string;
     phone: string;
@@ -34,7 +27,7 @@ export default function ReservationClient({ course }: ReservationClientProps) {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          courseId: course._id,
+          classId: classData._id,
           ...formData,
         }),
       });
@@ -55,9 +48,9 @@ export default function ReservationClient({ course }: ReservationClientProps) {
       );
 
       await tossPayments.requestPayment("카드", {
-        amount: course.fee,
+        amount: classData.fee,
         orderId,
-        orderName: `[교육] ${course.name}`,
+        orderName: `[교육] ${classData.name}`,
         customerName: formData.name,
         successUrl: `${window.location.origin}/education/checkout-success`,
         failUrl: `${window.location.origin}/education/checkout-fail`,
@@ -75,10 +68,10 @@ export default function ReservationClient({ course }: ReservationClientProps) {
     <div className="w-full flex gap-40">
       <div className="bg-white rounded-lg flex-1">
         <h2 className="text-xl font-bold mb-6">교육 신청</h2>
-        <ReservationForm course={course} onSubmit={handleSubmit} />
+        <ReservationForm classData={classData} onSubmit={handleSubmit} />
       </div>
       <div className="mt-8">
-        <EducationInfoArticle course={course} />
+        <EducationInfoArticle classData={classData} />
         <div className="mt-6 flex items-center justify-end gap-2">
           <div className="w-1/2 h-14">
             <Button

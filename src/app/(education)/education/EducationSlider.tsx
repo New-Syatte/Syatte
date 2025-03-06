@@ -2,16 +2,14 @@
 /* eslint-disable @next/next/no-img-element */
 "use client";
 import React from "react";
-import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { Swiper, SwiperSlide } from "swiper/react";
-import { Navigation, Pagination } from "swiper/modules";
+import { Pagination } from "swiper/modules";
 import "swiper/css";
-import "swiper/css/navigation";
 import "swiper/css/pagination";
-import { Mobile } from "@/hooks/useMediaQuery";
 import { Course } from "@/type/edu";
-import { formatDate } from "@/utils/date";
-import { formatPrice } from "@/utils/price";
+import Image from "next/image";
+import Button from "@/components/button/Button";
 
 interface EducationSliderProps {
   courses: Course[];
@@ -25,47 +23,155 @@ const categoryMap = {
   one_day_class: "One Day Class",
 };
 
-const EducationSlider = ({ courses }: EducationSliderProps) => {
-  const isMobile = Mobile();
+const getImageHeight = (classCount: number) => {
+  if (classCount === 1) {
+    return "h-[312px]";
+  }
 
+  return "h-[200px]"; // 모든 이미지 높이 통일
+};
+
+// Portable Text에서 텍스트만 추출하는 함수
+const extractTextFromPortableText = (blocks: any[] = []): string => {
+  if (!blocks || !Array.isArray(blocks)) return "";
+
+  return blocks
+    ?.map(block => {
+      if (block?._type === "block") {
+        return block.children
+          ?.map((child: any) => child?.text || "")
+          .filter(Boolean)
+          .join(" ");
+      }
+      return "";
+    })
+    .filter(Boolean)
+    .join(" ");
+};
+
+const EducationSlider = ({ courses }: EducationSliderProps) => {
+  const router = useRouter();
   return (
-    <div className="w-full max-w-7xl mx-auto px-4">
+    <div className="w-full max-w-7xl flex flex-col justify-center mx-auto overflow-visible relative">
       <Swiper
-        modules={[Navigation, Pagination]}
+        modules={[Pagination]}
         spaceBetween={30}
-        slidesPerView={1}
-        navigation
-        pagination={{ clickable: true }}
-        breakpoints={{
-          640: {
-            slidesPerView: 2,
-          },
-          1024: {
-            slidesPerView: 3,
-          },
+        slidesPerView="auto"
+        centeredSlides={true}
+        pagination={{
+          clickable: true,
+          el: ".swiper-pagination",
         }}
+        className="!pb-12 !overflow-visible"
       >
         {courses.map(course => (
-          <SwiperSlide key={course._id}>
-            <Link
-              href={`/education/${course._id}`}
-              className="flex flex-col gap-4 rounded-lg border border-gray-200 p-4 hover:border-primary"
-            >
-              <div className="flex flex-col gap-2">
-                <h3 className="text-lg font-bold">{course.name}</h3>
-                <div className="flex flex-col gap-1 text-sm text-gray-500">
-                  <p>
-                    {formatDate(course.startDate)} ~{" "}
-                    {formatDate(course.endDate)}
-                  </p>
-                  <p>{course.schedule}</p>
-                  <p>{formatPrice(course.fee)}원</p>
-                </div>
+          <SwiperSlide
+            key={course._id}
+            className="!w-[90%] opacity-40 transition-all duration-300"
+          >
+            <div className="mb-16 bg-white py-10 px-14 rounded-[20px] border border-lightGray h-[533px]">
+              <div className="flex justify-between items-center mb-1">
+                <h2 className="text-[40px] font-bold font-GmarketSans">
+                  {course.name}
+                </h2>
+                {course.classes.length === 1 && (
+                  <div className="w-44">
+                    <Button
+                      style="p-3"
+                      onClick={() =>
+                        router.push(`/education/${course.classes[0]._id}`)
+                      }
+                    >
+                      풀코스 신청하기
+                    </Button>
+                  </div>
+                )}
               </div>
-            </Link>
+              <div className="text-gray-600 mb-4 max-w-3xl text-medium">
+                {extractTextFromPortableText(course.description)}
+              </div>
+
+              <div className="flex w-full gap-10">
+                {course.classes.map(classItem => (
+                  <div
+                    key={classItem._id}
+                    className="bg-white w-full aspect-[23/7]"
+                  >
+                    <div
+                      className={`relative w-full ${getImageHeight(
+                        course.classes.length,
+                      )}`}
+                    >
+                      <Image
+                        src={classItem.image || "/images/default.webp"}
+                        alt={classItem.name}
+                        fill
+                        className="object-cover rounded-[10px]"
+                      />
+                    </div>
+                    {course.classes.length > 1 && (
+                      <div className="flex justify-between items-center mt-4 gap-5">
+                        <div className="w-2/3 flex flex-col gap-2">
+                          <h3 className="text-2xl font-bold">
+                            {classItem.name}
+                          </h3>
+                          <p className="text-lg">
+                            {extractTextFromPortableText(
+                              classItem.details,
+                            ).slice(0, 50)}
+                          </p>
+                        </div>
+                        <div className="w-1/3 flex items-center justify-center self-stretch h-[85px]">
+                          <Button
+                            styleType="secondary"
+                            style="flex-1"
+                            onClick={() =>
+                              router.push(`/education/${course._id}`)
+                            }
+                          >
+                            신청하기
+                          </Button>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                ))}
+              </div>
+            </div>
           </SwiperSlide>
         ))}
       </Swiper>
+
+      <style jsx global>{`
+        .swiper {
+          overflow: visible !important;
+          padding: 20px 0;
+        }
+        .swiper-slide {
+          transition: all 0.3s ease;
+        }
+        .swiper-slide-active {
+          opacity: 1 !important;
+          transform: scale(1.02);
+        }
+        .swiper-pagination {
+          position: relative !important;
+          margin-top: -4rem;
+        }
+        .swiper-pagination-bullet {
+          margin: 0 8px !important;
+          width: 8px !important;
+          height: 8px !important;
+          background: #d9d9d9;
+          opacity: 1;
+        }
+        .swiper-pagination-bullet-active {
+          background: #666666;
+        }
+      `}</style>
+
+      {/* Custom Pagination */}
+      <div className="swiper-pagination !bottom-0"></div>
     </div>
   );
 };

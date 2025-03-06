@@ -3,25 +3,17 @@
 import { format } from "date-fns";
 import ko from "date-fns/locale/ko";
 import priceFormat from "@/utils/priceFormat";
-
-interface Course {
-  name: string;
-  startDate: string;
-  endDate: string;
-  schedule: string;
-  location: string;
-  fee: number;
-}
+import { ClassSchema } from "@/type/edu";
 
 interface EducationInfoArticleProps {
-  course: Course;
+  classData: ClassSchema;
 }
 
-const EducationInfoArticle = ({ course }: EducationInfoArticleProps) => {
-  const startDate = format(new Date(course.startDate), "yyyy년 MM월 dd일", {
+const EducationInfoArticle = ({ classData }: EducationInfoArticleProps) => {
+  const startDate = format(new Date(classData.startDate), "yyyy년 MM월 dd일", {
     locale: ko,
   });
-  const endDate = format(new Date(course.endDate), "yyyy년 MM월 dd일", {
+  const endDate = format(new Date(classData.endDate), "yyyy년 MM월 dd일", {
     locale: ko,
   });
 
@@ -31,7 +23,7 @@ const EducationInfoArticle = ({ course }: EducationInfoArticleProps) => {
       <div className="space-y-4">
         <div className="flex items-center">
           <span className="w-24 text-gray-600">교육명</span>
-          <span>{course.name}</span>
+          <span>{classData.name}</span>
         </div>
         <div className="flex items-center">
           <span className="w-24 text-gray-600">교육 기간</span>
@@ -41,17 +33,17 @@ const EducationInfoArticle = ({ course }: EducationInfoArticleProps) => {
         </div>
         <div className="flex items-center">
           <span className="w-24 text-gray-600">교육 시간</span>
-          <span>{course.schedule}</span>
+          <span>{classData.schedule}</span>
         </div>
         <div className="flex items-center">
           <span className="w-24 text-gray-600">교육 장소</span>
-          <span>{course.location}</span>
+          <span>{classData.location}</span>
         </div>
       </div>
       <div className="flex justify-between items-center border-t border-lightGray mt-6 pt-6">
         <h3 className="text-xl font-bold">결제 금액</h3>
         <div className="font-bold text-2xl flex items-end gap-1">
-          <span>{priceFormat(course.fee)}</span>
+          <span>{priceFormat(classData.fee)}</span>
           <span className="text-lg">원</span>
         </div>
       </div>

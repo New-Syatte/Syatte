@@ -6,8 +6,8 @@ import URLS from "@/constants/urls";
 import Heading from "@/components/heading/Heading";
 
 const OrderLayout = async ({ children }: { children: React.ReactNode }) => {
-  const links = [URLS.CART, URLS.ORDER_HISTORY];
-  const listStr = ["나의 장바구니", "배송/주문 확인"];
+  const links = [URLS.CART, URLS.ORDER_HISTORY, URLS.EDUCATION_HISTORY];
+  const listStr = ["나의 장바구니", "배송/주문 확인", "교육 신청 내역"];
   return (
     <section className="w-[80%] sm:w-full sm:my-0 mx-auto my-24 min-h-[80vh] flex flex-col items-center justify-center">
       <header className="w-full mb-16 sm:mb-5 box-border flex justify-start items-end sm:py-2 sm:pt-24">
