@@ -20,6 +20,7 @@
     "@types/react-responsive": "^8.0.8",
     "@vercel/analytics": "^1.4.1",
     "@vercel/speed-insights": "^1.1.0",
+    "autoprefixer": "^10.4.17",
     "axios": "^1.6.7",
     "date-fns": "^4.1.0",
     "dayjs": "^1.11.10",
@@ -32,6 +33,7 @@
     "next-auth": "^5.0.0-beta.13",
     "next-sanity": "^7.0.12",
     "notiflix": "^3.2.6",
+    "postcss": "^8.4.35",
     "react": "^19.0.0",
     "react-chartjs-2": "^5.2.0",
     "react-datepicker": "^4.25.0",
@@ -44,9 +46,11 @@
     "react-simple-star-rating": "^5.1.7",
     "react-toastify": "^10.0.6",
     "react-youtube": "^10.1.0",
+    "source-map-loader": "^5.0.0",
     "swiper": "^11.2.2",
     "swr": "^2.2.4",
     "tailwind-scrollbar-hide": "^2.0.0",
+    "tailwindcss": "^3.4.1",
     "typescript": "^5.0.4"
   },
   "devDependencies": {
@@ -54,10 +58,6 @@
     "@types/react": "^19.0.0",
     "@types/react-datepicker": "^4.19.4",
     "@types/react-dom": "^19.0.0",
-    "autoprefixer": "^10.4.17",
-    "encoding": "^0.1.13",
-    "postcss": "^8.4.35",
-    "source-map-loader": "^5.0.0",
-    "tailwindcss": "^3.4.1"
+    "encoding": "^0.1.13"
   }
 }
