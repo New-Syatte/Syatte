@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "npm install --legacy-peer-deps && next build",
+    "build": "npm ci --legacy-peer-deps && next build",
     "start": "next start",
     "lint": "next lint"
   },
@@ -20,7 +20,6 @@
     "@types/react-responsive": "^8.0.8",
     "@vercel/analytics": "^1.4.1",
     "@vercel/speed-insights": "^1.1.0",
-    "autoprefixer": "^10.4.20",
     "axios": "^1.6.7",
     "date-fns": "^4.1.0",
     "dayjs": "^1.11.10",
@@ -60,6 +59,7 @@
     "@types/react-datepicker": "^4.19.4",
     "@types/react-dom": "^19.0.0",
     "@types/react-slick": "^0.23.13",
+    "autoprefixer": "^10.4.20",
     "encoding": "^0.1.13"
   }
 }
