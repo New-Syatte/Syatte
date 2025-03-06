@@ -18,9 +18,9 @@ const classQuery = `*[_type == "classSchema" && _id == $id][0] {
 export default async function EducationReservePage({
   searchParams,
 }: {
-  searchParams: { classId: string };
+  searchParams: Promise<{ classId: string }>;
 }) {
-  const { classId } = searchParams;
+  const { classId } = await searchParams;
 
   const classData = await client.fetch(
     classQuery,
