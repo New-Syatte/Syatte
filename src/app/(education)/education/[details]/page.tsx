@@ -23,12 +23,12 @@ const classQuery = `*[_type == "classSchema" && _id == $id][0] {
 }`;
 
 interface PageProps {
-  params: { details: string };
+  params: Promise<{ details: string }>;
 }
 
 // 페이지 컴포넌트
 export default async function ClassDetailsPage({ params }: PageProps) {
-  const { details: classId } = params;
+  const { details: classId } = await params;
 
   const classData = await client.fetch<ClassSchema>(
     classQuery,

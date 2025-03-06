@@ -14,11 +14,11 @@ const PeriodSelector = () => {
 
   useEffect(() => {
     if (inputStartDate! > inputEndDate!) setInputStartDate(inputEndDate);
-  }, [inputEndDate]);
+  }, [inputEndDate, inputStartDate]);
 
   useEffect(() => {
     if (inputStartDate! > inputEndDate!) setInputEndDate(inputStartDate);
-  }, [inputStartDate]);
+  }, [inputStartDate, inputEndDate]);
 
   const handleSubmitPeriod = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();

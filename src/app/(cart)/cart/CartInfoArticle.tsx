@@ -16,7 +16,7 @@ const CartInfoArticle = () => {
 
   useEffect(() => {
     dispatch(CALCULATE_CHECKED_ITEMS_SUBTOTAL());
-  }, [cartItems]);
+  }, [cartItems, dispatch]);
 
   const checkedItemsQuantity = cartItems
     .filter(item => item.isChecked)

@@ -15,7 +15,7 @@ export const Mobile = () => {
 
   useEffect(() => {
     checkResize();
-  }, [isMobile]);
+  }, [isMobile, checkResize]);
 
   return mobile;
 };
