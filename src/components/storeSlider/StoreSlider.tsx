@@ -33,20 +33,20 @@ const StoreSlider = ({ products, category }: DetailCategoryProps) => {
 
   return (
     <div className="flex w-[1300px] sm:w-full sm:gap-4 sm:grid sm:grid-cols-2">
-      {/* <Slider {...settings}> */}
-      {filteredProducts.map((product: Product) => (
-        <Card
-          key={product._id}
-          title={product.productName}
-          src={product.mainImage.imageUrl}
-          linkTo={`${URLS.PRODUCT_DETAILS}/${product._id}`}
-          product={product}
-          bgColor={
-            product.mainCategory === "midasMetal" ? "[#f4f4f4]" : "white"
-          }
-        />
-      ))}
-      {/* </Slider> */}
+      <Slider {...settings}>
+        {filteredProducts.map((product: Product) => (
+          <Card
+            key={product._id}
+            title={product.productName}
+            src={product.mainImage.imageUrl}
+            linkTo={`${URLS.PRODUCT_DETAILS}/${product._id}`}
+            product={product}
+            bgColor={
+              product.mainCategory === "midasMetal" ? "[#f4f4f4]" : "white"
+            }
+          />
+        ))}
+      </Slider>
     </div>
   );
 };
