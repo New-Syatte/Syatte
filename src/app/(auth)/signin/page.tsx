@@ -1,8 +1,7 @@
-import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
 import { getProviders } from "next-auth/react";
 import SignInClient from "@/components/Login/Signin";
-import { authOptions } from "@/app/api/auth/[...nextauth]/auth";
+import { auth } from "@/app/api/auth/[...nextauth]/auth";
 
 type SearchParams = Promise<{
   callbackUrl?: string;
@@ -13,8 +12,8 @@ export default async function SignInPage({
 }: {
   searchParams: SearchParams;
 }) {
-  const session = await getServerSession(authOptions);
-  const providers = await getProviders();
+  const session = await auth();
+  const providers = await getProviders() || {};
   const params = await searchParams;
   const callbackUrl = params?.callbackUrl || "/";
 
@@ -22,12 +21,8 @@ export default async function SignInPage({
     redirect(callbackUrl);
   }
 
-  if (!providers) {
-    redirect("/");
-  }
-
   return (
-    <section className="w-full h-screen flex justify-center items-center">
+    <section className="py-16 px-4">
       <SignInClient providers={providers} callbackUrl={callbackUrl} />
     </section>
   );

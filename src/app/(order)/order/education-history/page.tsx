@@ -2,8 +2,7 @@ import PeriodSelector from "@/layouts/periodSelector/PeriodSelector";
 import Heading from "@/components/heading/Heading";
 import { EduReservation } from "@/type/edu";
 import { client } from "@/services/sanity";
-import { getServerSession } from "next-auth";
-import { authOptions } from "@/app/api/auth/[...nextauth]/auth";
+import { auth } from "@/app/api/auth/[...nextauth]/auth";
 import EducationHistoryList from "./EducationHistoryList";
 
 // 사용자의 교육 신청 내역을 가져오는 쿼리
@@ -21,33 +20,39 @@ const getEducationReservations = async (email: string) => {
       category,
       startDate,
       endDate,
-      schedule,
-      fee,
+      price,
+      capacity,
       location,
-      "image": image.asset->url
-    }
-  } | order(class.startDate desc)`;
+      description
+    },
+    createdAt
+  } | order(createdAt desc)`;
 
-  return client.fetch(query, { email });
+  return client.fetch<EduReservation[]>(query, { email });
 };
 
 export default async function EducationHistory() {
-  // 현재 로그인한 사용자 정보 가져오기
-  const session = await getServerSession(authOptions);
-  const email = session?.user?.email || "";
+  const session = await auth();
+  
+  if (!session?.user?.email) {
+    return (
+      <div className="flex flex-col items-center justify-center h-96">
+        <h2 className="text-2xl font-bold mb-4">로그인이 필요합니다</h2>
+        <p>교육 예약 내역을 확인하려면 로그인해주세요.</p>
+      </div>
+    );
+  }
 
-  // 교육 신청 내역 가져오기
-  const reservations: EduReservation[] = await getEducationReservations(email);
+  const reservations = await getEducationReservations(session.user.email);
 
   return (
-    <section className="w-full flex flex-col gap-y-20 sm:gap-y-10 font-kor">
-      <div>
-        <div className="flex justify-between sm:flex-col mb-[30px] sm:mb-10 sm:pb-4 border-b border-lightGray">
-          <Heading title="교육 신청 내역" fontSize="3xl" />
-          <PeriodSelector />
-        </div>
+    <div className="flex flex-col w-full gap-10 sm:gap-5 mb-20">
+      <Heading title="교육 신청 내역" />
+      <div className="flex flex-col w-full gap-10 sm:gap-5">
+        <PeriodSelector />
         <EducationHistoryList reservations={reservations} />
       </div>
-    </section>
+    </div>
   );
 }
+
