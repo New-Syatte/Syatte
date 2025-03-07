@@ -5,17 +5,13 @@ export const Mobile = () => {
   const [mobile, setMobile] = useState<boolean>(false);
   const isMobile = useMediaQuery({ minWidth: 360, maxWidth: 819 });
 
-  const checkResize = () => {
-    if (isMobile) {
-      setMobile(true);
-    } else {
-      setMobile(false);
-    }
-  };
-
   useEffect(() => {
+    const checkResize = () => {
+      setMobile(isMobile);
+    };
+    
     checkResize();
-  }, [isMobile, checkResize]);
+  }, [isMobile]);
 
   return mobile;
 };

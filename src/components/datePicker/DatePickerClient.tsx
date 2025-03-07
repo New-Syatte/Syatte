@@ -3,8 +3,9 @@ import React, { forwardRef } from "react";
 import { BsChevronLeft, BsChevronRight } from "react-icons/bs";
 import { format } from "date-fns";
 import DatePicker from "react-datepicker";
-import ko from "date-fns/locale/ko";
+import { ko } from "date-fns/locale";
 import "react-datepicker/dist/react-datepicker.css";
+import Link from 'next/link';
 
 interface DatePickerClientProps {
   inputEndDate: Date | null;

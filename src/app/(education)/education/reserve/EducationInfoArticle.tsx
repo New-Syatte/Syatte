@@ -1,7 +1,7 @@
 "use client";
 
 import { format } from "date-fns";
-import ko from "date-fns/locale/ko";
+import { ko } from "date-fns/locale";
 import priceFormat from "@/utils/priceFormat";
 import { ClassSchema } from "@/type/edu";
 
