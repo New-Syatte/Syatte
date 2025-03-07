@@ -1,9 +1,12 @@
-import { getToken } from "next-auth/jwt";
+import { auth } from "@/app/api/auth/[...nextauth]/auth";
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 
 export async function middleware(request: NextRequest) {
-  const token = await getToken({ req: request });
+  // getToken 대신 auth 함수를 사용하여 세션 정보 가져오기
+  const session = await auth();
+  const token = session?.user;
+
   const { pathname } = request.nextUrl;
 
   // 인증이 필요한 경로들
@@ -30,7 +33,7 @@ export async function middleware(request: NextRequest) {
 
     const requestHeaders = new Headers(request.headers);
     if (token) {
-      requestHeaders.set("x-user-id", token.sub || "");
+      requestHeaders.set("x-user-id", token.id || "");
       requestHeaders.set("x-user-email", token.email || "");
       if (token.name) {
         requestHeaders.set("x-user-name", encodeURIComponent(token.name));

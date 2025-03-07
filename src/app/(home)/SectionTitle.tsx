@@ -1,6 +1,5 @@
 import Motion from "@/components/motion/Motion";
 import ResponsiveDesc from "./ResponsiveDesc";
-import { delay } from "@reduxjs/toolkit/dist/utils";
 
 interface SectionTitleProps {
   type: "syatt" | "brand" | "introduce" | "education";

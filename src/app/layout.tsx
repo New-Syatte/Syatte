@@ -22,9 +22,11 @@ export const crimson = Crimson_Pro({
 
 export const notoSansKR = Noto_Sans_KR({
   subsets: ["latin"],
-  weight: ["900", "700", "500", "400", "300"],
+  preload: true,
+  weight: ["400", "500", "700"],
   variable: "--font-noto-sans-kr",
   display: "swap",
+  fallback: ["system-ui", "arial"],
 });
 
 export const metadata = {
