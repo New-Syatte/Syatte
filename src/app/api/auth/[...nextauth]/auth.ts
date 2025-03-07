@@ -14,7 +14,7 @@ export interface UserWithId extends User {
   image: string;
 }
 
-export const authOptions: NextAuthConfig = {
+export const authConfig = {
   providers: [
     CredentialsProvider({
       name: "credentials",
@@ -50,11 +50,11 @@ export const authOptions: NextAuthConfig = {
   ],
   callbacks: {
     async signIn({ user }) {
-      if (!user?.id || !user?.email) {
-        return false;
-      }
-
       try {
+        if (!user?.id || !user?.email) {
+          return false;
+        }
+
         const userData = {
           id: user.id,
           name: user.name || "",
@@ -77,7 +77,7 @@ export const authOptions: NextAuthConfig = {
       }
       return token;
     },
-    async session({ session, token }: { session: any; token: any }) {
+    async session({ session, token }) {
       if (session.user) {
         session.user.id = token.id as string;
         session.user.username = token.username as string;
@@ -92,6 +92,6 @@ export const authOptions: NextAuthConfig = {
   debug: process.env.NODE_ENV === "development",
   secret: process.env.NEXTAUTH_SECRET || "your-secret-key",
   trustHost: true,
-};
+} satisfies NextAuthConfig;
 
-export const { auth, handlers, signIn, signOut } = NextAuth(authOptions);
+export const { handlers, auth, signIn, signOut } = NextAuth(authConfig);
