@@ -4,6 +4,9 @@ import { getOrder } from "@/services/sanity/orders";
 import { PaymentResponse } from "@/type/tossPayments";
 import { Suspense } from "react";
 
+// 동적 렌더링 설정 추가
+export const dynamic = 'force-dynamic';
+
 function PaymentProcessing() {
   return (
     <div className="min-h-screen flex items-center justify-center">

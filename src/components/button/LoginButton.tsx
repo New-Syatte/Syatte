@@ -26,15 +26,6 @@ const LoginButton = ({ title, onClick }: Props) => {
         border: "",
       };
       break;
-    case "naver":
-      data = {
-        img: "/naver-logo.png",
-        title: "네이버 로그인",
-        fontColor: "text-white",
-        bgColor: "bg-[#03C75A]",
-        border: "",
-      };
-      break;
     case "google":
       data = {
         img: "/google-logo.png",
@@ -44,8 +35,13 @@ const LoginButton = ({ title, onClick }: Props) => {
         border: "border",
       };
       break;
+    case "credentials":
+      // credentials 버튼은 표시하지 않음
+      return null;
     default:
-      throw new Error(`Invalid title: ${title}`);
+      // 알 수 없는 로그인 제공자는 표시하지 않음
+      console.warn(`알 수 없는 로그인 제공자: ${title}`);
+      return null;
   }
 
   return (

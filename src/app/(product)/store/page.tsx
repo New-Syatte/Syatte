@@ -7,6 +7,9 @@ import { getProducts } from "@/services/sanity/products";
 import { Product } from "@/type/products";
 import ProductCards from "./ProductCards";
 
+// 캐싱 설정 추가 (1시간마다 재검증)
+export const revalidate = 3600;
+
 export default async function Products() {
   const categoryValues = categorys.map(category => category.value);
   const products = await getProducts();
