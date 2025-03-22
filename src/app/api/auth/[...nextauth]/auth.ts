@@ -11,6 +11,20 @@ interface UserWithId {
   name?: string | null;
   email?: string | null;
   image?: string | null;
+  provider?: string; // 로그인 제공자 정보 추가
+}
+
+// 카카오 프로필 타입 정의
+interface KakaoProfile {
+  id: string | number;  // string 또는 number 타입 모두 허용
+  kakao_account?: {
+    profile?: {
+      nickname?: string;
+    };
+    email?: string;
+    has_email?: boolean;
+    email_needs_agreement?: boolean;
+  };
 }
 
 export const authConfig = {
@@ -26,21 +40,54 @@ export const authConfig = {
   ],
   callbacks: {
     async signIn({ user, account, profile }) {
+      // 카카오 로그인인 경우에는 이메일이 없어도 허용
+      if (account?.provider === "kakao") {
+        // 카카오는 이메일이 없어도 로그인 허용
+        return true;
+      }
+      
+      // 다른 제공자(Google 등)는 이메일 필수
       if (!user.email) {
+        console.log("로그인 거부: 이메일 정보 없음", account?.provider);
         return false;
       }
+      
       return true;
     },
     async jwt({ token, user, account, profile }) {
       // 첫 로그인 시에만 user 정보가 전달됨
       if (user) {
         token.id = user.id || "unknown";
-      }
-
-      if (account?.provider === "kakao" && profile) {
-        const kakaoProfile = profile as any;
-        if (kakaoProfile.kakao_account?.profile?.nickname) {
-          token.name = kakaoProfile.kakao_account.profile.nickname;
+        
+        // 로그인 제공자 정보 저장
+        if (account?.provider) {
+          token.provider = account.provider;
+        }
+        
+        // 카카오 로그인인 경우 추가 정보 처리
+        if (account?.provider === "kakao") {
+          // unknown으로 변환 후 KakaoProfile로 타입 지정
+          const kakaoProfile = profile as unknown as KakaoProfile;
+          
+          // 닉네임 설정
+          if (kakaoProfile.kakao_account?.profile?.nickname) {
+            token.name = kakaoProfile.kakao_account.profile.nickname;
+          }
+          
+          // 이메일이 없는 경우 대체 이메일 생성
+          if (!token.email && kakaoProfile.id) {
+            // id가 숫자든 문자열이든 문자열로 변환
+            token.email = `kakao_${String(kakaoProfile.id)}@example.com`;
+          }
+          
+          // 디버깅용 로그
+          console.log("카카오 프로필:", {
+            id: kakaoProfile.id,
+            hasEmail: kakaoProfile.kakao_account?.has_email,
+            needsAgreement: kakaoProfile.kakao_account?.email_needs_agreement,
+            providedEmail: kakaoProfile.kakao_account?.email,
+            nickname: kakaoProfile.kakao_account?.profile?.nickname
+          });
         }
       }
 
@@ -50,6 +97,16 @@ export const authConfig = {
       // JWT 토큰에서 사용자 정보를 세션에 추가
       if (token && session.user) {
         session.user.id = token.id as string;
+        
+        // 이메일이 없는 경우 (주로 카카오 로그인) 토큰에서 가져온 대체 이메일 사용
+        if (!session.user.email && token.email) {
+          session.user.email = token.email as string;
+        }
+        
+        // 로그인 제공자 정보도 세션에 포함 (선택 사항)
+        if (token.provider) {
+          (session.user as any).provider = token.provider;
+        }
       }
       return session;
     },

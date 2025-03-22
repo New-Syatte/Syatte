@@ -126,7 +126,7 @@ const EducationSlider = ({ courses }: EducationSliderProps) => {
                             styleType="secondary"
                             style="flex-1"
                             onClick={() =>
-                              router.push(`/education/${course._id}`)
+                              router.push(`/education/${classItem._id}`)
                             }
                           >
                             신청하기
