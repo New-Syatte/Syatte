@@ -3,6 +3,7 @@ import { NextAuthConfig } from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
 import KakaoProvider from "next-auth/providers/kakao";
 import { cookies } from "next/headers";
+import { getAuthBaseUrl } from "@/utils/url";
 
 // User 타입에 id를 추가한 인터페이스
 interface UserWithId {
@@ -73,8 +74,12 @@ async function getSession() {
     
     console.log("Getting auth session with cookies");
     
+    // 공통 유틸리티에서 기본 URL 가져오기
+    const baseUrl = getAuthBaseUrl();
+    console.log("Auth base URL:", baseUrl);
+    
     // API 호출로 세션 확인
-    const response = await fetch(`${process.env.NEXTAUTH_URL || "http://localhost:3000"}/api/auth/session`, {
+    const response = await fetch(`${baseUrl}/api/auth/session`, {
       headers: {
         cookie: cookiesStr,
       },
