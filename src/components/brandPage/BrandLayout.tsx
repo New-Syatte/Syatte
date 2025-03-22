@@ -2,6 +2,8 @@ import Image from "next/image";
 import { GrNext } from "react-icons/gr";
 import SubTitleBox from "@/components/subTitleBox/SubTitleBox";
 import { StaticImageData } from "next/image";
+import Link from "next/link";
+import URLS from "@/constants/urls";
 
 interface BrandLayoutProps {
   logo: StaticImageData;
@@ -38,6 +40,8 @@ export default function BrandLayout({
     return imagePath;
   };
 
+  console.log("확인", URLS);
+
   return (
     <>
       {/* 최상단 배너 영역 */}
@@ -58,14 +62,14 @@ export default function BrandLayout({
               <div className="flex text-[50px] font-[GmarketSansMedium] h-[56px] sm:text-[20px] sm:mx-auto sm:mt-[50px] sm:h-auto">
                 {countryName} 명품 페인트
               </div>
-              <div className="flex text-[100px] font-[GmarketSansMedium] font-bold sm:text-[40px] sm:mx-auto">
+              <div className="flex text-[80px] font-[GmarketSansMedium] font-bold sm:text-[40px] sm:mx-auto">
                 {brandName}
               </div>
               <div className="flex text-[18px] max-w-[767px] mr-[140px] mb-[36px] sm:text-[14px] sm:m-[0px] sm:mx-[35px] sm:mt-[20px] sm:text-center">
                 {titleBannerText}
               </div>
-              <div className="flex text-[18px] w-[200px] h-[50px] border-[1px] border-[#000000] justify-center items-center cursor-pointer sm:mx-auto sm:mt-7">
-                제품 더 알아보기
+              <div className="flex text-[18px] w-[200px] h-[50px] justify-center items-center sm:mx-auto sm:mt-7">
+                {/* 제품 더 알아보기 */}
               </div>
             </div>
           </div>
@@ -89,12 +93,19 @@ export default function BrandLayout({
                   {text}
                 </div>
               ))}
-              <div className="flex text-[24px] items-center cursor-pointer sm:mx-auto">
+              <Link
+                href={`${URLS.PRODUCT_STORE_BRAND}/${
+                  brandName === "Modern Masters"
+                    ? "modernMasters"
+                    : "midasMetal"
+                }`}
+                className="flex text-[24px] items-center cursor-pointer sm:mx-auto"
+              >
                 STORE
                 <div className="flex text-[20px] ml-2 pt-[1px]">
                   <GrNext />
                 </div>
-              </div>
+              </Link>
             </div>
           </div>
           <VideoSection videoId={videoId} />
