@@ -32,7 +32,7 @@ const Slider = ({
   height,
   fill = false,
   arrowSize = 78,
-  bgColor = "bg-white",
+  bgColor = "bg-transparent",
   setIndexImage,
   ...restProps
 }: ISliderProps) => {
