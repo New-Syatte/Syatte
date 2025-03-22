@@ -12,7 +12,7 @@ export default function PaintSlider() {
   return (
     <div className="flex w-full h-[246px] justify-between mt-[60px] overflow-hidden sm:hidden">
       <div className="flex items-center px-10 text-[24px] hover:bg-[#e5e5e5] cursor-pointer">
-        <GrPrevious />
+        {/* <GrPrevious /> */}
       </div>
       {paintList.map((data, index) => (
         <Image
@@ -25,7 +25,7 @@ export default function PaintSlider() {
         />
       ))}
       <div className="flex items-center px-10 text-[24px] hover:bg-[#e5e5e5] cursor-pointer">
-        <GrNext />
+        {/* <GrNext /> */}
       </div>
     </div>
   );

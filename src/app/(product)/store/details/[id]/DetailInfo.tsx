@@ -12,7 +12,7 @@ const DetailInfo = ({ detailImage }: DetailInfoProps) => {
       </article>
     );
   return (
-    <article className="overflow-auto w-full h-auto">
+    <article className="overflow-auto w-full h-auto flex justify-center">
       <Image
         src={detailImage}
         alt="details"
@@ -20,7 +20,7 @@ const DetailInfo = ({ detailImage }: DetailInfoProps) => {
         height={15969}
         sizes="100vw"
         style={{
-          width: "auto",
+          width: "700px",
           height: "auto",
           maxWidth: "980px",
           aspectRatio: "auto",
@@ -28,7 +28,6 @@ const DetailInfo = ({ detailImage }: DetailInfoProps) => {
         quality={100}
         priority
       />
-      {/* <img src={detailImage} alt="detailImage" /> */}
     </article>
   );
 };

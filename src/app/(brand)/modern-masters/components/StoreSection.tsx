@@ -2,7 +2,10 @@
 
 import Image from "next/image";
 import SubTitleBox from "@/components/subTitleBox/SubTitleBox";
-import StoreSlider from "@/components/storeSlider/StoreSlider";
+import ProductCards from "@/app/(product)/store/ProductCards";
+import { Product } from "@/type/products";
+import Link from "next/link";
+import URLS from "@/constants/urls";
 
 interface StoreSectionProps {
   products: any[];
@@ -38,22 +41,30 @@ export default function StoreSection({ products }: StoreSectionProps) {
         <SubTitleBox engValue={"STORE"} korValue={"공식 스토어"} />
       </div>
       {/* 스토어 영역 */}
-      <section className="flex w-full justify-center mb-[50px] z-10 sm:w-full">
+
+      <section className="flex sm:w-full flex-col gap-[73px] justify-center items-center">
         {categoryValues.map((category: string, index: number) => (
-          <div key={index}>
-            <StoreSlider
+          <div
+            key={index}
+            className="flex flex-col justify-center items-center sm:w-[90%]"
+          >
+            <div className="flex w-full justify-between sm:flex-col sm:items-center items-end mb-12 sm:font-GmarketSans"></div>
+            <ProductCards
               key={category}
-              products={products}
-              category={category}
+              products={products.filter(
+                (product: Product) => product.mainCategory === category,
+              )}
             />
+            <Link
+              href={`${URLS.PRODUCT_STORE_BRAND}/${category}`}
+              className="flex w-[170px] h-[50px] bg-[#000000] text-[#ffffff] justify-center items-center mt-[100px] pb-1 cursor-pointer sm:mt-[30px]"
+            >
+              스토어 이동
+            </Link>
           </div>
         ))}
       </section>
-      <div className="flex w-full justify-center">
-        <div className="flex w-[170px] h-[50px] bg-[#000000] text-[#ffffff] justify-center items-center mt-[100px] pb-1 cursor-pointer sm:mt-[30px]">
-          스토어 이동
-        </div>
-      </div>
+      <div className="flex w-full justify-center"></div>
     </div>
   );
 }
