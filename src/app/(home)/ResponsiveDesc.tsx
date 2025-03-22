@@ -15,7 +15,7 @@ const NoTrimDesc = ({ desc }: { desc: string }) => {
         ))}
       </>
     );
-  if (isMobile) return <div className="text-center">{desc}</div>;
+  if (isMobile) return <span className="text-center block">{desc}</span>;
   return <></>;
 };
 

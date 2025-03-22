@@ -7,7 +7,9 @@ import { cookies, headers } from "next/headers";
 // 동적 렌더링 설정 추가
 export const dynamic = 'force-dynamic';
 
-type SearchParams = Record<string, string> | null | undefined;
+// Next.js 15.1.6에 맞게 타입 정의 (공식 문서 기준)
+type Params = Promise<{ slug?: string }>;
+type SearchParams = Promise<{ [key: string]: string | string[] | undefined }>;
 
 // Next.js 15의 비동기 headers와 cookies를 처리하기 위한 유틸리티 함수
 const waitForPromise = async <T,>(promise: Promise<T> | T): Promise<T> => {
@@ -19,9 +21,9 @@ const waitForPromise = async <T,>(promise: Promise<T> | T): Promise<T> => {
   }
 };
 
-export default async function SignInPage({
-  searchParams,
-}: {
+// Next.js 15.1.6에 맞게 props 타입 및 구현 수정 (공식 문서 기준)
+export default async function SignInPage(props: {
+  params: Params;
   searchParams: SearchParams;
 }) {
   try {
@@ -29,14 +31,20 @@ export default async function SignInPage({
     await waitForPromise(headers());
     await waitForPromise(cookies());
     
-    // searchParams 처리
-    const params = await searchParams;
+    // 파라미터 처리 - 문서에 따라 props에서 추출
+    const params = await props.params;
+    const searchParams = await props.searchParams;
     
     // callbackUrl 처리
     let callbackUrl = "/";
-    if (params && typeof params === 'object' && params.callbackUrl) {
+    const callbackParam = searchParams.callbackUrl;
+    
+    if (callbackParam) {
       try {
-        const rawCallbackUrl = params.callbackUrl as string;
+        const rawCallbackUrl = Array.isArray(callbackParam) 
+          ? callbackParam[0] 
+          : callbackParam;
+        
         // URL 디코딩 수행
         callbackUrl = decodeURIComponent(rawCallbackUrl);
       } catch (e) {

@@ -20,8 +20,8 @@ const SESSION_COOKIE_NAMES = [
 function hasSessionCookie(request: NextRequest): boolean {
   // 모든 쿠키 확인
   const cookies = Array.from(request.cookies.getAll());
-  console.log("All cookies:", cookies.map(c => c.name).join(", "));
   
+  // 세션 쿠키가 있는지 확인
   return cookies.some(cookie => SESSION_COOKIE_NAMES.includes(cookie.name));
 }
 
@@ -51,19 +51,15 @@ export async function middleware(request: NextRequest) {
     return NextResponse.next();
   }
   
-  console.log(`Auth required for ${pathname}, checking session...`);
-  
   // 세션 쿠키 존재 확인 (간단히 쿠키 존재 여부만 확인)
   const hasSession = hasSessionCookie(request);
   
   if (hasSession) {
-    console.log("Session cookie found, allowing access");
     return NextResponse.next();
   }
   
   // 인증되지 않은 경우 - API 요청이면 401 응답
   if (pathname.startsWith('/api/')) {
-    console.log("Unauthenticated API request, returning 401");
     return NextResponse.json(
       { error: "인증되지 않은 사용자입니다." },
       { status: 401 }
@@ -71,7 +67,6 @@ export async function middleware(request: NextRequest) {
   }
   
   // 페이지 요청이면 로그인 페이지로 리다이렉트
-  console.log(`No session found, redirecting to login, callback: ${pathname}`);
   const loginUrl = new URL('/signin', request.url);
   loginUrl.searchParams.set('callbackUrl', pathname);
   return NextResponse.redirect(loginUrl);
