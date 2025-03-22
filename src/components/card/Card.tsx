@@ -63,8 +63,9 @@ export default function Card({
       </div>
       <div
         className={`text-${titleSize} sm:text-sm text-black font-normal mt-7 hover:underline`}
+        title={title}
       >
-        {title}
+        {title.length > 18 ? title.slice(0, 18) + "..." : title}
       </div>
       <div className="hover:underline sm:mt-1 mt-[10px] flex gap-2 items-end">
         <span className="text-rose-500 sm:text-xs text-2xl font-bold leading-[30px]">
