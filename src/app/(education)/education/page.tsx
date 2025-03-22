@@ -6,6 +6,9 @@ import { Course, ClassSchema } from "@/type/edu";
 import Image from "next/image";
 import Link from "next/link";
 
+// 캐싱 설정 추가 (6시간마다 재검증)
+export const revalidate = 21600;
+
 // 교육 과정 목록을 가져오는 쿼리
 const coursesQuery = `*[_type == "course" && count(classes) > 0] {
   _id,

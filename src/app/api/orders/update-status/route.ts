@@ -2,6 +2,9 @@ import { NextRequest, NextResponse } from "next/server";
 import { updateOrderStatus } from "@/services/sanity/orders";
 import { client } from "@/services/sanity";
 
+// 동적 라우트 설정 추가
+export const dynamic = 'force-dynamic';
+
 export async function POST(req: NextRequest) {
   try {
     const { orderId, status, events } = await req.json();

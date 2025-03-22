@@ -1,6 +1,6 @@
 "use client";
 
-import { ChangeEvent, FormEvent, useState } from "react";
+import { ChangeEvent, FormEvent, useState, useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useRouter } from "next/navigation";
 import {
@@ -13,7 +13,7 @@ import Heading from "@/components/heading/Heading";
 import Button from "@/components/button/Button";
 import { useSession } from "next-auth/react";
 import URLS from "@/constants/urls";
-import CartInfoArticle from "@/app/(cart)/cart/CartInfoArticle";
+import CartInfoArticleWrapper from "@/app/(cart)/cart/CartInfoArticleWrapper";
 import { Mobile } from "@/hooks/useMediaQuery";
 
 const id = "daum-postcode"; // script가 이미 rendering 되어 있는지 확인하기 위한 ID
@@ -21,18 +21,32 @@ const src = "//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js";
 
 export default function CheckoutAddressClient() {
   const { data: user } = useSession();
+  const formRef = useRef<HTMLFormElement>(null);
 
   // const postcodeRef = useRef<HTMLDivElement | null>(null);
   const [isScriptLoaded, setIsScriptLoaded] = useState<boolean>(false);
   const [roadAddress, setRoadAddress] = useState<string>("");
   const [zipCode, setZipCode] = useState("");
 
-  const [shippingAddress, setShippingAddress] = useState(
-    useSelector(selectShippingAddress),
-  );
-  const [billingAddress, setBillingAddress] = useState(
-    useSelector(selectBillingAddress),
-  );
+  // Redux에서 값을 가져오되, 기본값 제공하여 undefined 방지
+  const initialShippingAddress = useSelector(selectShippingAddress) || {
+    name: "",
+    phone: "",
+    postalCode: "",
+    city: "",
+    line: "",
+    memo: ""
+  };
+  
+  const initialBillingAddress = useSelector(selectBillingAddress) || {
+    name: "",
+    phone: "",
+    userEmail: user?.user?.email || ""
+  };
+  
+  const [shippingAddress, setShippingAddress] = useState(initialShippingAddress);
+  const [billingAddress, setBillingAddress] = useState(initialBillingAddress);
+  const [formInitialized, setFormInitialized] = useState(false);
 
   const isMobile = Mobile();
 
@@ -40,6 +54,41 @@ export default function CheckoutAddressClient() {
 
   const dispatch = useDispatch();
   const router = useRouter();
+
+  // 크롬 자동완성 감지 및 처리
+  useEffect(() => {
+    // 약간의 지연을 두어 브라우저 자동완성이 적용된 후에 실행
+    const timeoutId = setTimeout(() => {
+      if (formRef.current && !formInitialized) {
+        // 폼 요소 내의 모든 입력 필드 확인
+        const nameInput = formRef.current.querySelector('input[name="name"]') as HTMLInputElement;
+        const phoneInput = formRef.current.querySelector('input[name="phone"]') as HTMLInputElement;
+        
+        // 자동완성된 값이 있는지 확인하고 상태 업데이트
+        if (nameInput && nameInput.value && !shippingAddress.name) {
+          const newShippingAddress = {...shippingAddress, name: nameInput.value};
+          setShippingAddress(newShippingAddress);
+          
+          if (isSame) {
+            setBillingAddress({...billingAddress, name: nameInput.value});
+          }
+        }
+        
+        if (phoneInput && phoneInput.value && !shippingAddress.phone) {
+          const newShippingAddress = {...shippingAddress, phone: phoneInput.value};
+          setShippingAddress(newShippingAddress);
+          
+          if (isSame) {
+            setBillingAddress({...billingAddress, phone: phoneInput.value});
+          }
+        }
+        
+        setFormInitialized(true);
+      }
+    }, 500); // 500ms 지연
+    
+    return () => clearTimeout(timeoutId);
+  }, [formInitialized, shippingAddress, billingAddress, isSame]);
 
   const loadScript = () => {
     const script = document.createElement("script");
@@ -115,6 +164,7 @@ export default function CheckoutAddressClient() {
           fontSize="6xl sm:text-3xl"
         />
         <form
+          ref={formRef}
           className="flex w-full sm:flex-col sm:justify-center sm:items-center mt-10 gap-20"
           onSubmit={handleSubmit}
         >
@@ -128,10 +178,11 @@ export default function CheckoutAddressClient() {
                       required
                       className={INPUTSTYLE}
                       name={"name"}
-                      value={billingAddress.name}
+                      value={billingAddress?.name || ""}
                       onChange={e => handleBilling(e)}
                       type="text"
                       disabled={isSame}
+                      autoComplete="name"
                     />
                   </div>
                   <div className="w-1/3 sm:w-full">
@@ -140,12 +191,13 @@ export default function CheckoutAddressClient() {
                       required
                       className={INPUTSTYLE}
                       name={"phone"}
-                      value={billingAddress.phone}
+                      value={billingAddress?.phone || ""}
                       onChange={e => handleBilling(e)}
                       type="tel"
                       pattern="[0-9]{3}-[0-9]{4}-[0-9]{4}"
                       disabled={isSame}
                       onInput={e => hypenTel(e.target)}
+                      autoComplete="tel"
                     />
                   </div>
                 </div>
@@ -170,7 +222,7 @@ export default function CheckoutAddressClient() {
                       required
                       name={"name"}
                       className={INPUTSTYLE}
-                      value={shippingAddress.name}
+                      value={shippingAddress?.name || ""}
                       onChange={e => {
                         handleShipping(e);
                         if (isSame) {
@@ -178,6 +230,7 @@ export default function CheckoutAddressClient() {
                         }
                       }}
                       type="text"
+                      autoComplete="shipping name"
                     />
                   </div>
                   <div className="w-1/3 sm:w-full">
@@ -186,7 +239,7 @@ export default function CheckoutAddressClient() {
                       required
                       className={INPUTSTYLE}
                       name={"phone"}
-                      value={shippingAddress.phone}
+                      value={shippingAddress?.phone || ""}
                       onChange={e => {
                         handleShipping(e);
                         if (isSame) {
@@ -196,6 +249,7 @@ export default function CheckoutAddressClient() {
                       type="tel"
                       pattern="[0-9]{3}-[0-9]{4}-[0-9]{4}"
                       onInput={e => hypenTel(e.target)}
+                      autoComplete="shipping tel"
                     />
                   </div>
                 </div>
@@ -208,8 +262,9 @@ export default function CheckoutAddressClient() {
                         readOnly
                         className={INPUTSTYLE}
                         name={"postalCode"}
-                        value={zipCode}
+                        value={zipCode || ""}
                         type="text"
+                        autoComplete="postal-code"
                       />
                     )}
                     {isMobile && (
@@ -219,8 +274,9 @@ export default function CheckoutAddressClient() {
                           readOnly
                           className={INPUTSTYLE}
                           name={"postalCode"}
-                          value={zipCode}
+                          value={zipCode || ""}
                           type="text"
+                          autoComplete="postal-code"
                         />
                         <div className="w-1/2 h-10">
                           <Button onClick={ZipCodeSearch} styleType="primary">
@@ -238,8 +294,9 @@ export default function CheckoutAddressClient() {
                         readOnly
                         className={INPUTSTYLE}
                         name={"city"}
-                        value={roadAddress}
+                        value={roadAddress || ""}
                         type="text"
+                        autoComplete="address-level2"
                       />
                       {!isMobile && (
                         <div className="w-1/5">
@@ -256,23 +313,24 @@ export default function CheckoutAddressClient() {
                   required
                   className={INPUTSTYLE}
                   name={"line"}
-                  value={shippingAddress.line}
+                  value={shippingAddress?.line || ""}
                   onChange={e => handleShipping(e)}
                   type="text"
+                  autoComplete="address-line1"
                 />
                 <label className={LABELSTYLE}>배송 요청 사항</label>
                 <textarea
                   required
                   className={INPUTSTYLE + "mb-6 h-20 focus:outline-none"}
                   name={"memo"}
-                  value={shippingAddress.memo}
+                  value={shippingAddress?.memo || ""}
                   onChange={e => handleShipping(e)}
                 />
               </div>
             </div>
           </div>
           <div className="flex flex-col justify-start items-start w-1/4 gap-5 sm:w-[90%]">
-            <CartInfoArticle />
+            <CartInfoArticleWrapper />
             <div className="flex w-full gap-2">
               <div className="w-1/2 h-14">
                 <Button

@@ -8,7 +8,7 @@ import {
   selectCheckedTotalAmount,
 } from "@/redux/slice/cartSlice";
 import { useSelector } from "react-redux";
-import CartInfoArticle from "@/app/(cart)/cart/CartInfoArticle";
+import CartInfoArticleWrapper from "@/app/(cart)/cart/CartInfoArticleWrapper";
 import { useState } from "react";
 import { Mobile } from "@/hooks/useMediaQuery";
 import { requestPayment } from "@/services/payment";
@@ -19,10 +19,12 @@ import {
 import { setCheckoutData } from "@/app/actions";
 import { toast } from "react-toastify";
 import { CheckoutData } from "@/type/action";
+import { useSession } from "next-auth/react";
 
 export default function CheckoutClient() {
   const [isScriptLoaded, setIsScriptLoaded] = useState<boolean>(false);
   const [isPending, startTransition] = useTransition();
+  const { data: session } = useSession();
   const cartItems = useSelector(selectCheckedCartItems);
   const cartTotalAmount = useSelector(selectCheckedTotalAmount);
   const shippingAddress = useSelector(selectShippingAddress);
@@ -53,6 +55,11 @@ export default function CheckoutClient() {
       return false;
     }
 
+    if (!session?.user) {
+      toast.error("로그인이 필요합니다.");
+      return false;
+    }
+
     return true;
   };
 
@@ -75,8 +82,30 @@ export default function CheckoutClient() {
         // 체크아웃 데이터 저장
         await setCheckoutData(JSON.stringify(checkoutData));
 
-        // 결제 요청
-        await requestPayment(clientkey!, cartTotalAmount, orderNameCount);
+        // 사용자 정보 확인 및 추출
+        if (!session?.user) {
+          toast.error("로그인 정보를 찾을 수 없습니다.");
+          return;
+        }
+
+        const userId = session.user.id;
+        const userEmail = session.user.email || "";
+
+        // 사용자 정보가 비어있는지 확인
+        if (!userId || userId === "unknown") {
+          console.error("유효하지 않은 사용자 ID:", userId);
+          toast.error("유효한 사용자 정보가 필요합니다.");
+          return;
+        }
+
+        // 결제 요청 - 사용자 정보 포함
+        await requestPayment(
+          clientkey!, 
+          cartTotalAmount, 
+          orderNameCount,
+          userId,
+          userEmail
+        );
       } catch (error) {
         console.error("Checkout error:", error);
         toast.error(
@@ -110,7 +139,7 @@ export default function CheckoutClient() {
             <CheckoutForm />
           </div>
           <div className="flex flex-col justify-start items-start w-1/4 gap-5 sm:w-[90%]">
-            <CartInfoArticle />
+            <CartInfoArticleWrapper />
             <div className="flex w-full gap-2">
               <div className="w-1/2 h-14">
                 <Button

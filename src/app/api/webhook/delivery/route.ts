@@ -2,6 +2,9 @@ import { NextRequest, NextResponse } from "next/server";
 import { createDeliveryQueue } from "@/services/sanity/deliveryQueue";
 import { getOrderByDeliveryInfo } from "@/services/sanity/orders";
 
+// 동적 라우트 설정 추가
+export const dynamic = 'force-dynamic';
+
 // deliveryTracker webhook 요청 시 배송완료 큐 생성 및 큐 처리 트리거
 export async function POST(req: NextRequest) {
   try {

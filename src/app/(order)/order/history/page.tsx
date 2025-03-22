@@ -2,7 +2,6 @@ import StatusProgress from "./StatusProgress";
 import PeriodSelector from "@/layouts/periodSelector/PeriodSelector";
 import Heading from "@/components/heading/Heading";
 import OrderList from "./OrderList";
-import { registerWebhook } from "@/services/deliveryTracker";
 
 export default function OrderHistory() {
   return (

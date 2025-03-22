@@ -1,9 +1,9 @@
 "use client";
 
-import { signIn } from "next-auth/react";
+import { signIn, getProviders } from "next-auth/react";
 import LoginButton from "../button/LoginButton";
 import Loader from "@/components/loader/Loader";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 // Next-auth v5에서 호환되는 Provider 타입 정의
 type Provider = {
@@ -15,12 +15,23 @@ type Provider = {
 };
 
 type Props = {
-  providers: Record<string, Provider> | {};
   callbackUrl: string;
 };
 
-export default function Signin({ providers, callbackUrl }: Props) {
+export default function Signin({ callbackUrl }: Props) {
   const [isLoading, setIsLoading] = useState(false);
+  const [providers, setProviders] = useState<Record<string, Provider> | null>(null);
+
+  useEffect(() => {
+    const loadProviders = async () => {
+      setIsLoading(true);
+      const providersData = await getProviders();
+      setProviders(providersData);
+      setIsLoading(false);
+    };
+    
+    loadProviders();
+  }, []);
 
   const handleSignIn = async (id: string) => {
     setIsLoading(true);
@@ -34,7 +45,7 @@ export default function Signin({ providers, callbackUrl }: Props) {
       <div className="flex text-[40px] mb-2">로그인</div>
       <div className="flex text-[18px] mb-6">SNS 계정으로 가입 및 로그인</div>
       <div className="flex flex-col gap-2">
-        {Object.values(providers).map((provider: any) => (
+        {providers && Object.values(providers).map((provider: any) => (
           <LoginButton 
             key={provider.id} 
             title={provider.id} 

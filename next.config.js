@@ -24,7 +24,12 @@ const nextConfig = {
   },
   experimental: {
     serverActions: {
-      allowedOrigins: ["localhost:3000", "syatte.vercel.app"],
+      allowedOrigins: [
+        "localhost:3000", 
+        "syatte.vercel.app", 
+        "syatt-deploy.vercel.app",
+        "syatt-deploy-2oi8-git-dev-ruddnjs3769s-projects.vercel.app" // 실제 dev 브랜치 URL 추가
+      ],
     },
   },
   webpack: config => {
@@ -43,6 +48,12 @@ const nextConfig = {
 
     return config;
   },
+  // 환경 변수 추가
+  env: {
+    VERCEL_ENV: process.env.VERCEL_ENV || 'development',
+    VERCEL_BRANCH_URL: process.env.VERCEL_BRANCH_URL || 'http://localhost:3000',
+    VERCEL_URL: process.env.VERCEL_URL || 'localhost:3000',
+  }
 };
 
 module.exports = nextConfig;

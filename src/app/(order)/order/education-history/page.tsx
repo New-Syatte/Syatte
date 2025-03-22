@@ -5,6 +5,9 @@ import { client } from "@/services/sanity";
 import { auth } from "@/app/api/auth/[...nextauth]/auth";
 import EducationHistoryList from "./EducationHistoryList";
 
+// 동적 렌더링 설정 추가
+export const dynamic = 'force-dynamic';
+
 // 사용자의 교육 신청 내역을 가져오는 쿼리
 const getEducationReservations = async (email: string) => {
   try {

@@ -1,97 +1,126 @@
-import CredentialsProvider from "next-auth/providers/credentials";
-import NaverProvider from "next-auth/providers/naver";
-import KakaoProvider from "next-auth/providers/kakao";
-import { addUser } from "@/services/sanity/user";
-import type { User } from "next-auth";
 import NextAuth from "next-auth";
-import type { NextAuthConfig } from "next-auth";
+import { NextAuthConfig } from "next-auth";
+import GoogleProvider from "next-auth/providers/google";
+import KakaoProvider from "next-auth/providers/kakao";
+import { cookies } from "next/headers";
+import { getAuthBaseUrl } from "@/utils/url";
 
-export interface UserWithId extends User {
+// User 타입에 id를 추가한 인터페이스
+interface UserWithId {
   id: string;
-  username: string;
-  name: string;
-  email: string;
-  image: string;
+  name?: string | null;
+  email?: string | null;
+  image?: string | null;
 }
 
 export const authConfig = {
   providers: [
-    CredentialsProvider({
-      name: "credentials",
-      credentials: {
-        email: { label: "이메일", type: "email" },
-        password: { label: "비밀번호", type: "password" }
-      },
-      async authorize(credentials) {
-        // 로그인 로직 구현
-        // 성공 시 사용자 객체 반환, 실패 시 null 반환
-        if (!credentials?.email || !credentials?.password) {
-          return null;
-        }
-        
-        // 여기에 실제 로그인 로직 구현
-        // 예시:
-        return {
-          id: "1",
-          name: "사용자",
-          email: credentials.email as string,
-          image: "",
-        };
-      }
-    }),
-    NaverProvider({
-      clientId: process.env.NAVER_CLIENT_ID || "",
-      clientSecret: process.env.NAVER_CLIENT_SECRET || ""
+    GoogleProvider({
+      clientId: process.env.GOOGLE_ID as string,
+      clientSecret: process.env.GOOGLE_SECRET as string,
     }),
     KakaoProvider({
-      clientId: process.env.KAKAO_CLIENT_ID || "",
-      clientSecret: process.env.KAKAO_CLIENT_SECRET || ""
-    })
+      clientId: process.env.KAKAO_ID as string,
+      clientSecret: process.env.KAKAO_SECRET as string,
+    }),
   ],
   callbacks: {
-    async signIn({ user }) {
-      try {
-        if (!user?.id || !user?.email) {
-          return false;
-        }
-
-        const userData = {
-          id: user.id,
-          name: user.name || "",
-          email: user.email,
-          image: user.image || "",
-          username: user.email.split("@")[0]
-        };
-
-        await addUser(userData);
-        return true;
-      } catch (error) {
-        console.error("Error in signIn callback:", error);
-        return true; // 에러가 발생해도 로그인은 허용
+    async signIn({ user, account, profile }) {
+      if (!user.email) {
+        return false;
       }
+      return true;
     },
-    async jwt({ token, user }) {
+    async jwt({ token, user, account, profile }) {
+      // 첫 로그인 시에만 user 정보가 전달됨
       if (user) {
-        token.id = user.id;
-        token.username = user.email?.split("@")[0] || "";
+        token.id = user.id || "unknown";
       }
+
+      if (account?.provider === "kakao" && profile) {
+        const kakaoProfile = profile as any;
+        if (kakaoProfile.kakao_account?.profile?.nickname) {
+          token.name = kakaoProfile.kakao_account.profile.nickname;
+        }
+      }
+
       return token;
     },
-    async session({ session, token }) {
-      if (session.user) {
+    async session({ session, token, user }) {
+      // JWT 토큰에서 사용자 정보를 세션에 추가
+      if (token && session.user) {
         session.user.id = token.id as string;
-        session.user.username = token.username as string;
       }
       return session;
     },
   },
   pages: {
     signIn: "/signin",
-    error: "/error",
   },
-  debug: process.env.NODE_ENV === "development",
-  secret: process.env.NEXTAUTH_SECRET || "your-secret-key",
-  trustHost: true,
+  session: { strategy: "jwt" },
+  basePath: "/api/auth",
 } satisfies NextAuthConfig;
 
-export const { handlers, auth, signIn, signOut } = NextAuth(authConfig);
+// 새로운 Next-Auth 설정 방식
+const { handlers, auth: nextAuth, signIn, signOut } = NextAuth(authConfig);
+
+// 세션 확인용 클라이언트 사이드 API 확인
+async function getSession() {
+  try {
+    const cookiesList = await cookies();
+    const cookiesStr = cookiesList.getAll()
+      .map(c => `${c.name}=${c.value}`)
+      .join("; ");
+    
+    console.log("Getting auth session with cookies");
+    
+    // 공통 유틸리티에서 기본 URL 가져오기
+    const baseUrl = getAuthBaseUrl();
+    console.log("Auth base URL:", baseUrl);
+    
+    // API 호출로 세션 확인
+    const response = await fetch(`${baseUrl}/api/auth/session`, {
+      headers: {
+        cookie: cookiesStr,
+      },
+      cache: "no-store",
+    });
+    
+    if (!response.ok) {
+      console.log("Session API error:", response.status);
+      return null;
+    }
+    
+    return response.json();
+  } catch (error) {
+    console.error("Session fetch error:", error);
+    return null;
+  }
+}
+
+// Next.js 15에서는 headers()와 cookies()를 비동기적으로 처리해야 함
+export const auth = async () => {
+  try {
+    // 세션 데이터 가져오기 - API 호출 방식 사용
+    const session = await getSession();
+    
+    if (session && session.user) {
+      console.log("Session found:", session.user.name);
+      return session;
+    } else {
+      // 세션이 없으면 null 반환
+      console.log("No session found");
+      return null;
+    }
+  } catch (error) {
+    console.error("Auth error:", error);
+    // 에러 상세 정보 출력
+    if (error instanceof Error) {
+      console.error("Error message:", error.message);
+      console.error("Error stack:", error.stack);
+    }
+    return null;
+  }
+};
+
+export { handlers, signIn, signOut };

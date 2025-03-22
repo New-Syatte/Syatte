@@ -20,6 +20,9 @@ import SectionTitle from "./SectionTitle";
 import MainImagesLayout from "./MainImagesLayout";
 import IntroduceSlider from "./IntroduceSlider";
 
+// 캐싱 설정 추가 (12시간마다 재검증)
+export const revalidate = 43200;
+
 export default async function Home() {
   const datas = [{ imageUrl: Banner }];
   const introDatas = [
