@@ -7,20 +7,29 @@ import {
 } from "@/redux/slice/cartSlice";
 import deliveryFee from "@/constants/deliveryFee";
 import priceFormat from "@/utils/priceFormat";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 const CartInfoArticle = () => {
   const cartItems = useSelector(selectCartItems);
   const checkedTotalAmount = useSelector(selectCheckedTotalAmount);
   const dispatch = useDispatch();
+  
+  // 클라이언트 측에서만 계산할 상태 추가
+  const [checkedItemsQuantity, setCheckedItemsQuantity] = useState(0);
+  const [formattedTotal, setFormattedTotal] = useState('0');
 
   useEffect(() => {
     dispatch(CALCULATE_CHECKED_ITEMS_SUBTOTAL());
-  }, [cartItems, dispatch]);
-
-  const checkedItemsQuantity = cartItems
-    .filter(item => item.isChecked)
-    .reduce((total, item) => total + item.quantity, 0);
+    
+    // 클라이언트 측에서 계산
+    const quantity = cartItems
+      .filter(item => item.isChecked)
+      .reduce((total, item) => total + item.quantity, 0);
+    setCheckedItemsQuantity(quantity);
+    
+    // 가격 형식도 클라이언트에서만 계산
+    setFormattedTotal(priceFormat(checkedTotalAmount));
+  }, [cartItems, dispatch, checkedTotalAmount]);
 
   return (
     <div className="flex flex-col justify-between border border-lightGray h-[200px] w-full p-4 rounded-md">
@@ -41,7 +50,7 @@ const CartInfoArticle = () => {
       >
         <h4 className={"font-bold text-[22px]"}>총 결제금액</h4>
         <div className={"font-bold text-2xl flex justify-start items-end"}>
-          <p>{priceFormat(checkedTotalAmount)}</p>
+          <p>{formattedTotal}</p>
           <p className="text-lg">원</p>
         </div>
       </div>

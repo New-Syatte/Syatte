@@ -10,6 +10,27 @@ export async function getOrders(userId: string) {
   );
 }
 
+export async function getOrdersByEmail(userEmail: string) {
+  return client.fetch(
+    `*[_type == "order" && userEmail == $userEmail] | order(orderDate desc)`,
+    { userEmail },
+  );
+}
+
+// 이메일 또는 userId로 주문 조회 (카카오 로그인 사용자 대응)
+export async function getOrdersByUserInfo(userId: string, userEmail?: string | null) {
+  // 이메일이 있을 경우, 이메일과 userId 모두로 검색
+  if (userEmail) {
+    return client.fetch(
+      `*[_type == "order" && (userEmail == $userEmail || userId == $userId)] | order(orderDate desc)`,
+      { userId, userEmail },
+    );
+  }
+  
+  // 이메일이 없을 경우, userId로만 검색
+  return getOrders(userId);
+}
+
 export async function getOrderByDeliveryInfo(
   carrierId: string,
   trackingNumber: string,

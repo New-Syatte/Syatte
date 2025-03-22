@@ -6,6 +6,8 @@ export const requestPayment = async (
   clientKey: string,
   amount: number,
   orderName: string,
+  userId?: string,
+  userEmail?: string,
 ) => {
   const orderId = Math.random().toString(36).slice(2);
   const tosspayment = clientKey ? await loadTossPayments(clientKey) : null;
@@ -16,11 +18,16 @@ export const requestPayment = async (
   }
 
   try {
+    const successUrl = new URL(`${URLS.rootURL}/api/payment/confirm`);
+    
+    if (userId) successUrl.searchParams.append("userId", userId);
+    if (userEmail) successUrl.searchParams.append("userEmail", userEmail);
+    
     const response = await tosspayment.requestPayment("카드", {
       amount,
       orderId,
       orderName,
-      successUrl: `${URLS.rootURL}/api/payment/confirm`,
+      successUrl: successUrl.toString(),
       failUrl: `${URLS.rootURL}${URLS.CHECKOUT_FAIL}`,
     });
     return orderId;

@@ -5,6 +5,9 @@ import { updateOrderStatus } from "@/services/sanity/orders";
 import { DELIVERY_STATUS } from "@/constants/deliveryStatus";
 import { client } from "@/services/sanity";
 
+// 동적 라우트 설정 추가
+export const dynamic = 'force-dynamic';
+
 // deliveryTracker webhook 요청 시 배송 완료 큐 처리
 const MAX_RETRY_COUNT = 3;
 const PROCESSING_TIMEOUT = 5 * 60 * 1000; // 5분

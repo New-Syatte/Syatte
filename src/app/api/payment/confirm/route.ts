@@ -8,20 +8,17 @@ export async function GET(req: NextRequest) {
   const orderId = searchParams.get("orderId");
   const paymentKey = searchParams.get("paymentKey");
   const amount = searchParams.get("amount");
-
-  // 미들웨어에서 설정한 사용자 정보 가져오기
-  const userId = req.headers.get("x-user-id");
-  const userEmail = req.headers.get("x-user-email");
-  const userName = req.headers.get("x-user-name");
-
-  // URL 인코딩된 사용자 이름 디코딩
-  const decodedUserName = userName ? decodeURIComponent(userName) : "";
-
-  if (!orderId || !paymentKey || !amount || !userId) {
+  
+  // URL 파라미터에서 직접 사용자 정보 가져오기
+  const userId = searchParams.get("userId") || "unknown";
+  const userEmail = searchParams.get("userEmail") || "";
+  
+  // userId 또는 이메일 중 하나는 반드시 필요
+  if (!orderId || !paymentKey || !amount || (!userId && !userEmail)) {
     return NextResponse.redirect(
       new URL(
         `/checkout-fail?message=${encodeURIComponent(
-          "결제 정보가 올바르지 않습니다.",
+          "결제 정보가 올바르지 않습니다. 사용자 식별 정보가 필요합니다.",
         )}`,
         req.url,
       ),
@@ -60,14 +57,17 @@ export async function GET(req: NextRequest) {
       );
     }
 
-    // 주문 생성
+    // 체크아웃 데이터에서 사용자 이름 가져오기
+    const userName = checkoutData.billingAddress?.name || "";
+
+    // 주문 생성 - userId와 이메일 모두 전달
     try {
       const order = await createOrderFromPayment({
         payment,
         orderId,
         userId,
-        userEmail: userEmail || "",
-        displayName: decodedUserName,
+        userEmail,
+        displayName: userName,
         cartItems: checkoutData.cartItems || [],
         shippingAddress: checkoutData.shippingAddress || {},
         billingAddress: checkoutData.billingAddress || {},
@@ -93,6 +93,7 @@ export async function GET(req: NextRequest) {
         stack: error.stack,
         orderId,
         userId,
+        userEmail,
       });
       throw error;
     }
