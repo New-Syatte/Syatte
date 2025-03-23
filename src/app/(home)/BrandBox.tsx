@@ -61,13 +61,13 @@ const BrandBox = ({ brand }: BrandBoxProps) => {
           {description}
         </p>
         <div className="self-start flex sm:block gap-12">
-          <Link
+          {/* <Link
             href={gallery}
             className="font-garamond text-2xl flex gap-3 hover:underline tracking-widest"
           >
             GALLERY
             <MdArrowForwardIos className="text-xl mt-[6px]" />
-          </Link>
+          </Link> */}
           <Link
             href={store} // 추후 수정(Issue #20)
             className="font-garamond text-2xl flex gap-3 hover:underline tracking-widest sm:mt-2 my-0"
