@@ -25,18 +25,18 @@ const slideData = [
     query: "/midasMetal",
     imageUrl: MidasMetalLogo,
   },
-  {
-    id: 3,
-    title: "메탈이펙트",
-    query: "/modernMasters/metalEffect",
-    imageUrl: MetalEffectLogo,
-  },
-  {
-    id: 4,
-    title: "컬러패스트",
-    query: "/modernMasters/colorFast",
-    imageUrl: ColorFastLogo,
-  },
+  // {
+  //   id: 3,
+  //   title: "메탈이펙트",
+  //   query: "/modernMasters/metalEffect",
+  //   imageUrl: MetalEffectLogo,
+  // },
+  // {
+  //   id: 4,
+  //   title: "컬러패스트",
+  //   query: "/modernMasters/colorFast",
+  //   imageUrl: ColorFastLogo,
+  // },
 ];
 
 const BrandSlider = () => {
