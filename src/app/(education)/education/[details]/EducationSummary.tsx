@@ -91,7 +91,7 @@ const EducationSummary = ({ course }: EducationSummaryProps) => {
       </div>
 
       {/* 교육 정보 그리드 */}
-      <div className="grid grid-cols-1 gap-8 mb-8 mt-8">
+      <div className="grid grid-cols-1 gap-8 mb-8 mt-8 w-full">
         <div className="space-y-6 py-6 font-helvetica">
           <div className="border-y border-zinc-400 py-4 flex flex-col justify-between items-start gap-2 px-4">
             <div className="flex gap-9 items-center">
@@ -99,6 +99,7 @@ const EducationSummary = ({ course }: EducationSummaryProps) => {
               <p className="text-gray-700">
                 {formatDateSafely(firstClass.startDate, "yyyy. MM. dd")} ~{" "}
                 {formatDateSafely(lastClass.endDate, "MM. dd.")}
+                <br />
                 <span className="text-primary">
                   {firstClass.schedule ? ` (${firstClass.schedule})` : ""}
                 </span>
