@@ -87,7 +87,7 @@ export default async function ClassDetailsPage({ params }: PageProps) {
         </div>
 
         {/* 교육 정보 그리드 */}
-        <div className="grid grid-cols-1 gap-8 mb-8 mt-8">
+        <div className="grid grid-cols-1 gap-8 mb-8 mt-8 w-full">
           <div className="space-y-6 py-6 font-helvetica">
             <div className="border-y border-zinc-400 py-4 flex flex-col justify-between items-start gap-2 px-4">
               <div className="flex gap-9 items-center">
@@ -95,6 +95,7 @@ export default async function ClassDetailsPage({ params }: PageProps) {
                 <p className="text-gray-700">
                   {formatDateSafely(classData.startDate, "yyyy. MM. dd")} ~{" "}
                   {formatDateSafely(classData.endDate, "MM. dd.")}
+                  <br />
                   <span className="text-primary">
                     {classData.schedule ? ` (${classData.schedule})` : ""}
                   </span>
