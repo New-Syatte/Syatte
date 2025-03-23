@@ -115,7 +115,7 @@ const EducationSlider = ({ courses }: EducationSliderProps) => {
                           <h3 className="text-2xl font-bold">
                             {classItem.name}
                           </h3>
-                          <p className="text-lg">
+                          <p className="text-md">
                             {extractTextFromPortableText(
                               classItem.details,
                             ).slice(0, 50)}

@@ -55,7 +55,7 @@ export default async function Products() {
                   (product: Product) => product.mainCategory === category,
                 )}
               />
-              {index === 0 && <ProductBanner />}
+              {/* {index === 0 && <ProductBanner />} */}
             </div>
           ))}
         </section>
