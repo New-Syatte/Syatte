@@ -43,7 +43,7 @@ export default function Card({
           width: `${isMobile ? "150px" : width + "px"}`,
           height: `${isMobile ? "150px" : height + "px"}`,
         }}
-        className={`bg-${bgColor} border border-zinc-300 flex items-center justify-center`}
+        className={`bg-${bgColor} border border-zinc-100 flex items-center justify-center rounded-md`}
       >
         <div
           className="relative"
